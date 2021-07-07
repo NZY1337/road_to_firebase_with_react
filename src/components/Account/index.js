@@ -1,10 +1,11 @@
 import React from "react";
+import Container from "@material-ui/core/Container";
 
 const Account = () => {
   return (
-    <div>
+    <Container>
       <h1>Account</h1>
-    </div>
+    </Container>
   );
 };
 

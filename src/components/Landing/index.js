@@ -1,10 +1,11 @@
 import React from "react";
+import Container from "@material-ui/core/Container";
 
 const Landing = () => {
   return (
-    <div>
+    <Container>
       <h1>Landing</h1>
-    </div>
+    </Container>
   );
 };
 

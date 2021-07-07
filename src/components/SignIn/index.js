@@ -1,10 +1,13 @@
 import React from "react";
+import { SignInForm } from "./SignInForm";
+import Container from "@material-ui/core/Container";
 
 const SignIn = () => {
   return (
-    <div>
-      <h1>SignIn</h1>
-    </div>
+    <Container maxWidth="lg">
+      <h1>Sign In</h1>
+      <SignInForm />
+    </Container>
   );
 };
 

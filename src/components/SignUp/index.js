@@ -1,11 +1,18 @@
 import React from "react";
+import { FirebaseContext } from "../Firebase";
+import { SignUpForm, SignUpLink } from "./SignUpForm";
 
-const SignUp = () => {
+import Container from "@material-ui/core/Container";
+
+const SignUpPage = () => {
   return (
-    <div>
+    <Container maxWidth="lg">
       <h1>SignUp</h1>
-    </div>
+
+      <SignUpForm />
+      <SignUpLink />
+    </Container>
   );
 };
 
-export default SignUp;
+export default SignUpPage;
