@@ -74,6 +74,12 @@ const NavigationNonAuth = () => {
             Sign In
           </Link>
         </MenuItem>
+
+        {/* <MenuItem>
+          <Link style={style} to={ROUTES.SIGN_UP} color="inherit">
+            Register
+          </Link>
+        </MenuItem> */}
       </Toolbar>
     </AppBar>
   );
