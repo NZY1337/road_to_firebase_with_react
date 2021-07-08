@@ -1,5 +1,6 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
+import { withAuthorization } from "../Sesssion";
 
 const Home = () => {
   return (
@@ -9,4 +10,5 @@ const Home = () => {
   );
 };
 
-export default Home;
+const condition = (authUser) => !!authUser;
+export default withAuthorization(condition)(Home);

@@ -1,16 +1,19 @@
 import React from "react";
 import "materialize-css";
-import { Button } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
 
-const Admin = () => {
+import * as ROLES from "../../constants/roles";
+import { withAuthorization } from "../Sesssion";
+
+const AdminPage = () => {
   return (
-    <div>
+    <Container maxWidth="lg">
       <h1>Admin</h1>
-      <Button variant="contained" color="primary">
-        click me!
-      </Button>
-    </div>
+      <p>Restricted area! Only users with the admin role are authorized.</p>
+    </Container>
   );
 };
 
-export default Admin;
+const condition = (authUser) => authUser && !!authUser.roles[ROLES.ADMIN];
+
+export default withAuthorization(condition)(AdminPage);

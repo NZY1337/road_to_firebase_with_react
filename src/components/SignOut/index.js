@@ -11,5 +11,5 @@ const SignOutBtn = ({ firebase }) => {
     </div>
   );
 };
-
+// 
 export default withFirebase(SignOutBtn);

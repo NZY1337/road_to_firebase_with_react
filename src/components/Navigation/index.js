@@ -27,11 +27,11 @@ const NavigationAuth = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <MenuItem>
+        {/* <MenuItem>
           <Link style={style} to={ROUTES.SIGN_IN} color="inherit">
             Sign In
           </Link>
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem>
           <Link style={style} to={ROUTES.LANDING} color="inherit">
@@ -69,17 +69,23 @@ const NavigationNonAuth = () => {
           </Link>
         </MenuItem>
 
+        {/* <MenuItem>
+          <Link style={style} to={ROUTES.HOME} color="inherit">
+            Home
+          </Link>
+        </MenuItem> */}
+
         <MenuItem>
           <Link style={style} to={ROUTES.SIGN_IN} color="inherit">
             Sign In
           </Link>
         </MenuItem>
 
-        {/* <MenuItem>
+        <MenuItem>
           <Link style={style} to={ROUTES.SIGN_UP} color="inherit">
             Register
           </Link>
-        </MenuItem> */}
+        </MenuItem>
       </Toolbar>
     </AppBar>
   );

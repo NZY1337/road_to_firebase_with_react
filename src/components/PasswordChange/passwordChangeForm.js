@@ -1,21 +1,24 @@
-import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
+import * as ROUTES from "../../constants/routes";
 
 import Container from "@material-ui/core/Container";
+
+// HOC
+import { withFirebase } from "../Firebase";
+
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 
-import { withFirebase } from "../Firebase";
-import * as ROUTES from "../../constants/routes";
-
 const INITIAL_STATE = {
-  email: "",
+  passwordOne: "",
+  passwordTwo: "",
   error: null,
 };
 
-class PasswordForgetFormBase extends Component {
+class PasswordChangeFormBase extends Component {
   constructor(props) {
     super(props);
 
@@ -24,11 +27,12 @@ class PasswordForgetFormBase extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    const { email } = this.state;
+
+    const { passwordOne } = this.state;
 
     this.props.firebase
-      .doPasswordReset(email)
-      .then(() => {
+      .doPasswordUpdate(passwordOne)
+      .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
       })
       .catch((error) => {
@@ -36,26 +40,44 @@ class PasswordForgetFormBase extends Component {
       });
   };
 
-  onChange = (event) => this.setState({ [event.target.name]: event.target.value });
+  onChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
 
   render() {
-    const { email, error } = this.state;
-    const isInvalid = email === "";
+    const { passwordOne, passwordTwo, error } = this.state;
+    const isInvalid = passwordOne === "" || passwordOne !== passwordTwo;
+
     return (
       <Container maxWidth="lg">
-        <h1>Forgot Password</h1>
         <Grid container spacing={3}>
           <Grid item xs={6}>
+            <h1>Reset Password</h1>
             <form onSubmit={this.onSubmit}>
               <div>
                 <TextField
-                  type="email"
-                  name="email"
+                  id="filled-passwordOne"
+                  name="passwordOne"
                   margin="dense"
-                  id="filled-email"
-                  label="Email"
+                  label="PasswordOne"
+                  type="password"
                   onChange={this.onChange}
-                  defaultValue={email}
+                  defaultValue={passwordOne}
+                  variant="outlined"
+                />
+              </div>
+
+              <div>
+                <TextField
+                  type="password"
+                  name="passwordTwo"
+                  margin="dense"
+                  id="filled-passwordTwo"
+                  label="Password Two"
+                  onChange={this.onChange}
+                  defaultValue={passwordTwo}
                   variant="outlined"
                 />
               </div>
@@ -68,7 +90,7 @@ class PasswordForgetFormBase extends Component {
                 type="submit"
                 disabled={isInvalid}
               >
-                Reset Password
+                Reset My Password
               </Button>
 
               {error && <p>{error.message}</p>}
@@ -80,14 +102,7 @@ class PasswordForgetFormBase extends Component {
   }
 }
 
-const PasswordForgetLink = () => {
-  return (
-    <Container>
-      <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
-    </Container>
-  );
-};
+const PasswordChangeForm = withFirebase(PasswordChangeFormBase);
 
-const PasswordForgetForm = withFirebase(PasswordForgetFormBase);
-
-export { PasswordForgetForm, PasswordForgetLink };
+export default PasswordChangeForm;
+// export default PasswordChangeForm;
