@@ -2,50 +2,22 @@ import React from "react";
 import "materialize-css";
 import Container from "@material-ui/core/Container";
 
-import * as ROLES from "../../constants/roles";
 import { withFirebase } from "../Firebase";
+import withLoader from "../../hoc/withLoader";
+
+import { compose } from "recompose";
 
 import UserList from "./userList";
 
 class AdminPage extends React.Component {
   constructor(props) {
     super(props);
-    this.loaderRef = React.createRef();
 
     this.state = {
       loading: false,
       users: [],
-      counter: 0,
-      loadingText: "Loading",
     };
   }
-
-  displayLoader = () => {
-    console.log("test");
-    if (this.state.counter === 3) {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          counter: -1,
-          loadingText: "Loading ",
-        };
-      });
-    } else {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          loadingText: (prevState.loadingText += " ."),
-        };
-      });
-    }
-
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        counter: prevState.counter + 1,
-      };
-    });
-  };
 
   fetchUsers = () => {
     this.props.firebase.users().on("value", (snapshot) => {
@@ -61,39 +33,44 @@ class AdminPage extends React.Component {
         loading: false,
       });
 
+      this.props.setLoaderState(this.state.loading);
+
       // stop interval if the users is not empty
       if (this.state.users.length !== 0) {
-        clearInterval(this.interval);
+        clearInterval(this.props.loaderInterval);
       }
     });
   };
 
   componentDidMount() {
-    this.setState({ loading: true });
+    this.setState(
+      (prevState) => {
+        return {
+          ...prevState,
+          loading: true,
+        };
+      },
+      () => {
+        this.props.setLoaderState(this.state.loading);
+      }
+    );
 
     this.fetchUsers();
 
-    this.interval = setInterval(this.displayLoader, 100);
+    // this.interval = setInterval(this.props.displayLoader, 100);
   }
 
   componentWillUnmount() {
     this.props.firebase.users().off();
 
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
   }
 
   render() {
     const { users, loading } = this.state;
-
     return (
       <Container maxWidth="lg">
         <h1>Admin</h1>
-
-        {loading && (
-          <p>
-            <b>{this.state.loadingText}</b>
-          </p>
-        )}
 
         <UserList users={users} />
       </Container>
@@ -101,4 +78,4 @@ class AdminPage extends React.Component {
   }
 }
 
-export default withFirebase(AdminPage);
+export default compose(withLoader, withFirebase)(AdminPage);
