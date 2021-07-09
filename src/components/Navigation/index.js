@@ -52,6 +52,12 @@ const NavigationAuth = () => {
         </MenuItem>
 
         <MenuItem>
+          <Link style={style} to={ROUTES.ADMIN} color="inherit">
+            Admin
+          </Link>
+        </MenuItem>
+
+        <MenuItem>
           <SignOutBtn />
         </MenuItem>
       </Toolbar>
