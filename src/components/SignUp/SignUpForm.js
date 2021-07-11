@@ -42,7 +42,7 @@ class SignUpFormBase extends Component {
     const { username, email, passwordOne, isAdmin, avatar } = this.state;
     this.storage = this.props.firebase.storage;
     this.firebase = this.props.firebase;
-
+    const db = this.props.firebase.db;
     const roles = {};
 
     console.log(this.db);
@@ -70,18 +70,20 @@ class SignUpFormBase extends Component {
           function () {
             task.snapshot.ref.getDownloadURL().then(function (url) {
               console.log("File available at", url);
-              console.log(this.db);
-              //   this.db.ref("users/" + authUser.user.uid).set({
-              //     username,
-              //     email,
-              //     roles,
-              //     url,
-              //   });
+
+              try {
+                db.ref("users/" + authUser.user.uid).set({
+                  username,
+                  email,
+                  roles,
+                  url,
+                });
+              } catch (err) {
+                console.log(err);
+              }
             });
           }
         );
-
-        ////////////////
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -224,3 +226,4 @@ export { SignUpForm, SignUpLink };
 // https://firebase.google.com/codelabs/firebase-web#7 - firebase chat msg
 // https://stackoverflow.com/questions/41214447/firebase-user-uploads-and-profile-pictures - match image with profile user id
 // https://stackoverflow.com/questions/54736051/upload-image-to-a-user-using-firebase-realtime-database-and-react
+// https://stackoverflow.com/questions/42217131/how-to-upload-and-assign-profile-picture-to-user-during-registration-with-fireba/42248982
