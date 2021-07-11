@@ -1,4 +1,5 @@
 import React from "react";
+import Container from "@material-ui/core/Container";
 
 const withLoader = (Component) => {
   class WithLoader extends React.Component {
@@ -58,20 +59,14 @@ const withLoader = (Component) => {
 
     render() {
       return (
-        <>
+        <Container maxWidth="lg">
           {this.state.loading && (
             <p>
               <b>{this.state.loadingText}</b>
             </p>
           )}
-          <Component
-            {...this.props}
-            setLoaderState={this.setLoaderState}
-            loadingText={this.state.loadingText}
-            displayLoader={this.displayLoader}
-            loaderInterval={this.interval}
-          />
-        </>
+          <Component {...this.props} setLoaderState={this.setLoaderState} loaderInterval={this.interval} />
+        </Container>
       );
     }
   }

@@ -1,6 +1,5 @@
 import React from "react";
 import "materialize-css";
-import Container from "@material-ui/core/Container";
 
 import { withFirebase } from "../Firebase";
 import withLoader from "../../hoc/withLoader";
@@ -16,6 +15,7 @@ class AdminPage extends React.Component {
     this.state = {
       loading: false,
       users: [],
+      avatar: null,
     };
   }
 
@@ -42,6 +42,8 @@ class AdminPage extends React.Component {
     });
   };
 
+  //! After calling setState the this.state variable is not immediately changed. so if you want to perform an action immediately
+  //! after setting state on a state variable and then return a result, a callback will be useful
   componentDidMount() {
     this.setState(
       (prevState) => {
@@ -57,23 +59,31 @@ class AdminPage extends React.Component {
 
     this.fetchUsers();
 
-    // this.interval = setInterval(this.props.displayLoader, 100);
+    this.storage = this.props.firebase.storage;
+
+    // this.storage
+    //   .ref("users/" + authUser.uid + "/profile.jpg")
+    //   .getDownloadURL()
+    //   .then((imgUrl) => {
+    //     console.log(imgUrl);
+    //     this.setState({
+    //       avatar: imgUrl,
+    //     });
+    //   });
   }
 
   componentWillUnmount() {
     this.props.firebase.users().off();
-
-    // clearInterval(this.interval);
   }
 
   render() {
-    const { users, loading } = this.state;
+    const { users } = this.state;
     return (
-      <Container maxWidth="lg">
+      <>
         <h1>Admin</h1>
 
-        <UserList users={users} />
-      </Container>
+        <UserList users={users} storage={this.storage} />
+      </>
     );
   }
 }

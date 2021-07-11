@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,20 +7,20 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-const UserList = ({ users }) => {
+const UserList = ({ users, storage }) => {
+  const [imgUrl, setImgUrl] = useState([]);
+
   return (
     <Grid container spacing={3}>
       {users.map((user) => {
+        console.log(imgUrl);
         return (
           <Grid item key={user.uid} lg={4}>
             <Paper>
               <Card>
                 <CardActionArea>
-                  <CardMedia
-                    image="https://images.pexels.com/photos/4982882/pexels-photo-4982882.jpeg?cs=srgb&dl=pexels-nadi-lindsay-4982882.jpg&fm=jpg"
-                    title="Contemplative Reptile"
-                    style={{ height: 140 }}
-                  />
+                  {/* <CardMedia image={} title="Contemplative Reptile" style={{ height: 140 }} /> */}
+                  {/* <img src={} /> */}
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {user.username}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
+import * as ROLES from "../../constants/roles";
 
 // HOC
 import { withFirebase } from "../Firebase";
@@ -9,12 +10,19 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Button from "@material-ui/core/Button";
+
+import { Input, InputLabel } from "@material-ui/core";
 
 const INITIAL_STATE = {
   username: "",
   email: "",
   passwordOne: "",
   passwordTwo: "",
+  isAdmin: false,
+  avatar: null,
   error: null,
 };
 
@@ -23,20 +31,51 @@ class SignUpFormBase extends Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
+
+    console.log(this.props.firebase.db);
   }
 
   onSubmit = (event) => {
     event.preventDefault();
+    const { username, email, passwordOne, isAdmin, avatar } = this.state;
+    this.storage = this.props.firebase.storage;
+    this.firebase = this.props.firebase;
 
-    const { username, email, passwordOne } = this.state;
+    // const {
+    //   firebase: { storage },
+    // } = this.props;
+
+    const roles = {};
+
+    if (isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    }
+
+    /* ********************* */
+
+    /* ********************* */
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser) => {
-        // Create a user in your Firebase realtime database
-        return this.props.firebase.user(authUser.user.uid).set({
-          username,
-          email,
+        // upload user's profile image
+        const uploadTask = this.storage.ref(`images/${avatar.name}`).put(avatar);
+
+        uploadTask.on("state_changed", () => {
+          // complete function ....
+          this.storage
+            .ref("images")
+            .child(avatar.name)
+            .getDownloadURL()
+            .then((url) => {
+              console.log(url);
+              this.firebase.db.ref("users/" + authUser.user.uid).set({
+                url: url,
+                username,
+                email,
+                roles,
+              });
+            });
         });
       })
       .then(() => {
@@ -54,8 +93,19 @@ class SignUpFormBase extends Component {
     });
   };
 
+  onChangeCheckbox = (event) => {
+    this.setState({ [event.target.name]: event.target.checked });
+  };
+
+  onChangeAvatar = (event) => {
+    const myState = { ...this.state };
+    myState.avatar = event.currentTarget.files[0];
+
+    this.setState(myState);
+  };
+
   render() {
-    const { username, email, passwordOne, passwordTwo, error } = this.state;
+    const { username, email, passwordOne, passwordTwo, error, isAdmin, avatar } = this.state;
     const isInvalid = passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "";
 
     return (
@@ -101,6 +151,15 @@ class SignUpFormBase extends Component {
               />
             </div>
 
+            <div style={{ margin: ".5rem 0" }}>
+              <Button variant="contained" component="label">
+                Upload Your Avatars
+                <input type="file" name="avatar" onChange={this.onChangeAvatar} hidden />
+              </Button>
+
+              {/* {avatar && <p>{avatar}</p>} */}
+            </div>
+
             <div>
               <TextField
                 id="filled-password-two"
@@ -111,6 +170,15 @@ class SignUpFormBase extends Component {
                 onChange={this.onChange}
                 defaultValue={passwordTwo}
                 variant="outlined"
+              />
+            </div>
+
+            <div>
+              <FormControlLabel
+                value="end"
+                control={<Checkbox checked={isAdmin} name="isAdmin" onChange={this.onChangeCheckbox} color="primary" />}
+                label="Make Admin"
+                labelPlacement="end"
               />
             </div>
 
@@ -126,6 +194,7 @@ class SignUpFormBase extends Component {
             </Button>
 
             {error && <p>{error.message}</p>}
+            {/* {avatar && <img src={this.state.avatar} />} */}
           </form>
         </Grid>
       </Grid>
@@ -145,3 +214,8 @@ const SignUpLink = () => {
 
 export { SignUpForm, SignUpLink };
 // export default SignUpForm;
+
+// https://www.youtube.com/watch?v=31MVIwvstzs - link uploaded images with the users' profile
+// https://www.youtube.com/watch?v=PKwu15ldZ7k - react authentication with Firebase - full course by Kyle WebDevSimplified
+// https://firebase.google.com/codelabs/firebase-web#7 - firebase chat msg
+// https://stackoverflow.com/questions/41214447/firebase-user-uploads-and-profile-pictures - match image with profile user id
