@@ -32,7 +32,9 @@ class SignUpFormBase extends Component {
 
     this.state = { ...INITIAL_STATE };
 
-    console.log(this.props.firebase.db);
+    this.db = this.props.firebase.db;
+
+    console.log(this.db);
   }
 
   onSubmit = (event) => {
@@ -41,42 +43,45 @@ class SignUpFormBase extends Component {
     this.storage = this.props.firebase.storage;
     this.firebase = this.props.firebase;
 
-    // const {
-    //   firebase: { storage },
-    // } = this.props;
-
     const roles = {};
+
+    console.log(this.db);
 
     if (isAdmin) {
       roles[ROLES.ADMIN] = ROLES.ADMIN;
     }
 
-    /* ********************* */
-
-    /* ********************* */
-
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser) => {
         // upload user's profile image
-        const uploadTask = this.storage.ref(`images/${avatar.name}`).put(avatar);
+        const taskRef = this.storage.ref(`images/${avatar.name}`);
+        const task = taskRef.put(avatar);
 
-        uploadTask.on("state_changed", () => {
-          // complete function ....
-          this.storage
-            .ref("images")
-            .child(avatar.name)
-            .getDownloadURL()
-            .then((url) => {
-              console.log(url);
-              this.firebase.db.ref("users/" + authUser.user.uid).set({
-                url: url,
-                username,
-                email,
-                roles,
-              });
+        task.on(
+          "state_changed",
+          function (snapshot) {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+          },
+          function (error) {
+            // Handle unsuccessful uploads
+          },
+          function () {
+            task.snapshot.ref.getDownloadURL().then(function (url) {
+              console.log("File available at", url);
+              console.log(this.db);
+              //   this.db.ref("users/" + authUser.user.uid).set({
+              //     username,
+              //     email,
+              //     roles,
+              //     url,
+              //   });
             });
-        });
+          }
+        );
+
+        ////////////////
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -194,7 +199,6 @@ class SignUpFormBase extends Component {
             </Button>
 
             {error && <p>{error.message}</p>}
-            {/* {avatar && <img src={this.state.avatar} />} */}
           </form>
         </Grid>
       </Grid>
@@ -219,3 +223,4 @@ export { SignUpForm, SignUpLink };
 // https://www.youtube.com/watch?v=PKwu15ldZ7k - react authentication with Firebase - full course by Kyle WebDevSimplified
 // https://firebase.google.com/codelabs/firebase-web#7 - firebase chat msg
 // https://stackoverflow.com/questions/41214447/firebase-user-uploads-and-profile-pictures - match image with profile user id
+// https://stackoverflow.com/questions/54736051/upload-image-to-a-user-using-firebase-realtime-database-and-react

@@ -19,7 +19,7 @@ const UserList = ({ users, storage }) => {
             <Paper>
               <Card>
                 <CardActionArea>
-                  {/* <CardMedia image={} title="Contemplative Reptile" style={{ height: 140 }} /> */}
+                  <CardMedia image={user.url} title="Contemplative Reptile" style={{ height: 140 }} />
                   {/* <img src={} /> */}
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
