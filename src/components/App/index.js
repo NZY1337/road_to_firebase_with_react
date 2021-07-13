@@ -10,6 +10,7 @@ import HomePage from "../Home";
 import AccountPage from "../Account";
 import AdminPage from "../Admin";
 import SomeComponent from "../test";
+import Todos from "../Todo";
 
 import { withAuthentication } from "../Sesssion";
 
@@ -29,6 +30,7 @@ const App = () => {
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.ADMIN} component={AdminPage} />
         <Route path="/test" component={SomeComponent} />
+        <Route path="/todos" component={Todos} />
       </>
     </Router>
   );

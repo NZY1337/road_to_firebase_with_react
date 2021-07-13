@@ -1,5 +1,6 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import PasswordChange from "../PasswordChange";
 import { PasswordForgetForm } from "../PasswordForgot/passwordForgotForm";
 import { withAuthorization, AuthUserContext } from "../Sesssion";
@@ -10,9 +11,20 @@ const Account = () => {
       <AuthUserContext.Consumer>
         {(authUser) => (
           <>
-            <h3>Account: {authUser.email}</h3>
-            <PasswordChange />
-            <PasswordForgetForm />
+            <Grid container>
+              <Container>
+                <h3>Account: {authUser.email}</h3>
+              </Container>
+            </Grid>
+
+            <Grid container>
+              <Grid xs={6}>
+                <PasswordChange />
+              </Grid>
+              <Grid xs={6}>
+                <PasswordForgetForm />
+              </Grid>
+            </Grid>
           </>
         )}
       </AuthUserContext.Consumer>

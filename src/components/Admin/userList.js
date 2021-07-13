@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
@@ -8,12 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 const UserList = ({ users, storage }) => {
-  const [imgUrl, setImgUrl] = useState([]);
-
   return (
     <Grid container spacing={3}>
       {users.map((user) => {
-        console.log(imgUrl);
         return (
           <Grid item key={user.uid} lg={4}>
             <Paper>

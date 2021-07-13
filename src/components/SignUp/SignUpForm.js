@@ -14,8 +14,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import Button from "@material-ui/core/Button";
 
-import { Input, InputLabel } from "@material-ui/core";
-
 const INITIAL_STATE = {
   username: "",
   email: "",
@@ -24,6 +22,7 @@ const INITIAL_STATE = {
   isAdmin: false,
   avatar: null,
   error: null,
+  uploadStatus: null,
 };
 
 class SignUpFormBase extends Component {
@@ -31,63 +30,71 @@ class SignUpFormBase extends Component {
     super(props);
 
     this.state = { ...INITIAL_STATE };
-
-    this.db = this.props.firebase.db;
-
-    console.log(this.db);
   }
 
-  onSubmit = (event) => {
-    event.preventDefault();
-    const { username, email, passwordOne, isAdmin, avatar } = this.state;
-    this.storage = this.props.firebase.storage;
-    this.firebase = this.props.firebase;
+  submitAvatar = (authUser) => {
+    const { avatar, username, email, isAdmin } = this.state;
+    const taskRef = this.props.firebase.storage.ref(`images/${avatar.name}`);
+    const task = taskRef.put(avatar);
     const db = this.props.firebase.db;
-    const roles = {};
+    const history = this.props.history;
+    const self = this;
 
-    console.log(this.db);
+    const roles = {};
 
     if (isAdmin) {
       roles[ROLES.ADMIN] = ROLES.ADMIN;
     }
 
+    task.on(
+      "state_changed",
+      function (snapshot) {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+
+        self.setState({ uploadStatus: progress });
+      },
+      function (error) {
+        // Handle unsuccessful uploads
+      },
+
+      function () {
+        task.snapshot.ref.getDownloadURL().then(function (url) {
+          console.log("File available at", url);
+
+          try {
+            db.ref("users/" + authUser.user.uid)
+              .set({
+                username,
+                email,
+                roles,
+                url,
+              })
+              .then(() => {
+                console.log("user successfully created");
+              });
+
+            history.push(ROUTES.HOME);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      }
+    );
+  };
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    const { email, passwordOne } = this.state;
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then((authUser) => {
         // upload user's profile image
-        const taskRef = this.storage.ref(`images/${avatar.name}`);
-        const task = taskRef.put(avatar);
-
-        task.on(
-          "state_changed",
-          function (snapshot) {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-          },
-          function (error) {
-            // Handle unsuccessful uploads
-          },
-          function () {
-            task.snapshot.ref.getDownloadURL().then(function (url) {
-              console.log("File available at", url);
-
-              try {
-                db.ref("users/" + authUser.user.uid).set({
-                  username,
-                  email,
-                  roles,
-                  url,
-                });
-              } catch (err) {
-                console.log(err);
-              }
-            });
-          }
-        );
+        this.submitAvatar(authUser);
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
       })
       .catch((error) => {
         this.setState({ error });
@@ -113,7 +120,8 @@ class SignUpFormBase extends Component {
 
   render() {
     const { username, email, passwordOne, passwordTwo, error, isAdmin, avatar } = this.state;
-    const isInvalid = passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "";
+    const isInvalid =
+      passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "" || avatar === null;
 
     return (
       <Grid container spacing={3}>
@@ -164,7 +172,7 @@ class SignUpFormBase extends Component {
                 <input type="file" name="avatar" onChange={this.onChangeAvatar} hidden />
               </Button>
 
-              {/* {avatar && <p>{avatar}</p>} */}
+              {avatar && <p>{avatar.name}</p>}
             </div>
 
             <div>
@@ -201,6 +209,8 @@ class SignUpFormBase extends Component {
             </Button>
 
             {error && <p>{error.message}</p>}
+
+            {this.state.uploadStatus && <p>{Math.round(this.state.uploadStatus)} %</p>}
           </form>
         </Grid>
       </Grid>
@@ -219,7 +229,6 @@ const SignUpLink = () => {
 };
 
 export { SignUpForm, SignUpLink };
-// export default SignUpForm;
 
 // https://www.youtube.com/watch?v=31MVIwvstzs - link uploaded images with the users' profile
 // https://www.youtube.com/watch?v=PKwu15ldZ7k - react authentication with Firebase - full course by Kyle WebDevSimplified
@@ -227,3 +236,6 @@ export { SignUpForm, SignUpLink };
 // https://stackoverflow.com/questions/41214447/firebase-user-uploads-and-profile-pictures - match image with profile user id
 // https://stackoverflow.com/questions/54736051/upload-image-to-a-user-using-firebase-realtime-database-and-react
 // https://stackoverflow.com/questions/42217131/how-to-upload-and-assign-profile-picture-to-user-during-registration-with-fireba/42248982
+// https://www.freecodecamp.org/news/what-to-do-when-this-loses-context-f09664af076f/
+// https://www.youtube.com/watch?v=oxqVnWPg0So
+// https://stackoverflow.com/questions/61927039/firebase-cloud-storage-resource-the-server-responded-with-a-status-of-403 - JS permissions

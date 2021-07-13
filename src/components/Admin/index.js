@@ -61,6 +61,8 @@ class AdminPage extends React.Component {
 
     this.storage = this.props.firebase.storage;
 
+    console.log(this.storage);
+
     // this.storage
     //   .ref("users/" + authUser.uid + "/profile.jpg")
     //   .getDownloadURL()
@@ -82,7 +84,7 @@ class AdminPage extends React.Component {
       <>
         <h1>Admin</h1>
 
-        <UserList users={users} storage={this.storage} />
+        <UserList users={users} />
       </>
     );
   }
