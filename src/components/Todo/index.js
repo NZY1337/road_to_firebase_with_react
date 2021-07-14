@@ -14,8 +14,8 @@ class Todos extends React.Component {
     this.state = {
       user: null,
       todos: {},
-      todo: "",
-      test: false,
+      todo: null,
+      todoId: "",
     };
   }
 
@@ -25,22 +25,29 @@ class Todos extends React.Component {
     });
   };
 
-  onAddTodo = (e) => {
-    e.preventDefault();
-    //! Get the pushed ID for specific value in firebase js
-    this.props.firebase.db.ref(`todos/${this.state.user}`).push(this.state.todo);
-    this.setState({ todo: "" });
+  onAddTodo = () => {
+    let { todoId } = this.state;
+    if (todoId === "") {
+      this.props.firebase.db.ref(`todos/${this.state.user}`).push(this.state.todo, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({ todo: "", todoId: "" });
+        }
+      });
+    } else {
+      // edit selected record
+    }
   };
 
-  fetchTodos = () => {
-    const notes_db = this.props.firebase.db.ref("todos");
+  fetchTodos = (user) => {
+    const notes_db = this.props.firebase.db.ref(`todos/${user}`);
 
     notes_db.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
         let todos = snapshot.val();
-
         this.setState({
-          todos: todos[this.state.user],
+          todos: todos,
         });
       } else {
         this.setState({
@@ -50,19 +57,23 @@ class Todos extends React.Component {
     });
   };
 
+  handleDelete = (id) => {
+    if (window.confirm("Are you sure to delete this record?")) {
+      const notesRef = this.props.firebase.db.ref("todos/" + this.state.user);
+      notesRef.child(id).remove();
+    }
+  };
+
+  handleEdit = (id) => {};
+
   componentDidMount() {
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
+        this.fetchTodos(user.uid);
         this.setState({ user: user.uid });
       }
     });
-    this.fetchTodos();
   }
-
-  handleDelete = (id) => {
-    const notesRef = this.props.firebase.db.ref("todos/" + this.state.user);
-    notesRef.child(id).remove();
-  };
 
   render() {
     const { todo, todos } = this.state;
@@ -70,7 +81,9 @@ class Todos extends React.Component {
 
     const renderTodos = () => {
       const collection = Object.keys(todos).map((key) => {
-        return <Todo key={key} id={key} handleDelete={this.handleDelete} todo={todos[key]} />;
+        return (
+          <Todo key={key} id={key} handleEdit={this.handleEdit} handleDelete={this.handleDelete} todo={todos[key]} />
+        );
       });
 
       return collection;
@@ -114,3 +127,5 @@ class Todos extends React.Component {
 }
 
 export default withFirebase(Todos);
+
+// https://www.c-sharpcorner.com/article/react-crud-operation-with-firebase/
