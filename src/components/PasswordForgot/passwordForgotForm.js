@@ -41,6 +41,7 @@ class PasswordForgetFormBase extends Component {
   render() {
     const { email, error } = this.state;
     const isInvalid = email === "";
+
     return (
       <Container maxWidth="lg">
         <h1>Forgot Password</h1>

@@ -1,6 +1,8 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
+import withLoader from "../../hoc/withLoader";
+
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
@@ -11,10 +13,12 @@ class Todos extends React.Component {
   constructor(props) {
     super(props);
 
+    this.inputRef = React.createRef();
+
     this.state = {
       user: null,
       todos: {},
-      todo: null,
+      todo: "",
       todoId: "",
     };
   }
@@ -36,7 +40,16 @@ class Todos extends React.Component {
         }
       });
     } else {
-      // edit selected record
+      this.props.firebase.db
+        .ref(`todos/${this.state.user}`)
+        .child(this.state.todoId)
+        .set(this.state.todo, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            this.setState({ todo: "", todoId: "" });
+          }
+        });
     }
   };
 
@@ -49,22 +62,40 @@ class Todos extends React.Component {
         this.setState({
           todos: todos,
         });
+        this.props.setLoaderState(false);
       } else {
         this.setState({
           todos: {},
         });
       }
     });
+
+    if (this.state.todos.length !== 0) {
+      clearInterval(this.props.loaderInterval);
+    }
   };
 
   handleDelete = (id) => {
     if (window.confirm("Are you sure to delete this record?")) {
       const notesRef = this.props.firebase.db.ref("todos/" + this.state.user);
       notesRef.child(id).remove();
+
+      this.setState({ todo: "" });
     }
   };
 
-  handleEdit = (id) => {};
+  handleEdit = (id) => {
+    this.setState({ todoId: id });
+
+    const todo = this.props.firebase.db.ref(`todos/${this.state.user}/${id}`);
+
+    todo.on("value", (snapshot) => {
+      const todo = snapshot.val();
+      this.setState({
+        todo,
+      });
+    });
+  };
 
   componentDidMount() {
     this.props.firebase.auth.onAuthStateChanged((user) => {
@@ -73,11 +104,15 @@ class Todos extends React.Component {
         this.setState({ user: user.uid });
       }
     });
+
+    this.props.setLoaderState(true);
   }
 
   render() {
     const { todo, todos } = this.state;
     const isInvalid = todo === "";
+
+    const btnText = this.state.todoId ? "Edit Todo" : "Add Todo";
 
     const renderTodos = () => {
       const collection = Object.keys(todos).map((key) => {
@@ -94,16 +129,15 @@ class Todos extends React.Component {
         <h1>Todo List</h1>
 
         <Grid container direction="row" alignItems="start" justify="space-between">
-          <Grid md={4}>
+          <Grid item md={4}>
             <TextField
+              ref={this.inputRef}
               value={todo}
+              autoFocus={false}
               onChange={this.handleChange}
-              //   error={!!error}
-              //   helperText={error}
               id="outlined-basic"
               fullWidth
               label="Enter Title"
-              multiline
               variant="outlined"
             />
             <Button
@@ -113,11 +147,16 @@ class Todos extends React.Component {
               color="primary"
               style={{ marginTop: "12.5px" }}
             >
-              Add Todo
+              {btnText}
             </Button>
           </Grid>
 
-          <Grid item md={4}>
+          <Grid item md={5}>
+            {this.props.loading && (
+              <p>
+                <b>{this.props.loadingText}</b>
+              </p>
+            )}
             {renderTodos()}
           </Grid>
         </Grid>
@@ -126,6 +165,6 @@ class Todos extends React.Component {
   }
 }
 
-export default withFirebase(Todos);
+export default withLoader(withFirebase(Todos));
 
 // https://www.c-sharpcorner.com/article/react-crud-operation-with-firebase/

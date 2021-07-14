@@ -13,7 +13,6 @@ class AdminPage extends React.Component {
     super(props);
 
     this.state = {
-      loading: false,
       users: [],
       avatar: null,
     };
@@ -30,10 +29,9 @@ class AdminPage extends React.Component {
 
       this.setState({
         users: usersList,
-        loading: false,
       });
 
-      this.props.setLoaderState(this.state.loading);
+      this.props.setLoaderState(false);
 
       // stop interval if the users is not empty
       if (this.state.users.length !== 0) {
@@ -45,33 +43,11 @@ class AdminPage extends React.Component {
   //! After calling setState the this.state variable is not immediately changed. so if you want to perform an action immediately
   //! after setting state on a state variable and then return a result, a callback will be useful
   componentDidMount() {
-    this.setState(
-      (prevState) => {
-        return {
-          ...prevState,
-          loading: true,
-        };
-      },
-      () => {
-        this.props.setLoaderState(this.state.loading);
-      }
-    );
+    this.props.setLoaderState(true);
 
     this.fetchUsers();
 
     this.storage = this.props.firebase.storage;
-
-    console.log(this.storage);
-
-    // this.storage
-    //   .ref("users/" + authUser.uid + "/profile.jpg")
-    //   .getDownloadURL()
-    //   .then((imgUrl) => {
-    //     console.log(imgUrl);
-    //     this.setState({
-    //       avatar: imgUrl,
-    //     });
-    //   });
   }
 
   componentWillUnmount() {
@@ -83,7 +59,11 @@ class AdminPage extends React.Component {
     return (
       <>
         <h1>Admin</h1>
-
+        {this.props.loading && (
+          <p>
+            <b>{this.props.loadingText}</b>
+          </p>
+        )}
         <UserList users={users} />
       </>
     );

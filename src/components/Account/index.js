@@ -18,10 +18,10 @@ const Account = () => {
             </Grid>
 
             <Grid container>
-              <Grid xs={6}>
+              <Grid item xs={6}>
                 <PasswordChange />
               </Grid>
-              <Grid xs={6}>
+              <Grid item xs={6}>
                 <PasswordForgetForm />
               </Grid>
             </Grid>

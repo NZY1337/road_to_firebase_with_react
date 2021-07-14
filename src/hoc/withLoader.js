@@ -41,12 +41,7 @@ const withLoader = (Component) => {
     };
 
     setLoaderState = (loading) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          loading: loading,
-        };
-      });
+      this.setState({ loading: loading });
     };
 
     componentDidMount() {
@@ -60,12 +55,18 @@ const withLoader = (Component) => {
     render() {
       return (
         <Container maxWidth="lg">
-          {this.state.loading && (
+          {/* {this.state.loading && (
             <p>
               <b>{this.state.loadingText}</b>
             </p>
-          )}
-          <Component {...this.props} setLoaderState={this.setLoaderState} loaderInterval={this.interval} />
+          )} */}
+          <Component
+            loadingText={this.state.loadingText}
+            loading={this.state.loading}
+            {...this.props}
+            setLoaderState={this.setLoaderState}
+            loaderInterval={this.interval}
+          />
         </Container>
       );
     }

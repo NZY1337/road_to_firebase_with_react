@@ -49,7 +49,7 @@ const NavigationAuth = ({ firebase, authUser }) => {
     <AppBar position="static">
       <Container maxWidth="lg">
         <Grid container>
-          <Grid container xs={11}>
+          <Grid item container xs={11}>
             <MenuItem>
               <Link style={style} to={ROUTES.LANDING} color="inherit">
                 Landing
@@ -85,7 +85,7 @@ const NavigationAuth = ({ firebase, authUser }) => {
             </MenuItem>
           </Grid>
 
-          <Grid xs={1} container alignItems="center" justify="flex-end">
+          <Grid item xs={1} container alignItems="center" justify="flex-end">
             <MenuItem direction="row">
               <img src={profileImg} style={profilePic} />
             </MenuItem>
