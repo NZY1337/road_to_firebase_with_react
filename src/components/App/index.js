@@ -11,6 +11,9 @@ import AccountPage from "../Account";
 import AdminPage from "../Admin";
 import SomeComponent from "../test";
 import Todos from "../Todo";
+import Editor from "../Editor";
+import Blogs from "../Blog";
+import SingleBlog from "../Blog/SingleBlog";
 
 import { withAuthentication } from "../Sesssion";
 
@@ -23,6 +26,7 @@ const App = () => {
         <Navigation />
 
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
+        <Route path={ROUTES.EDITOR} component={Editor} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
@@ -31,6 +35,8 @@ const App = () => {
         <Route path={ROUTES.ADMIN} component={AdminPage} />
         <Route path="/test" component={SomeComponent} />
         <Route path="/todos" component={Todos} />
+        <Route path="/blogs/blog/:id" component={SingleBlog} />
+        <Route path="/blogs" exact component={Blogs} />
       </>
     </Router>
   );

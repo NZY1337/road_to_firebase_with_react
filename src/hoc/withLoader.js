@@ -55,11 +55,6 @@ const withLoader = (Component) => {
     render() {
       return (
         <Container maxWidth="lg">
-          {/* {this.state.loading && (
-            <p>
-              <b>{this.state.loadingText}</b>
-            </p>
-          )} */}
           <Component
             loadingText={this.state.loadingText}
             loading={this.state.loading}

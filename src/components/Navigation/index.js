@@ -57,10 +57,22 @@ const NavigationAuth = ({ firebase, authUser }) => {
             </MenuItem>
 
             <MenuItem>
+              <Link style={style} to={ROUTES.BLOGS} color="inherit">
+                Blog
+              </Link>
+            </MenuItem>
+
+            <MenuItem>
+              <Link style={style} to={ROUTES.EDITOR} color="inherit">
+                Editor
+              </Link>
+            </MenuItem>
+
+            {/* <MenuItem>
               <Link style={style} to={ROUTES.TODO} color="inherit">
                 Todos
               </Link>
-            </MenuItem>
+            </MenuItem> */}
 
             <MenuItem>
               <Link style={style} to={ROUTES.HOME} color="inherit">
@@ -74,11 +86,11 @@ const NavigationAuth = ({ firebase, authUser }) => {
               </Link>
             </MenuItem>
 
-            <MenuItem>
+            {/* <MenuItem>
               <Link style={style} to={ROUTES.ADMIN} color="inherit">
                 Users
               </Link>
-            </MenuItem>
+            </MenuItem> */}
 
             <MenuItem>
               <SignOutBtn />
