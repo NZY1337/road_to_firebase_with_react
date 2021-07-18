@@ -4,11 +4,7 @@ import { withAuthorization } from "../Sesssion";
 import "./home.css";
 
 const Home = () => {
-  return (
-    <Container>
-      <h1>Home</h1>
-    </Container>
-  );
+  return <h1>Home</h1>;
 };
 
 const condition = (authUser) => !!authUser;

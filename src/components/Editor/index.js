@@ -186,7 +186,7 @@ class Editor extends React.Component {
     };
 
     return (
-      <Container maxWidth="lg">
+      <>
         <h1>Quill_JS Editor</h1>
 
         <EditorPreview onHandlePostPreview={this.onHandlePostPreview} value={this.state.content.title} />
@@ -216,7 +216,7 @@ class Editor extends React.Component {
         <Button variant="contained" color="secondary" style={{ marginTop: "12.5px" }} onClick={this.handleAddPost}>
           Publish Post
         </Button>
-      </Container>
+      </>
     );
   }
 }

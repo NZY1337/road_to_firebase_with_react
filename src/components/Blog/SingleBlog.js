@@ -35,11 +35,7 @@ class SingleBlog extends Component {
 
   render() {
     const { content } = this.state;
-    return (
-      <Container maxWidth="lg">
-        <ReactQuill value={content} theme="bubble" readOnly />
-      </Container>
-    );
+    return <ReactQuill value={content} theme="bubble" readOnly />;
   }
 }
 

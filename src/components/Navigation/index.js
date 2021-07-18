@@ -46,8 +46,8 @@ const NavigationAuth = ({ firebase, authUser }) => {
   }, [authUser]);
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="lg">
+    <AppBar position="fixed">
+      <Container>
         <Grid container>
           <Grid item container xs={11}>
             <MenuItem>
@@ -74,11 +74,11 @@ const NavigationAuth = ({ firebase, authUser }) => {
               </Link>
             </MenuItem> */}
 
-            <MenuItem>
+            {/* <MenuItem>
               <Link style={style} to={ROUTES.HOME} color="inherit">
                 Home
               </Link>
-            </MenuItem>
+            </MenuItem> */}
 
             <MenuItem>
               <Link style={style} to={ROUTES.ACCOUNT} color="inherit">
@@ -111,31 +111,33 @@ const NavigationAuth = ({ firebase, authUser }) => {
 const NavigationNonAuth = () => {
   return (
     <AppBar position="static">
-      <Toolbar>
-        <MenuItem>
-          <Link style={style} to={ROUTES.LANDING} color="inherit">
-            Landing
-          </Link>
-        </MenuItem>
+      <Container>
+        <Toolbar>
+          <MenuItem>
+            <Link style={style} to={ROUTES.LANDING} color="inherit">
+              Landing
+            </Link>
+          </MenuItem>
 
-        {/* <MenuItem>
+          {/* <MenuItem>
           <Link style={style} to={ROUTES.HOME} color="inherit">
             Home
           </Link>
         </MenuItem> */}
 
-        <MenuItem>
-          <Link style={style} to={ROUTES.SIGN_IN} color="inherit">
-            Sign In
-          </Link>
-        </MenuItem>
+          <MenuItem>
+            <Link style={style} to={ROUTES.SIGN_IN} color="inherit">
+              Sign In
+            </Link>
+          </MenuItem>
 
-        <MenuItem>
-          <Link style={style} to={ROUTES.SIGN_UP} color="inherit">
-            Register
-          </Link>
-        </MenuItem>
-      </Toolbar>
+          <MenuItem>
+            <Link style={style} to={ROUTES.SIGN_UP} color="inherit">
+              Register
+            </Link>
+          </MenuItem>
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 };

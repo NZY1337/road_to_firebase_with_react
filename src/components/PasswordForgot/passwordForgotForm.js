@@ -43,7 +43,7 @@ class PasswordForgetFormBase extends Component {
     const isInvalid = email === "";
 
     return (
-      <Container maxWidth="lg">
+      <>
         <h1>Forgot Password</h1>
         <Grid container spacing={3}>
           <Grid item xs={6}>
@@ -76,7 +76,7 @@ class PasswordForgetFormBase extends Component {
             </form>
           </Grid>
         </Grid>
-      </Container>
+      </>
     );
   }
 }

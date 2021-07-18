@@ -51,53 +51,51 @@ class PasswordChangeFormBase extends Component {
     const isInvalid = passwordOne === "" || passwordOne !== passwordTwo;
 
     return (
-      <Container maxWidth="lg">
-        <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <h1>Reset Password</h1>
-            <form onSubmit={this.onSubmit}>
-              <div>
-                <TextField
-                  id="filled-passwordOne"
-                  name="passwordOne"
-                  margin="dense"
-                  label="PasswordOne"
-                  type="password"
-                  onChange={this.onChange}
-                  defaultValue={passwordOne}
-                  variant="outlined"
-                />
-              </div>
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <h1>Reset Password</h1>
+          <form onSubmit={this.onSubmit}>
+            <div>
+              <TextField
+                id="filled-passwordOne"
+                name="passwordOne"
+                margin="dense"
+                label="PasswordOne"
+                type="password"
+                onChange={this.onChange}
+                defaultValue={passwordOne}
+                variant="outlined"
+              />
+            </div>
 
-              <div>
-                <TextField
-                  type="password"
-                  name="passwordTwo"
-                  margin="dense"
-                  id="filled-passwordTwo"
-                  label="Password Two"
-                  onChange={this.onChange}
-                  defaultValue={passwordTwo}
-                  variant="outlined"
-                />
-              </div>
+            <div>
+              <TextField
+                type="password"
+                name="passwordTwo"
+                margin="dense"
+                id="filled-passwordTwo"
+                label="Password Two"
+                onChange={this.onChange}
+                defaultValue={passwordTwo}
+                variant="outlined"
+              />
+            </div>
 
-              <Button
-                style={{ marginTop: ".5rem" }}
-                endIcon={<Icon>send</Icon>}
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={isInvalid}
-              >
-                Reset My Password
-              </Button>
+            <Button
+              style={{ marginTop: ".5rem" }}
+              endIcon={<Icon>send</Icon>}
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={isInvalid}
+            >
+              Reset My Password
+            </Button>
 
-              {error && <p>{error.message}</p>}
-            </form>
-          </Grid>
+            {error && <p>{error.message}</p>}
+          </form>
         </Grid>
-      </Container>
+      </Grid>
     );
   }
 }

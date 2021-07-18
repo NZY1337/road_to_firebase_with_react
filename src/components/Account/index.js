@@ -7,28 +7,26 @@ import { withAuthorization, AuthUserContext } from "../Sesssion";
 
 const Account = () => {
   return (
-    <Container maxWidth="lg">
-      <AuthUserContext.Consumer>
-        {(authUser) => (
-          <>
-            <Grid container>
-              <Container>
-                <h3>Account: {authUser.email}</h3>
-              </Container>
-            </Grid>
+    <AuthUserContext.Consumer>
+      {(authUser) => (
+        <>
+          <Grid container>
+            <Container>
+              <h3>Account: {authUser.email}</h3>
+            </Container>
+          </Grid>
 
-            <Grid container>
-              <Grid item xs={6}>
-                <PasswordChange />
-              </Grid>
-              <Grid item xs={6}>
-                <PasswordForgetForm />
-              </Grid>
+          <Grid container>
+            <Grid item xs={6}>
+              <PasswordChange />
             </Grid>
-          </>
-        )}
-      </AuthUserContext.Consumer>
-    </Container>
+            <Grid item xs={6}>
+              <PasswordForgetForm />
+            </Grid>
+          </Grid>
+        </>
+      )}
+    </AuthUserContext.Consumer>
   );
 };
 const condition = (authUser) => !!authUser;

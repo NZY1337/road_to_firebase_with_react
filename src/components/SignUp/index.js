@@ -5,11 +5,11 @@ import Container from "@material-ui/core/Container";
 
 const SignUpPage = () => {
   return (
-    <Container maxWidth="lg">
+    <>
       <h1>SignUp</h1>
 
       <SignUpForm />
-    </Container>
+    </>
   );
 };
 

@@ -53,7 +53,7 @@ class SignInFormBase extends Component {
     const isInvalid = password === "" || email === "";
 
     return (
-      <Container maxWidth="lg">
+      <>
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <h1>Sign In</h1>
@@ -99,7 +99,7 @@ class SignInFormBase extends Component {
             </form>
           </Grid>
         </Grid>
-      </Container>
+      </>
     );
   }
 }

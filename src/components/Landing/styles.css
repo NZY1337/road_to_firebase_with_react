@@ -1,0 +1,66 @@
+.slick-dots {
+  bottom: 20px !important;
+}
+
+.slick-track {
+  height: 100vh;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #fff !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-family: initial !important;
+  color: yellow !important;
+  font-size: 2.5rem !important;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 50px !important;
+}
+
+.slick-next {
+  right: 50px !important;
+}
+
+.backImg {
+  background-size: cover;
+  position: relative;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  /* box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3); */
+  background-blend-mode: multiply;
+}
+
+.backImg::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: red;
+  z-index: 1;
+}
+
+.backImg h1 {
+  color: #fff;
+  font-size: 3rem;
+}
+
+.backImg h2 {
+  color: #fff;
+  /* font-size: rem; */
+}

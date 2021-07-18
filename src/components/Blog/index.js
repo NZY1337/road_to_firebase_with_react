@@ -62,11 +62,9 @@ class Blogs extends Component {
     };
 
     return (
-      <Container maxWidth="lg" style={{ marginTop: "2rem" }}>
-        <Grid spacing={2} container>
-          {renderPosts()}
-        </Grid>
-      </Container>
+      <Grid spacing={2} container>
+        {renderPosts()}
+      </Grid>
     );
   }
 }

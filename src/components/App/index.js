@@ -14,6 +14,7 @@ import Todos from "../Todo";
 import Editor from "../Editor";
 import Blogs from "../Blog";
 import SingleBlog from "../Blog/SingleBlog";
+import Layout from "../Layout";
 
 import { withAuthentication } from "../Sesssion";
 
@@ -22,9 +23,7 @@ import * as ROUTES from "../../constants/routes";
 const App = () => {
   return (
     <Router>
-      <>
-        <Navigation />
-
+      <Layout>
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
         <Route path={ROUTES.EDITOR} component={Editor} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
@@ -37,7 +36,7 @@ const App = () => {
         <Route path="/todos" component={Todos} />
         <Route path="/blogs/blog/:id" component={SingleBlog} />
         <Route path="/blogs" exact component={Blogs} />
-      </>
+      </Layout>
     </Router>
   );
 };

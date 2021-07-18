@@ -1,11 +1,14 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Carousel from "./carousel";
 
 const Landing = () => {
   return (
-    <Container>
-      <h1>Landing</h1>
-    </Container>
+    <>
+      <Carousel />
+      {/* <h1>asd</h1> */}
+    </>
   );
 };
 
