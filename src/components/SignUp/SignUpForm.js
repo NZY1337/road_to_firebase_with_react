@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 import Icon from "@material-ui/core/Icon";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Button from "@material-ui/core/Button";
 
 const INITIAL_STATE = {
   username: "",

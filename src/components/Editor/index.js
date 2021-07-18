@@ -1,21 +1,19 @@
 import React from "react";
+
+// quill
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import { ImageResize } from "quill-image-resize-module";
+
+// others...
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { withFirebase } from "../Firebase";
+import Grid from "@material-ui/core/Grid";
 
-// function imageHandler() {
-//   //   const range = this.quill.getSelection();
-//   //   const value = prompt("Insert image URL");
-//   //   if (value) {
-//   //     this.quill.insertEmbed(range.index, "image", value, Quill.sources.USER);
-//   //   }
-
-//   console.log("fmm");
-// }
+// Editor Preview
+import EditorPreview from "./editorPreview";
 
 Quill.register("modules/imageResize", ImageResize);
 // Quill.register("modules/imageHandler", imageHandler);
@@ -25,17 +23,56 @@ class Editor extends React.Component {
     super(props);
 
     this.editorRef = React.createRef();
+
     this.state = {
       quillEditor: null,
-      content: null,
+      content: {
+        editorContent: null,
+        cover: null,
+        fmm: true,
+        title: "ce-este-designul",
+      },
       minify: true,
       user: null,
     };
   }
 
+  handeUploadCoverImage = async (file) => {
+    try {
+      const imgRef = this.props.firebase.storage.ref(
+        `blog/${this.state.user}/design/${this.state.content.title}/images/cover/${file.name}`
+      );
+      const imgState = await imgRef.put(file);
+      const downloadUrl = await imgState.ref.getDownloadURL();
+      const content = { ...this.state.content };
+      content.cover = downloadUrl;
+
+      this.setState({ content });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  onHandlePostPreview = (e) => {
+    const content = { ...this.state.content };
+
+    if (e.currentTarget.type === "file") {
+      content.cover = e.currentTarget.files[0];
+      this.handeUploadCoverImage(e.currentTarget.files[0]);
+    } else {
+      content.title = e.currentTarget.value;
+    }
+
+    this.setState({
+      content: content,
+    });
+  };
+
   handleUploadImage = async (file) => {
     try {
-      const imgRef = this.props.firebase.storage.ref(`blog/images/${this.state.user}/img`);
+      const imgRef = this.props.firebase.storage.ref(
+        `blog/${this.state.user}/design/${this.state.content.title}/images/content/${file.name}`
+      );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       return downloadUrl;
@@ -75,29 +112,13 @@ class Editor extends React.Component {
 
         this.setState({
           editor: this.state.quillEditor.editor.deleteText(range.index, 1),
-        });
-
-        this.setState({
           editor: this.state.quillEditor.editor.insertEmbed(range.index, "image", imgUrl),
         });
       }
     };
   };
 
-  componentDidMount() {
-    this.setState({
-      quillEditor: this.editorRef.current,
-    });
-
-    
-    this.props.firebase.auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ user: user.uid });
-      }
-    });
-  }
-
-  onAddPost = () => {
+  handleAddPost = () => {
     this.props.firebase.db.ref(`posts/${this.state.user}/blog/`).push(this.state.content, (err) => {
       if (err) {
         console.log(err);
@@ -109,8 +130,10 @@ class Editor extends React.Component {
 
   handleChange = () => {
     const { ops } = this.state.quillEditor.editor.getContents();
-    console.log(ops);
-    this.setState({ content: ops });
+
+    const content = { ...this.state.content };
+    content.editorContent = ops;
+    this.setState({ content });
   };
 
   toggleMinify = () => {
@@ -118,9 +141,23 @@ class Editor extends React.Component {
     this.setState({ minify: !minify });
   };
 
+  componentDidMount() {
+    this.setState({
+      quillEditor: this.editorRef.current,
+    });
+
+    this.props.firebase.auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid });
+      }
+    });
+  }
+
   render() {
     const { content, minify } = this.state;
     // console.log(content);
+
+    console.log(new Date());
 
     const Quill_JS = {
       modules: {
@@ -151,17 +188,32 @@ class Editor extends React.Component {
     return (
       <Container maxWidth="lg">
         <h1>Quill_JS Editor</h1>
-        <ReactQuill onChange={this.handleChange} ref={this.editorRef} modules={Quill_JS.modules} />
-        {/* <hr />
-        <h1>Editor contents in Delta JSON format</h1>
-        <button onClick={this.toggleMinify}>{minify ? "Beautify" : "Minify"}</button>
-        <pre>{JSON.stringify(content, null, minify ? 0 : 2)}</pre>
-        <hr />
-        <h1>Read-only Quill Editor (Content generated from Delta JSON)</h1>
-        <div style={{ border: "1px solid #ccc" }}>
-          <ReactQuill value={content} theme="bubble" readOnly />{" "}
-        </div> */}
-        <Button variant="contained" color="secondary" style={{ marginTop: "12.5px" }} onClick={this.onAddPost}>
+
+        <EditorPreview onHandlePostPreview={this.onHandlePostPreview} value={this.state.content.title} />
+        {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
+
+        <Grid container direction="row" justify="space-between" alignItems="start">
+          <Grid item md={5}>
+            <h3>Content</h3>
+            <ReactQuill onChange={this.handleChange} ref={this.editorRef} modules={Quill_JS.modules} />
+          </Grid>
+
+          <Grid item md={6}>
+            {/* <h1>Editor contents in Delta JSON format</h1> */}
+            {/* <button onClick={this.toggleMinify}>{minify ? "Beautify" : "Minify"}</button> */}
+            {/* <pre>{JSON.stringify(content, null, minify ? 0 : 2)}</pre> */}
+            {/* <h1>Read-only Quill Editor (Content generated from Delta JSON)</h1> */}
+            <h3>Content Preview</h3>
+            <ReactQuill
+              style={{ border: "2px solid black", minHeight: "300px" }}
+              value={content.editorContent}
+              theme="bubble"
+              readOnly
+            />{" "}
+          </Grid>
+        </Grid>
+
+        <Button variant="contained" color="secondary" style={{ marginTop: "12.5px" }} onClick={this.handleAddPost}>
           Publish Post
         </Button>
       </Container>

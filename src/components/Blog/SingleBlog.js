@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-
 import { withFirebase } from "../Firebase";
 
 class SingleBlog extends Component {
