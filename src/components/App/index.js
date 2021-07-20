@@ -34,8 +34,8 @@ const App = () => {
         <Route path={ROUTES.ADMIN} component={AdminPage} />
         <Route path="/test" component={SomeComponent} />
         <Route path="/todos" component={Todos} />
-        <Route path="/blogs/blog/:id" component={SingleBlog} />
-        <Route path="/blogs" exact component={Blogs} />
+        <Route path="/blog/:id" component={SingleBlog} />
+        <Route path="/blog" exact component={Blogs} />
       </Layout>
     </Router>
   );

@@ -46,7 +46,7 @@ const NavigationAuth = ({ firebase, authUser }) => {
   }, [authUser]);
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="" style={{ marginBottom: "5rem" }} color="primary" elevation={0}>
       <Container>
         <Grid container>
           <Grid item container xs={11}>

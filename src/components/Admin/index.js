@@ -1,6 +1,6 @@
 import React from "react";
 import "materialize-css";
-
+import { Container } from "@material-ui/core";
 import { withFirebase } from "../Firebase";
 import withLoader from "../../hoc/withLoader";
 
@@ -57,7 +57,7 @@ class AdminPage extends React.Component {
   render() {
     const { users } = this.state;
     return (
-      <>
+      <Container maxWidth="lg">
         <h1>Admin</h1>
         {this.props.loading && (
           <p>
@@ -65,7 +65,7 @@ class AdminPage extends React.Component {
           </p>
         )}
         <UserList users={users} />
-      </>
+      </Container>
     );
   }
 }

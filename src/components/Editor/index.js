@@ -28,19 +28,21 @@ class Editor extends React.Component {
       quillEditor: null,
       content: {
         editorContent: null,
-        cover: null,
-        fmm: true,
-        title: "ce-este-designul",
+        category: "blog",
+        description: "",
+        cover: "",
+        title: "",
       },
       minify: true,
       user: null,
     };
   }
 
+  //! to STORAGE
   handeUploadCoverImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `blog/${this.state.user}/design/${this.state.content.title}/images/cover/${file.name}`
+        `/blog/${this.state.user}/${this.state.content.title}/images/cover/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -53,25 +55,11 @@ class Editor extends React.Component {
     }
   };
 
-  onHandlePostPreview = (e) => {
-    const content = { ...this.state.content };
-
-    if (e.currentTarget.type === "file") {
-      content.cover = e.currentTarget.files[0];
-      this.handeUploadCoverImage(e.currentTarget.files[0]);
-    } else {
-      content.title = e.currentTarget.value;
-    }
-
-    this.setState({
-      content: content,
-    });
-  };
-
-  handleUploadImage = async (file) => {
+  //! to STORAGE
+  handleUploadContentEditorImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `blog/${this.state.user}/design/${this.state.content.title}/images/content/${file.name}`
+        `/blog/${this.state.user}/${this.state.content.title}/images/content/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -80,6 +68,33 @@ class Editor extends React.Component {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  //! to DB
+  handleAddPost = () => {
+    this.props.firebase.db.ref(`/blog/${this.state.user}/`).push(this.state.content, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.setState({ content: this.state.quillEditor.editor.setText("") });
+      }
+    });
+  };
+
+  onHandlePostPreview = (e) => {
+    const content = { ...this.state.content };
+
+    if (e.currentTarget.type === "file") {
+      content.cover = e.currentTarget.files[0];
+      this.handeUploadCoverImage(e.currentTarget.files[0]);
+    } else {
+      content[e.target.name] = e.target.value;
+      //   console.log(e.target.name, e.currentTarget.name);
+    }
+
+    this.setState({
+      content: content,
+    });
   };
 
   createInput = () => {
@@ -108,7 +123,7 @@ class Editor extends React.Component {
           editor: this.state.quillEditor.editor.setSelection(range.index + 1),
         });
 
-        const imgUrl = await this.handleUploadImage(file);
+        const imgUrl = await this.handleUploadContentEditorImage(file);
 
         this.setState({
           editor: this.state.quillEditor.editor.deleteText(range.index, 1),
@@ -116,16 +131,6 @@ class Editor extends React.Component {
         });
       }
     };
-  };
-
-  handleAddPost = () => {
-    this.props.firebase.db.ref(`posts/${this.state.user}/blog/`).push(this.state.content, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        this.setState({ content: this.state.quillEditor.editor.setText("") });
-      }
-    });
   };
 
   handleChange = () => {
@@ -155,9 +160,8 @@ class Editor extends React.Component {
 
   render() {
     const { content, minify } = this.state;
-    // console.log(content);
 
-    console.log(new Date());
+    //!{TODO} - import QUill_js const from another file and bind this to the actual context
 
     const Quill_JS = {
       modules: {
@@ -186,10 +190,11 @@ class Editor extends React.Component {
     };
 
     return (
-      <>
+      <Container maxWidth="lg">
         <h1>Quill_JS Editor</h1>
 
-        <EditorPreview onHandlePostPreview={this.onHandlePostPreview} value={this.state.content.title} />
+        <EditorPreview onHandlePostPreview={this.onHandlePostPreview} value={this.state.content} />
+
         {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
 
         <Grid container direction="row" justify="space-between" alignItems="start">
@@ -216,9 +221,15 @@ class Editor extends React.Component {
         <Button variant="contained" color="secondary" style={{ marginTop: "12.5px" }} onClick={this.handleAddPost}>
           Publish Post
         </Button>
-      </>
+      </Container>
     );
   }
 }
 
 export default withFirebase(Editor);
+
+// currentTarget vs target
+
+// https://www.youtube.com/watch?v=GvyHQi69gqM
+// https://github.com/mui-org/material-ui/issues/5085
+// https://www.carlrippon.com/event-target-v-current-target/

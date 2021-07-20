@@ -7,7 +7,21 @@
 }
 
 .slick-dots li.slick-active button:before {
-  color: #fff !important;
+  color: red !important;
+  background: red;
+}
+
+.slick-dots li button:before {
+  color: #000 !important;
+  width: 15px !important;
+  height: 15px !important;
+  background: #000;
+}
+
+.slick-dots li button {
+  background-color: #000 !important;
+  width: 15px !important;
+  height: 15px !important;
 }
 
 .slick-prev:before,

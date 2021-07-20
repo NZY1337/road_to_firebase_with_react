@@ -9,11 +9,9 @@ const Account = () => {
   return (
     <AuthUserContext.Consumer>
       {(authUser) => (
-        <>
+        <Container maxWidth="lg">
           <Grid container>
-            <Container>
-              <h3>Account: {authUser.email}</h3>
-            </Container>
+            <h3>Account: {authUser.email}</h3>
           </Grid>
 
           <Grid container>
@@ -24,7 +22,7 @@ const Account = () => {
               <PasswordForgetForm />
             </Grid>
           </Grid>
-        </>
+        </Container>
       )}
     </AuthUserContext.Consumer>
   );
