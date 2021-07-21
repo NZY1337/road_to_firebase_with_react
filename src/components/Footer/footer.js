@@ -77,7 +77,7 @@ export default function Footer() {
           </Grid>
 
           <Grid container item sm={4} flex="center" alignItems="center">
-            <ul class="d-xl-flex" id="footer-nav">
+            <ul className="d-xl-flex" id="footer-nav">
               {footerMenu.map((item, index) => {
                 return (
                   <li key={index}>

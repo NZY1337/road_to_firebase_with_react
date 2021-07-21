@@ -5,6 +5,7 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import { ImageResize } from "quill-image-resize-module";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 
 // others...
 import Container from "@material-ui/core/Container";
@@ -21,6 +22,11 @@ Quill.register("modules/imageResize", ImageResize);
 class Editor extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log(this.props.location.state);
+    console.log(this.props.match.params.id);
+
+    this.postId = this.props.match.params.id;
 
     this.editorRef = React.createRef();
 
@@ -42,7 +48,7 @@ class Editor extends React.Component {
   handeUploadCoverImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `/blog/${this.state.user}/${this.state.content.title}/images/cover/${file.name}`
+        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/cover/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -59,12 +65,11 @@ class Editor extends React.Component {
   handleUploadContentEditorImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `/blog/${this.state.user}/${this.state.content.title}/images/content/${file.name}`
+        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/content/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       return downloadUrl;
-      //   console.log(downloadUrl);
     } catch (err) {
       console.log(err);
     }
@@ -72,13 +77,27 @@ class Editor extends React.Component {
 
   //! to DB
   handleAddPost = () => {
-    this.props.firebase.db.ref(`/blog/${this.state.user}/`).push(this.state.content, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        this.setState({ content: this.state.quillEditor.editor.setText("") });
-      }
-    });
+    if (this.props.location.state) {
+      this.props.firebase.db
+        .ref(`/${this.state.content.category}/${this.state.user}/${this.postId}/`)
+        .set(this.state.content, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            this.setState({ content: this.state.quillEditor.editor.setText("") });
+          }
+        });
+    } else {
+      this.props.firebase.db
+        .ref(`/${this.state.content.category}/${this.state.user}/`)
+        .push(this.state.content, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            this.setState({ content: this.state.quillEditor.editor.setText("") });
+          }
+        });
+    }
   };
 
   onHandlePostPreview = (e) => {
@@ -133,11 +152,11 @@ class Editor extends React.Component {
     };
   };
 
-  handleChange = () => {
+  handleChange = (html) => {
     const { ops } = this.state.quillEditor.editor.getContents();
 
     const content = { ...this.state.content };
-    content.editorContent = ops;
+    content.editorContent = html;
     this.setState({ content });
   };
 
@@ -147,6 +166,20 @@ class Editor extends React.Component {
   };
 
   componentDidMount() {
+    if (this.props.location.state) {
+      const { data } = this.props.location.state;
+
+      const content = {
+        title: data.title,
+        editorContent: data.editorContent,
+        category: data.category,
+        description: data.description,
+        cover: data.cover,
+      };
+
+      this.setState({ content });
+    }
+
     this.setState({
       quillEditor: this.editorRef.current,
     });
@@ -162,7 +195,6 @@ class Editor extends React.Component {
     const { content, minify } = this.state;
 
     //!{TODO} - import QUill_js const from another file and bind this to the actual context
-
     const Quill_JS = {
       modules: {
         toolbar: {
@@ -183,7 +215,6 @@ class Editor extends React.Component {
 
         imageResize: { displaySize: true },
         clipboard: {
-          // toggle to add extra line breaks when pasting HTML:
           matchVisual: false,
         },
       },
@@ -200,20 +231,21 @@ class Editor extends React.Component {
         <Grid container direction="row" justify="space-between" alignItems="start">
           <Grid item md={5}>
             <h3>Content</h3>
-            <ReactQuill onChange={this.handleChange} ref={this.editorRef} modules={Quill_JS.modules} />
+            <ReactQuill
+              onChange={this.handleChange}
+              value={content.editorContent}
+              ref={this.editorRef}
+              modules={Quill_JS.modules}
+            />
           </Grid>
 
           <Grid item md={6}>
-            {/* <h1>Editor contents in Delta JSON format</h1> */}
-            {/* <button onClick={this.toggleMinify}>{minify ? "Beautify" : "Minify"}</button> */}
-            {/* <pre>{JSON.stringify(content, null, minify ? 0 : 2)}</pre> */}
-            {/* <h1>Read-only Quill Editor (Content generated from Delta JSON)</h1> */}
             <h3>Content Preview</h3>
             <ReactQuill
               style={{ border: "2px solid black", minHeight: "300px" }}
               value={content.editorContent}
               theme="bubble"
-              readOnly
+              readOnly={false}
             />{" "}
           </Grid>
         </Grid>

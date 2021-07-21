@@ -25,7 +25,6 @@ const App = () => {
     <Router>
       <Layout>
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
-        <Route path={ROUTES.EDITOR} component={Editor} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
@@ -34,7 +33,9 @@ const App = () => {
         <Route path={ROUTES.ADMIN} component={AdminPage} />
         <Route path="/test" component={SomeComponent} />
         <Route path="/todos" component={Todos} />
-        <Route path="/blog/:id" component={SingleBlog} />
+        <Route path="/editor" component={Editor} />
+        <Route path="/edit/:id" component={Editor} />
+        <Route path="/blog/:title" component={SingleBlog} />
         <Route path="/blog" exact component={Blogs} />
       </Layout>
     </Router>

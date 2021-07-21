@@ -10,6 +10,7 @@ class SingleBlog extends Component {
 
     this.state = {
       content: this.props.location.state.data.editorContent,
+      //   content: null,
     };
   }
 

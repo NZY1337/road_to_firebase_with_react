@@ -33,8 +33,9 @@ const EditorPreview = ({ onHandlePostPreview, value }) => {
           margin="dense"
           label="Title"
           type="text"
-          onChange={(e) => onHandlePostPreview(e)}
+          value={title}
           defaultValue={title}
+          onChange={(e) => onHandlePostPreview(e)}
           variant="outlined"
         />
 
@@ -47,8 +48,8 @@ const EditorPreview = ({ onHandlePostPreview, value }) => {
           margin="dense"
           label="Description"
           type="text"
+          value={description}
           onChange={(e) => onHandlePostPreview(e)}
-          defaultValue={description}
           variant="outlined"
         />
 
