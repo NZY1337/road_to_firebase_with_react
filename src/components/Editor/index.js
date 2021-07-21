@@ -23,9 +23,6 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props.location.state);
-    console.log(this.props.match.params.id);
-
     this.postId = this.props.match.params.id;
 
     this.editorRef = React.createRef();
@@ -48,7 +45,7 @@ class Editor extends React.Component {
   handeUploadCoverImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/cover/${file.name}`
+        `/${this.state.content.category}/${this.state.user}/images/cover/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -65,7 +62,7 @@ class Editor extends React.Component {
   handleUploadContentEditorImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/content/${file.name}`
+        `/${this.state.content.category}/${this.state.user}/images/content/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -192,7 +189,7 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { content, minify } = this.state;
+    const { content } = this.state;
 
     //!{TODO} - import QUill_js const from another file and bind this to the actual context
     const Quill_JS = {
@@ -236,16 +233,17 @@ class Editor extends React.Component {
               value={content.editorContent}
               ref={this.editorRef}
               modules={Quill_JS.modules}
+
+              //   theme="snow" //bubble
             />
           </Grid>
 
           <Grid item md={6}>
             <h3>Content Preview</h3>
             <ReactQuill
-              style={{ border: "2px solid black", minHeight: "300px" }}
+              //   style={{ border: "2px solid black", minHeight: "300px" }}
               value={content.editorContent}
-              theme="bubble"
-              readOnly={false}
+              readOnly
             />{" "}
           </Grid>
         </Grid>

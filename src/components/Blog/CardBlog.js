@@ -30,6 +30,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 
 const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose, handleClick }) => {
   const post = posts[id];
+  const urlTitle = post.title.toLowerCase().split(" ").join("-");
 
   return (
     <Grid item md={4}>
@@ -43,9 +44,7 @@ const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose,
               onClick={(e) => {
                 handleClick(e, id);
               }}
-            >
-              Actions
-            </Button>
+            />
           }
           title="Razvan Puricescu"
           subheader="September 14, 2016"
@@ -92,7 +91,7 @@ const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose,
             component={Link}
             endIcon={<AddIcon />}
             to={{
-              pathname: `/blog/${post.title}`,
+              pathname: `/blog/${urlTitle}`,
               state: {
                 data: post, // id you want to get in Project component
               },
