@@ -8,16 +8,34 @@ class SingleBlog extends Component {
   constructor(props) {
     super(props);
 
+    this.title = this.props.match.params.title.split("-").join(" ");
+    this.postType = this.props.location.pathname.split("/")[1];
+
+    console.log(this.title);
+
     this.state = {
-      content: this.props.location.state.data.editorContent,
-      //   content: null,
+      content: {},
     };
   }
+
+  fetchPost = (user) => {
+    const postsRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.title}`);
+
+    postsRef.on("value", (snapshot) => {
+      if (snapshot.val() !== null) {
+        let content = snapshot.val();
+
+        this.setState({
+          content: content,
+        });
+      }
+    });
+  };
 
   componentDidMount() {
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
-        //
+        this.fetchPost(user.uid);
       }
     });
   }
@@ -28,9 +46,9 @@ class SingleBlog extends Component {
     return (
       <Container maxWidth="lg">
         <Typography align="center" gutterBottom={true} variant="h2">
-          {this.props.location.state.data.title}
+          {this.state.content.title}
         </Typography>
-        <ReactQuill value={content} theme="bubble" readOnly />
+        <ReactQuill value={this.state.content.editorContent || ""} theme="bubble" readOnly />
       </Container>
     );
   }

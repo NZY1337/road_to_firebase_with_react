@@ -11,6 +11,8 @@ class Blogs extends Component {
   constructor(props) {
     super(props);
 
+    this.pathname = this.props.location.pathname;
+
     this.state = {
       posts: {},
       user: null,
@@ -35,7 +37,7 @@ class Blogs extends Component {
   };
 
   fetchPosts = (user) => {
-    const postsRef = this.props.firebase.db.ref(`/blog/${user}/`);
+    const postsRef = this.props.firebase.db.ref(`/${this.pathname}/${user}/`);
 
     postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
@@ -69,6 +71,7 @@ class Blogs extends Component {
       const collection = Object.keys(posts).map((id) => {
         return (
           <CardBlog
+            pathname={this.pathname}
             key={id}
             id={id}
             uniqueIdForAnchorEl={uniqueIdForAnchorEl}

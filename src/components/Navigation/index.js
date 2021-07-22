@@ -57,6 +57,12 @@ const NavigationAuth = ({ firebase, authUser }) => {
             </MenuItem>
 
             <MenuItem>
+              <Link style={style} to={ROUTES.NEWS} color="inherit">
+                News
+              </Link>
+            </MenuItem>
+
+            <MenuItem>
               <Link style={style} to={ROUTES.BLOGS} color="inherit">
                 Blog
               </Link>

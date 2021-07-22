@@ -17,6 +17,7 @@ import Fade from "@material-ui/core/Fade";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
+import logo from "../../assets/images/beadesignful-logo.png";
 
 /*
     !handle multiple menu item for MATERIAL UI;
@@ -28,21 +29,23 @@ import CardHeader from "@material-ui/core/CardHeader";
     - this principle is applied  for the Link inside the MenuItem when targeting specific post
 */
 
-const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose, handleClick }) => {
+const CardBlog = ({ pathname, id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose, handleClick }) => {
   const post = posts[id];
-  const urlTitle = post.title.toLowerCase().split(" ").join("-");
+
+  const urlTitle = post.title.split(" ").join("-");
 
   return (
     <Grid item md={4}>
       <Card>
         <CardHeader
-          avatar={<Avatar aria-label="recipe">R</Avatar>}
+          avatar={<Avatar src={logo} aria-label="recipe" />}
           action={
             <Button
               color="secondary"
               endIcon={<MoreVertIcon />}
               onClick={(e) => {
-                handleClick(e, id);
+                handleClick(e, post.title);
+                console.log(post.title);
               }}
             />
           }
@@ -54,13 +57,12 @@ const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose,
           <MenuItem onClick={handleClose}>
             <Link
               to={{
-                pathname: `/edit/${uniqueIdForAnchorEl}/`,
-                state: {
-                  data: posts[uniqueIdForAnchorEl],
-                },
+                pathname: `/edit/${post.category}/${uniqueIdForAnchorEl}/`,
+              }}
+              onClick={() => {
+                console.log(post.category);
               }}
               color="secondary"
-              onClick={() => console.log(id)}
             >
               Edit Post
             </Link>
@@ -80,8 +82,7 @@ const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose,
               {post.title}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all
-              continents except Antarctica
+              {post.description}
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -91,10 +92,7 @@ const CardBlog = ({ id, uniqueIdForAnchorEl, anchorEl, open, posts, handleClose,
             component={Link}
             endIcon={<AddIcon />}
             to={{
-              pathname: `/blog/${urlTitle}`,
-              state: {
-                data: post, // id you want to get in Project component
-              },
+              pathname: `${pathname}/${urlTitle}`,
             }}
             size="small"
             variant="outlined"

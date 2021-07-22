@@ -34,9 +34,12 @@ const App = () => {
         <Route path="/test" component={SomeComponent} />
         <Route path="/todos" component={Todos} />
         <Route path="/editor" component={Editor} />
-        <Route path="/edit/:id" component={Editor} />
+        <Route path="/edit/:type/:id" component={Editor} />
         <Route path="/blog/:title" component={SingleBlog} />
         <Route path="/blog" exact component={Blogs} />
+
+        <Route path="/news/:title" component={SingleBlog} />
+        <Route path="/news" exact component={Blogs} />
       </Layout>
     </Router>
   );

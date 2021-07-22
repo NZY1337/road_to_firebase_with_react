@@ -23,7 +23,8 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.postId = this.props.match.params.id;
+    this.postTitle = this.props.match.params.id ? this.props.match.params.id.split("-").join(" ") : null;
+    this.posType = this.props.match.params.type ? this.props.match.params.type : null;
 
     this.editorRef = React.createRef();
 
@@ -45,7 +46,7 @@ class Editor extends React.Component {
   handeUploadCoverImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `/${this.state.content.category}/${this.state.user}/images/cover/${file.name}`
+        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/cover/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -62,7 +63,7 @@ class Editor extends React.Component {
   handleUploadContentEditorImage = async (file) => {
     try {
       const imgRef = this.props.firebase.storage.ref(
-        `/${this.state.content.category}/${this.state.user}/images/content/${file.name}`
+        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/content/${file.name}`
       );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
@@ -74,27 +75,41 @@ class Editor extends React.Component {
 
   //! to DB
   handleAddPost = () => {
-    if (this.props.location.state) {
-      this.props.firebase.db
-        .ref(`/${this.state.content.category}/${this.state.user}/${this.postId}/`)
-        .set(this.state.content, (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            this.setState({ content: this.state.quillEditor.editor.setText("") });
-          }
+    this.props.firebase.db
+      .ref(`/${this.state.content.category}/${this.state.user}/${this.state.content.title}`)
+      .set(this.state.content, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          this.setState({ content: this.state.quillEditor.editor.setText("") });
+        }
+      });
+
+    //   if (this.props.location.state) {
+    //     this.props.firebase.db
+    //       .ref(`/${this.state.content.category}/${this.state.user}/${this.postId}/`)
+    //       .set(this.state.content, (err) => {
+    //         if (err) {
+    //           console.log(err);
+    //         } else {
+    //           this.setState({ content: this.state.quillEditor.editor.setText("") });
+    //         }
+    //       });
+    //   }
+  };
+
+  fetchPost = (user) => {
+    const postRef = this.props.firebase.db.ref(`${this.posType}/${user}/${this.postTitle}`);
+
+    postRef.on("value", (snapshot) => {
+      if (snapshot.val() !== null && this.postTitle && this.posType) {
+        let content = snapshot.val();
+
+        this.setState({
+          content: content,
         });
-    } else {
-      this.props.firebase.db
-        .ref(`/${this.state.content.category}/${this.state.user}/`)
-        .push(this.state.content, (err) => {
-          if (err) {
-            console.log(err);
-          } else {
-            this.setState({ content: this.state.quillEditor.editor.setText("") });
-          }
-        });
-    }
+      }
+    });
   };
 
   onHandlePostPreview = (e) => {
@@ -150,40 +165,22 @@ class Editor extends React.Component {
   };
 
   handleChange = (html) => {
-    const { ops } = this.state.quillEditor.editor.getContents();
-
     const content = { ...this.state.content };
     content.editorContent = html;
     this.setState({ content });
   };
 
-  toggleMinify = () => {
-    const { minify } = this.state;
-    this.setState({ minify: !minify });
-  };
-
   componentDidMount() {
-    if (this.props.location.state) {
-      const { data } = this.props.location.state;
-
-      const content = {
-        title: data.title,
-        editorContent: data.editorContent,
-        category: data.category,
-        description: data.description,
-        cover: data.cover,
-      };
-
-      this.setState({ content });
-    }
-
     this.setState({
       quillEditor: this.editorRef.current,
     });
 
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user: user.uid });
+        this.setState({
+          user: user.uid,
+        });
+        this.fetchPost(user.uid);
       }
     });
   }
