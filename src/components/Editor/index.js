@@ -23,8 +23,10 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.postTitle = this.props.match.params.id ? this.props.match.params.id.split("-").join(" ") : null;
-    this.posType = this.props.match.params.type ? this.props.match.params.type : null;
+    this.postTitle = this.props.match.params.title ? this.props.match.params.title.split("-").join(" ") : null;
+
+    console.log(this.postTitle);
+    this.postType = this.props.match.params.type ? this.props.match.params.type : null;
 
     this.editorRef = React.createRef();
 
@@ -37,7 +39,6 @@ class Editor extends React.Component {
         cover: "",
         title: "",
       },
-      minify: true,
       user: null,
     };
   }
@@ -75,34 +76,28 @@ class Editor extends React.Component {
 
   //! to DB
   handleAddPost = () => {
-    this.props.firebase.db
-      .ref(`/${this.state.content.category}/${this.state.user}/${this.state.content.title}`)
-      .set(this.state.content, (err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          this.setState({ content: this.state.quillEditor.editor.setText("") });
-        }
-      });
+    // https://stackoverflow.com/questions/44784275/how-to-add-update-and-list-data-into-firebase-using-js
+    // https://www.ryanjyost.com/react-routing/
 
-    //   if (this.props.location.state) {
-    //     this.props.firebase.db
-    //       .ref(`/${this.state.content.category}/${this.state.user}/${this.postId}/`)
-    //       .set(this.state.content, (err) => {
-    //         if (err) {
-    //           console.log(err);
-    //         } else {
-    //           this.setState({ content: this.state.quillEditor.editor.setText("") });
-    //         }
-    //       });
-    //   }
+    if (this.postTitle && this.postType) {
+      //! this.postTitle not this.state.content.title
+      const postRef = this.props.firebase.db.ref(`${this.state.content.category}/${this.state.user}/${this.postTitle}`);
+      // const postRef = this.props.firebase.db.ref(`${this.postType}/${this.state.user}/${this.postTitle}`);
+
+      postRef.update(this.state.content);
+    } else {
+      //! this.postTitle not this.state.content.title
+      const postRef = this.props.firebase.db.ref(`${this.state.content.category}/${this.state.user}`);
+
+      postRef.push(this.state.content);
+    }
   };
 
   fetchPost = (user) => {
-    const postRef = this.props.firebase.db.ref(`${this.posType}/${user}/${this.postTitle}`);
+    const postRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.postTitle}`);
 
     postRef.on("value", (snapshot) => {
-      if (snapshot.val() !== null && this.postTitle && this.posType) {
+      if (snapshot.val() !== null && this.postTitle && this.postType) {
         let content = snapshot.val();
 
         this.setState({

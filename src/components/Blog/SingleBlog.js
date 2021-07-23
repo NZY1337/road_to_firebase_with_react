@@ -8,10 +8,8 @@ class SingleBlog extends Component {
   constructor(props) {
     super(props);
 
-    this.title = this.props.match.params.title.split("-").join(" ");
+    this.id = this.props.match.params.id;
     this.postType = this.props.location.pathname.split("/")[1];
-
-    console.log(this.title);
 
     this.state = {
       content: {},
@@ -19,7 +17,7 @@ class SingleBlog extends Component {
   }
 
   fetchPost = (user) => {
-    const postsRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.title}`);
+    const postsRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.id}`);
 
     postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {

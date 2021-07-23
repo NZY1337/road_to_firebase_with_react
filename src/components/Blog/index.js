@@ -17,14 +17,14 @@ class Blogs extends Component {
       posts: {},
       user: null,
       anchorEl: null,
-      uniqueIdForAnchorEl: null,
+      uniquePostId: null,
     };
   }
 
-  handleClick = (event, uniqueIdForAnchorEl) => {
+  handleClick = (event, uniquePostId) => {
     this.setState({
       anchorEl: event.currentTarget,
-      uniqueIdForAnchorEl: uniqueIdForAnchorEl,
+      uniquePostId: uniquePostId,
     });
   };
 
@@ -32,12 +32,12 @@ class Blogs extends Component {
     this.setState({
       ...this.state,
       anchorEl: null,
-      uniqueIdForAnchorEl: null,
+      uniquePostId: null,
     });
   };
 
   fetchPosts = (user) => {
-    const postsRef = this.props.firebase.db.ref(`/${this.pathname}/${user}/`);
+    const postsRef = this.props.firebase.db.ref(`${this.pathname}/${user}/`);
 
     postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
@@ -64,7 +64,7 @@ class Blogs extends Component {
   }
 
   render() {
-    const { anchorEl, uniqueIdForAnchorEl, posts } = this.state;
+    const { anchorEl, uniquePostId, posts } = this.state;
     const open = Boolean(anchorEl);
 
     const renderPosts = () => {
@@ -74,7 +74,7 @@ class Blogs extends Component {
             pathname={this.pathname}
             key={id}
             id={id}
-            uniqueIdForAnchorEl={uniqueIdForAnchorEl}
+            uniquePostId={uniquePostId}
             anchorEl={anchorEl}
             open={open}
             posts={posts}

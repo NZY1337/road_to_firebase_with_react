@@ -1,7 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { LANDING, SIGN_UP } from "../../constants/routes";
-import Navigation from "../Navigation";
+import { Redirect, BrowserRouter as Router, Route } from "react-router-dom";
+
 import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
 import SignInPage from "../SignIn";
@@ -20,6 +19,8 @@ import { withAuthentication } from "../Sesssion";
 
 import * as ROUTES from "../../constants/routes";
 
+// https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
+
 const App = () => {
   return (
     <Router>
@@ -34,15 +35,27 @@ const App = () => {
         <Route path="/test" component={SomeComponent} />
         <Route path="/todos" component={Todos} />
         <Route path="/editor" component={Editor} />
-        <Route path="/edit/:type/:id" component={Editor} />
-        <Route path="/blog/:title" component={SingleBlog} />
-        <Route path="/blog" exact component={Blogs} />
 
-        <Route path="/news/:title" component={SingleBlog} />
+        {/* blog */}
+        <Route path="/edit/:type/:id" component={Editor} />
+        <Route path="/blog/:id/" component={SingleBlog} />
+
+        <Route path="/blog" exact component={Blogs} />
+        {/* news */}
+        <Route path="/news/:id" component={SingleBlog} />
         <Route path="/news" exact component={Blogs} />
       </Layout>
     </Router>
   );
 };
+
+{
+  /* <Route
+  path="/test/:id1/:id2"
+  component={({ match }) => {
+    return <Redirect to={{ path: "/component-route", state: { ...match.params } }} />;
+  }}
+/>; */
+}
 
 export default withAuthentication(App);
