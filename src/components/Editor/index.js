@@ -70,7 +70,7 @@ class Editor extends React.Component {
     // uniqueIdStorage - when the post is edited - from state
 
     const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
-    console.log(decideWhereToPlaceFile);
+
     const imgRef = this.postId
       ? storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
       : storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images`).child("cover/cover.jpg");
@@ -90,6 +90,9 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handleUploadContentEditorImage = async (file) => {
+    /*  when uploading content images for editor we asume that we already have generated our Unique ID;
+        because first we upload cover(immediately generates the UNIQUE_ID) then content
+    */
     const { user } = this.state;
     const { storage } = this.props.firebase;
     const { uniqueIdStorage, category } = this.state.content;
@@ -124,6 +127,8 @@ class Editor extends React.Component {
     } else {
       postRef.push(this.state.content);
     }
+
+    this.props.history.push(`/${this.state.content.category}`);
   };
 
   fetchPost = (user) => {
@@ -149,7 +154,6 @@ class Editor extends React.Component {
       this.handeUploadCoverImage(e.currentTarget.files[0]);
     } else {
       content[e.target.name] = e.target.value;
-      //   console.log(e.target.name, e.currentTarget.name);
     }
 
     this.setState({
@@ -206,11 +210,11 @@ class Editor extends React.Component {
 
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
-        if (this.postId) this.fetchPost(user.uid);
-
         this.setState({
           user: user.uid,
         });
+
+        if (this.postId) this.fetchPost(user.uid);
       }
     });
   }
