@@ -90,11 +90,15 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handleUploadContentEditorImage = async (file) => {
-    const { uniqueIdStorage } = this.state.content;
+    const { user } = this.state;
+    const { storage } = this.props.firebase;
+    const { uniqueIdStorage, category } = this.state.content;
+
+    const imgRef = this.postId
+      ? storage.ref(`${category}/${user}/${uniqueIdStorage}/images/content/${file.name}`)
+      : storage.ref(`${category}/${user}/${uniqueIdStorage}/images/content`).child(`${file.name}`);
+
     try {
-      const imgRef = this.props.firebase.storage
-        .ref(`/${this.state.content.category}/${this.state.user}/${uniqueIdStorage}/images`)
-        .child(`content/${file.name}`);
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       return downloadUrl;
