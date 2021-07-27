@@ -41,6 +41,7 @@ class Editor extends React.Component {
     super(props);
 
     this.postId = this.props.match.params.id;
+    console.log(this.postId);
     this.postType = this.props.match.params.type;
     this.uniqueIdStorage = uuidv4().slice(0, 6);
     this.editorRef = React.createRef();
@@ -69,6 +70,7 @@ class Editor extends React.Component {
     // uniqueIdStorage - when the post is edited - from state
 
     const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
+    console.log(decideWhereToPlaceFile);
     const imgRef = this.postId
       ? storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
       : storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images`).child("cover/cover.jpg");
@@ -78,7 +80,7 @@ class Editor extends React.Component {
       const downloadUrl = await imgState.ref.getDownloadURL();
       const content = { ...this.state.content };
       content.cover = downloadUrl;
-      content.uniqueIdStorage = this.uniqueIdStorage;
+      content.uniqueIdStorage = content.uniqueIdStorage ? content.uniqueIdStorage : this.uniqueIdStorage;
 
       this.setState({ content });
     } catch (err) {
@@ -88,17 +90,11 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handleUploadContentEditorImage = async (file) => {
-    const { uniqueIdStorage, category } = this.state.content;
-    const { user } = this.state;
-    const { storage } = this.props.firebase;
-
-    const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
-    console.log(decideWhereToPlaceFile);
-    const imgRef = this.postId
-      ? storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/content/${file.name}`)
-      : storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/content`).child(`${file.name}`);
-
+    const { uniqueIdStorage } = this.state.content;
     try {
+      const imgRef = this.props.firebase.storage
+        .ref(`/${this.state.content.category}/${this.state.user}/${uniqueIdStorage}/images`)
+        .child(`content/${file.name}`);
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       return downloadUrl;
