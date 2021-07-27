@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -37,6 +38,9 @@ const Navigation = ({ firebase }) => {
 const NavigationAuth = ({ firebase, authUser }) => {
   const [profileImg, setProfileImg] = useState(null);
 
+  const { pathname } = useLocation();
+  const navStyle = pathname === "/" ? { backgroundColor: "rgba(0,9,9,0.5)" } : { color: "primary" };
+
   useEffect(() => {
     const userRef = firebase.db.ref("users/" + authUser.uid + "/url");
     userRef.on("value", (snapshot) => {
@@ -46,7 +50,7 @@ const NavigationAuth = ({ firebase, authUser }) => {
   }, [authUser]);
 
   return (
-    <AppBar position="" style={{ marginBottom: "5rem" }} color="primary" elevation={0}>
+    <AppBar disableGutters={true} style={navStyle} elevation={0}>
       <Container>
         <Grid container>
           <Grid item container xs={11}>
@@ -115,8 +119,11 @@ const NavigationAuth = ({ firebase, authUser }) => {
 };
 
 const NavigationNonAuth = () => {
+  const { pathname } = useLocation();
+  const navStyle = pathname === "/" ? { backgroundColor: "rgba(0,9,9,0.5)" } : { color: "primary" };
+
   return (
-    <AppBar position="static">
+    <AppBar disableGutters={true} style={navStyle} position="static">
       <Container>
         <Toolbar>
           <MenuItem>

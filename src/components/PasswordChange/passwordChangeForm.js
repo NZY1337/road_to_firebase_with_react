@@ -83,7 +83,6 @@ class PasswordChangeFormBase extends Component {
 
             <Button
               style={{ marginTop: ".5rem" }}
-              endIcon={<Icon>send</Icon>}
               variant="contained"
               color="primary"
               type="submit"

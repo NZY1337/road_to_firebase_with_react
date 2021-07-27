@@ -1,11 +1,14 @@
 import React from "react";
 
+// uuid generates uniq keys for firebase-storage to get a ref for the uploaded files
+import { v4 as uuidv4 } from "uuid";
+
 // quill
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import { ImageResize } from "quill-image-resize-module";
-import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import Paper from "@material-ui/core/Paper";
 
 // others...
 import Container from "@material-ui/core/Container";
@@ -16,18 +19,30 @@ import Grid from "@material-ui/core/Grid";
 // Editor Preview
 import EditorPreview from "./editorPreview";
 
+import editorModules from "./quillModules";
+
 Quill.register("modules/imageResize", ImageResize);
-// Quill.register("modules/imageHandler", imageHandler);
+
+// GSAP
+// https://codepen.io/GreenSock/pen/obdMzZ
+// https://codepen.io/GreenSock/pen/lEiAv
+// https://codepen.io/GreenSock/pen/EqCtL
+// https://greensock.com/react/
+
+// currentTarget vs target
+// https://www.youtube.com/watch?v=M23X3zzIawA
+// https://www.youtube.com/watch?v=GvyHQi69gqM
+// https://github.com/mui-org/material-ui/issues/5085
+// https://codesandbox.io/s/react-quilljsbasic-wm0uk?file=/src/App.js
+// https://www.carlrippon.com/event-target-v-current-target/
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.postTitle = this.props.match.params.title ? this.props.match.params.title.split("-").join(" ") : null;
-
-    console.log(this.postTitle);
-    this.postType = this.props.match.params.type ? this.props.match.params.type : null;
-
+    this.postId = this.props.match.params.id;
+    this.postType = this.props.match.params.type;
+    this.uniqueIdStorage = uuidv4().slice(0, 6);
     this.editorRef = React.createRef();
 
     this.state = {
@@ -38,6 +53,7 @@ class Editor extends React.Component {
         description: "",
         cover: "",
         title: "",
+        uniqueIdStorage: "",
       },
       user: null,
     };
@@ -45,14 +61,24 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handeUploadCoverImage = async (file) => {
+    const { uniqueIdStorage, category } = this.state.content;
+    const { user } = this.state;
+    const { storage } = this.props.firebase;
+
+    // this.uniqueIdStorage - first time submitting the post
+    // uniqueIdStorage - when the post is edited - from state
+
+    const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
+    const imgRef = this.postId
+      ? storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
+      : storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images`).child("cover/cover.jpg");
+
     try {
-      const imgRef = this.props.firebase.storage.ref(
-        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/cover/${file.name}`
-      );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       const content = { ...this.state.content };
       content.cover = downloadUrl;
+      content.uniqueIdStorage = this.uniqueIdStorage;
 
       this.setState({ content });
     } catch (err) {
@@ -62,10 +88,17 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handleUploadContentEditorImage = async (file) => {
+    const { uniqueIdStorage, category } = this.state.content;
+    const { user } = this.state;
+    const { storage } = this.props.firebase;
+
+    const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
+    console.log(decideWhereToPlaceFile);
+    const imgRef = this.postId
+      ? storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/content/${file.name}`)
+      : storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/content`).child(`${file.name}`);
+
     try {
-      const imgRef = this.props.firebase.storage.ref(
-        `/${this.state.content.category}/${this.state.user}/${this.state.content.title}/images/content/${file.name}`
-      );
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       return downloadUrl;
@@ -74,31 +107,32 @@ class Editor extends React.Component {
     }
   };
 
-  //! to DB
-  handleAddPost = () => {
+  handleAddPost = async () => {
+    //! unmounting firebase events when component mountsoff
     // https://stackoverflow.com/questions/44784275/how-to-add-update-and-list-data-into-firebase-using-js
     // https://www.ryanjyost.com/react-routing/
 
-    if (this.postTitle && this.postType) {
-      //! this.postTitle not this.state.content.title
-      const postRef = this.props.firebase.db.ref(`${this.state.content.category}/${this.state.user}/${this.postTitle}`);
-      // const postRef = this.props.firebase.db.ref(`${this.postType}/${this.state.user}/${this.postTitle}`);
+    // const eventref = this.props.firebase.db.ref(`${this.state.content.category}`).child(`${this.state.user}`);
+    // const snapshot = await eventref.once("value");
+    // const value = snapshot.val() ? Object.keys(snapshot.val()).length + 1 : 1;
+    //   .child(`${value}`);
 
-      postRef.update(this.state.content);
+    const postRef = this.props.firebase.db.ref(`${this.state.content.category}`).child(`${this.state.user}`);
+
+    if (this.postId) {
+      postRef.child(`${this.postId}`).update(this.state.content);
     } else {
-      //! this.postTitle not this.state.content.title
-      const postRef = this.props.firebase.db.ref(`${this.state.content.category}/${this.state.user}`);
-
       postRef.push(this.state.content);
     }
   };
 
   fetchPost = (user) => {
-    const postRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.postTitle}`);
+    const postRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.postId}`);
 
     postRef.on("value", (snapshot) => {
-      if (snapshot.val() !== null && this.postTitle && this.postType) {
-        let content = snapshot.val();
+      if (snapshot.val()) {
+        let content = { ...snapshot.val() };
+        content.editorContent = content.editorContent ? content.editorContent : "";
 
         this.setState({
           content: content,
@@ -172,71 +206,41 @@ class Editor extends React.Component {
 
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
+        if (this.postId) this.fetchPost(user.uid);
+
         this.setState({
           user: user.uid,
         });
-        this.fetchPost(user.uid);
       }
     });
   }
 
   render() {
     const { content } = this.state;
-
-    //!{TODO} - import QUill_js const from another file and bind this to the actual context
-    const Quill_JS = {
-      modules: {
-        toolbar: {
-          container: [
-            [{ header: 1 }, { header: 2 }, { font: [] }],
-            [{ header: [] }],
-            [{ size: [] }],
-            [{ color: [] }, { background: [] }],
-            ["bold", "italic", "underline", "strike", "blockquote", "code-block"],
-            [{ align: [] }, { indent: "-1" }, { indent: "+1" }],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["link", "image", "video"],
-          ],
-          handlers: {
-            image: this.quillImageCallback,
-          },
-        },
-
-        imageResize: { displaySize: true },
-        clipboard: {
-          matchVisual: false,
-        },
-      },
-    };
+    const Quill_JS = editorModules.bind(this)();
 
     return (
       <Container maxWidth="lg">
-        <h1>Quill_JS Editor</h1>
+        <h1>Editor</h1>
 
         <EditorPreview onHandlePostPreview={this.onHandlePostPreview} value={this.state.content} />
 
         {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
 
         <Grid container direction="row" justify="space-between" alignItems="start">
-          <Grid item md={5}>
-            <h3>Content</h3>
-            <ReactQuill
-              onChange={this.handleChange}
-              value={content.editorContent}
-              ref={this.editorRef}
-              modules={Quill_JS.modules}
-
-              //   theme="snow" //bubble
-            />
-          </Grid>
-
-          <Grid item md={6}>
-            <h3>Content Preview</h3>
-            <ReactQuill
-              //   style={{ border: "2px solid black", minHeight: "300px" }}
-              value={content.editorContent}
-              readOnly
-            />{" "}
+          <Grid xs={12} item>
+            <Paper elevation={3}>
+              <ReactQuill
+                onChange={this.handleChange}
+                value={content.editorContent}
+                ref={this.editorRef}
+                modules={Quill_JS.modules}
+                style={{ padding: ".5rem", height: "100vh" }}
+                theme="bubble" //bubble
+                readOnly={false}
+                placeholder="Compose your story..."
+              />
+            </Paper>
           </Grid>
         </Grid>
 
@@ -249,9 +253,3 @@ class Editor extends React.Component {
 }
 
 export default withFirebase(Editor);
-
-// currentTarget vs target
-
-// https://www.youtube.com/watch?v=GvyHQi69gqM
-// https://github.com/mui-org/material-ui/issues/5085
-// https://www.carlrippon.com/event-target-v-current-target/

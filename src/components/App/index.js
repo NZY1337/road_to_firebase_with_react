@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Redirect, BrowserRouter as Router, Route } from "react-router-dom";
 
 import LandingPage from "../Landing";
@@ -42,20 +42,11 @@ const App = () => {
 
         <Route path="/blog" exact component={Blogs} />
         {/* news */}
-        <Route path="/news/:id" component={SingleBlog} />
+        <Route path="/news/:id/" component={SingleBlog} />
         <Route path="/news" exact component={Blogs} />
       </Layout>
     </Router>
   );
 };
-
-{
-  /* <Route
-  path="/test/:id1/:id2"
-  component={({ match }) => {
-    return <Redirect to={{ path: "/component-route", state: { ...match.params } }} />;
-  }}
-/>; */
-}
 
 export default withAuthentication(App);

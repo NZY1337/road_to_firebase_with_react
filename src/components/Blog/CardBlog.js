@@ -19,20 +19,30 @@ import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
 import logo from "../../assets/images/beadesignful-logo.png";
 
-// routing
-import { useParams } from "react-router-dom";
-
 /*
+    ***********************************************
     !handle multiple menu item for MATERIAL UI;
     - if you want to open a specific menu, (or open something based on the current id (Link)) anchorEl should know on which id the event is point to
     - so we have a callback function which passes the actual id to the handleClick
     - the id is saved, and passed back to the component
     - id = uniquePostId 
     - this principle is applied  for the Link inside the MenuItem when targeting specific post
+    ************************************************
 */
 
-const CardBlog = ({ pathname, id, uniquePostId, anchorEl, open, posts, handleClose, handleClick }) => {
+const CardBlog = ({
+  pathname,
+  id,
+  uniquePostId,
+  anchorEl,
+  open,
+  posts,
+  handleClose,
+  handleClick,
+  handleDeletePost,
+}) => {
   const post = posts[id];
+  const postTitle = post.title.split(" ").join("-").toLowerCase();
 
   return (
     <Grid item md={4}>
@@ -45,6 +55,7 @@ const CardBlog = ({ pathname, id, uniquePostId, anchorEl, open, posts, handleClo
               endIcon={<MoreVertIcon />}
               onClick={(e) => {
                 handleClick(e, id);
+                // handleDeletePost(post.category, id);
               }}
             />
           }
@@ -55,17 +66,17 @@ const CardBlog = ({ pathname, id, uniquePostId, anchorEl, open, posts, handleClo
         <Menu id={id} anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} TransitionComponent={Fade}>
           <MenuItem onClick={handleClose}>
             <Link
-              //   to={{
-              //     pathname: `/edit/${post.category}/${uniquePostId}/`,
-              //   }}
+              to={{
+                pathname: `/edit/${post.category}/${uniquePostId}/`,
+              }}
               color="secondary"
             >
               Edit Post
             </Link>
           </MenuItem>
 
-          <MenuItem onClick={handleClose}>
-            <Link color="secondary" onClick={() => console.log(uniquePostId)}>
+          <MenuItem>
+            <Link to="#" color="secondary" onClick={() => handleDeletePost(post.category, uniquePostId)}>
               Delete Post
             </Link>
           </MenuItem>
@@ -87,9 +98,7 @@ const CardBlog = ({ pathname, id, uniquePostId, anchorEl, open, posts, handleClo
           <Button
             component={Link}
             endIcon={<AddIcon />}
-            to={{
-              pathname: `${pathname}/${id}`,
-            }}
+            to={`${pathname}/${id}/${postTitle}`}
             size="small"
             variant="outlined"
             color="primary"

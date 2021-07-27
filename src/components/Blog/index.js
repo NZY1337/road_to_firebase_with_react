@@ -58,10 +58,39 @@ class Blogs extends Component {
       if (user) {
         this.fetchPosts(user.uid);
 
-        this.setState({ user: user.email });
+        this.setState({ user: user.uid });
       }
     });
+
+    // setPostsNumber
   }
+
+  handleDeletePost = (category, postId) => {
+    const posts = { ...this.state.posts };
+    const { user } = this.state;
+    const ref = `${category}/${user}`;
+    console.log(ref);
+    const postRef = this.props.firebase.db.ref(ref);
+
+    const _this = this;
+
+    const convertedPostsFromObjectToArray = Object.entries(posts);
+    const filteredPosts = convertedPostsFromObjectToArray.filter(([key, value]) => key !== postId);
+    const convertedPostsFromArrayToObject = Object.fromEntries(filteredPosts);
+    this.handleClose();
+
+    // const confirm = window.confirm("are you shure you want to delete this?");
+
+    // if (confirm) {}
+
+    postRef.on("child_removed", (snapshot) => {
+      if (snapshot.val()) {
+        this.setState({ posts: convertedPostsFromArrayToObject });
+      }
+    });
+
+    postRef.child(`${postId}`).remove();
+  };
 
   render() {
     const { anchorEl, uniquePostId, posts } = this.state;
@@ -80,6 +109,7 @@ class Blogs extends Component {
             posts={posts}
             handleClick={this.handleClick}
             handleClose={this.handleClose}
+            handleDeletePost={this.handleDeletePost}
           />
         );
       });

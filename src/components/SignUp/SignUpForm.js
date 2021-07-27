@@ -9,7 +9,7 @@ import { withFirebase } from "../Firebase";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
+import SendIcon from "@material-ui/icons/Send";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
@@ -198,7 +198,7 @@ class SignUpFormBase extends Component {
 
             <Button
               style={{ marginTop: ".5rem" }}
-              endIcon={<Icon>send</Icon>}
+              endIcon={<SendIcon />}
               variant="contained"
               color="primary"
               type="submit"
