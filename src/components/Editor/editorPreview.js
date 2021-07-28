@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import FormatQuoteIcon from "@material-ui/icons/FormatQuote";
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
 const currencies = [
   {
@@ -22,8 +22,8 @@ const currencies = [
   },
 ];
 
-const EditorPreview = ({ onHandlePostPreview, value }) => {
-  const { title, description, category } = value;
+const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, postId }) => {
+  const { title, description, category, cover } = post;
   const disabled = title === "" || description === "";
 
   return (
@@ -74,11 +74,30 @@ const EditorPreview = ({ onHandlePostPreview, value }) => {
           ))}
         </TextField>
 
-        <Typography gutterBottom={true} variant="h6" color="secondary">
-          Upload your post cover.
-        </Typography>
+        {!imgUploaded && (
+          <Typography gutterBottom={true} variant="h6" color="secondary">
+            Upload your post cover.
+          </Typography>
+        )}
 
-        <Button style={{ marginBottom: "1rem" }} disabled={disabled} variant="contained" component="label">
+        {imgUploaded && (
+          <Grid item container alignItems="center" sty>
+            <Typography gutterBottom={true} variant="h6" color="secondary" style={{ fontSize: "1rem" }}>
+              Img Uploaded Successfully
+            </Typography>
+
+            <CheckCircleOutlineIcon color="secondary" />
+          </Grid>
+        )}
+
+        {postId && <img style={{ width: "100%", height: "300px" }} src={cover} />}
+
+        <Button
+          style={{ marginBottom: "1rem", marginTop: cover ? "1rem" : "0" }}
+          disabled={disabled}
+          variant="contained"
+          component="label"
+        >
           Blog Cover
           <input type="file" name="cover" onChange={(e) => onHandlePostPreview(e)} hidden />
         </Button>

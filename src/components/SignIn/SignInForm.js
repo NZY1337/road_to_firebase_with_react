@@ -35,7 +35,7 @@ class SignInFormBase extends Component {
       .then((authUser) => {
         console.log(authUser);
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.LANDING);
       })
       .catch((error) => {
         this.setState({ error });
@@ -86,7 +86,6 @@ class SignInFormBase extends Component {
 
               <Button
                 style={{ marginTop: ".5rem" }}
-                endIcon={<Icon>send</Icon>}
                 variant="contained"
                 color="primary"
                 type="submit"

@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
 
 import * as ROUTES from "../../constants/routes";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import SignOutBtn from "../SignOut";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
@@ -28,130 +26,93 @@ const profilePic = {
 };
 
 const Navigation = ({ firebase }) => {
+  const [navs, setNavs] = useState([
+    {
+      location: ROUTES.LANDING,
+      name: "Landing",
+      auth: false,
+    },
+    { location: ROUTES.SIGN_UP, name: "Sign Up", auth: false },
+    { location: ROUTES.SIGN_IN, name: "Sign In", auth: false },
+    { location: ROUTES.ACCOUNT, name: "Account", auth: true },
+    { location: ROUTES.ADMIN, name: "Admin", auth: true },
+    { location: ROUTES.PASSWORD_FORGET, name: "Password Forget", auth: true },
+    { location: ROUTES.EDITOR, name: "Editor", auth: true },
+    { location: ROUTES.BLOGS, name: "Blog", auth: false },
+    { location: ROUTES.NEWS, name: "News", auth: false },
+  ]);
+
+  const authMenu = () => {
+    const authNavs = navs.filter((nav) => nav.auth === true);
+
+    return authNavs.map((nav) => {
+      return (
+        <MenuItem>
+          <Link style={style} to={nav.location} color="inherit">
+            {nav.name}
+          </Link>
+        </MenuItem>
+      );
+    });
+  };
+
+  const nonAuthMenu = () => {
+    const authNavs = navs.filter((nav) => nav.auth === false);
+
+    return authNavs.map((nav) => {
+      return (
+        <MenuItem>
+          <Link style={style} to={nav.location} color="inherit">
+            {nav.name}
+          </Link>
+        </MenuItem>
+      );
+    });
+  };
+
   return (
     <AuthUserContext.Consumer>
-      {(authUser) => (authUser ? <NavigationAuth firebase={firebase} authUser={authUser} /> : <NavigationNonAuth />)}
+      {(authuser) => (
+        <AppBar disableGutters={true} elevation={0}>
+          <Container>
+            <Grid container>
+              <Grid item container xs={11}>
+                {authuser && authMenu()}
+                {nonAuthMenu()}
+
+                {authuser && (
+                  <MenuItem>
+                    <SignOutBtn />
+                  </MenuItem>
+                )}
+              </Grid>
+              <SetProfile firebase={firebase} authUser={authuser} />
+            </Grid>
+          </Container>
+        </AppBar>
+      )}
     </AuthUserContext.Consumer>
   );
 };
 
-const NavigationAuth = ({ firebase, authUser }) => {
+const SetProfile = ({ firebase, authUser }) => {
   const [profileImg, setProfileImg] = useState(null);
 
-  const { pathname } = useLocation();
-  const navStyle = pathname === "/" ? { backgroundColor: "rgba(0,9,9,0.5)" } : { color: "primary" };
-
   useEffect(() => {
-    const userRef = firebase.db.ref("users/" + authUser.uid + "/url");
-    userRef.on("value", (snapshot) => {
-      const data = snapshot.val();
-      setProfileImg(data);
-    });
+    if (authUser) {
+      const userRef = firebase.db.ref("users/" + authUser.uid + "/url");
+      userRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+
+        setProfileImg(data);
+      });
+    }
   }, [authUser]);
 
   return (
-    <AppBar disableGutters={true} style={navStyle} elevation={0}>
-      <Container>
-        <Grid container>
-          <Grid item container xs={11}>
-            <MenuItem>
-              <Link style={style} to={ROUTES.LANDING} color="inherit">
-                Landing
-              </Link>
-            </MenuItem>
-
-            <MenuItem>
-              <Link style={style} to={ROUTES.NEWS} color="inherit">
-                News
-              </Link>
-            </MenuItem>
-
-            <MenuItem>
-              <Link style={style} to={ROUTES.BLOGS} color="inherit">
-                Blog
-              </Link>
-            </MenuItem>
-
-            <MenuItem>
-              <Link style={style} to={ROUTES.EDITOR} color="inherit">
-                Editor
-              </Link>
-            </MenuItem>
-
-            {/* <MenuItem>
-              <Link style={style} to={ROUTES.TODO} color="inherit">
-                Todos
-              </Link>
-            </MenuItem> */}
-
-            {/* <MenuItem>
-              <Link style={style} to={ROUTES.HOME} color="inherit">
-                Home
-              </Link>
-            </MenuItem> */}
-
-            <MenuItem>
-              <Link style={style} to={ROUTES.ACCOUNT} color="inherit">
-                Account
-              </Link>
-            </MenuItem>
-
-            {/* <MenuItem>
-              <Link style={style} to={ROUTES.ADMIN} color="inherit">
-                Users
-              </Link>
-            </MenuItem> */}
-
-            <MenuItem>
-              <SignOutBtn />
-            </MenuItem>
-          </Grid>
-
-          <Grid item xs={1} container alignItems="center" justify="flex-end">
-            <MenuItem direction="row">
-              <img src={profileImg} style={profilePic} />
-            </MenuItem>
-          </Grid>
-        </Grid>
-      </Container>
-    </AppBar>
-  );
-};
-
-const NavigationNonAuth = () => {
-  const { pathname } = useLocation();
-  const navStyle = pathname === "/" ? { backgroundColor: "rgba(0,9,9,0.5)" } : { color: "primary" };
-
-  return (
-    <AppBar disableGutters={true} style={navStyle} position="static">
-      <Container>
-        <Toolbar>
-          <MenuItem>
-            <Link style={style} to={ROUTES.LANDING} color="inherit">
-              Landing
-            </Link>
-          </MenuItem>
-
-          {/* <MenuItem>
-          <Link style={style} to={ROUTES.HOME} color="inherit">
-            Home
-          </Link>
-        </MenuItem> */}
-
-          <MenuItem>
-            <Link style={style} to={ROUTES.SIGN_IN} color="inherit">
-              Sign In
-            </Link>
-          </MenuItem>
-
-          <MenuItem>
-            <Link style={style} to={ROUTES.SIGN_UP} color="inherit">
-              Register
-            </Link>
-          </MenuItem>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <Grid item xs={1} container alignItems="center" justify="flex-end">
+      <MenuItem direction="row">{authUser && <img src={profileImg} style={profilePic} />}</MenuItem>
+    </Grid>
   );
 };
 

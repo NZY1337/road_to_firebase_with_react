@@ -41,15 +41,16 @@ class Editor extends React.Component {
     super(props);
 
     this.postId = this.props.match.params.id;
-    console.log(this.postId);
+
     this.postType = this.props.match.params.type;
     this.uniqueIdStorage = uuidv4().slice(0, 6);
     this.editorRef = React.createRef();
 
     this.state = {
+      imgUploaded: false,
       quillEditor: null,
       content: {
-        editorContent: null,
+        editorContent: "",
         category: "blog",
         description: "",
         cover: "",
@@ -81,7 +82,7 @@ class Editor extends React.Component {
       const content = { ...this.state.content };
       content.cover = downloadUrl;
       content.uniqueIdStorage = content.uniqueIdStorage ? content.uniqueIdStorage : this.uniqueIdStorage;
-
+      this.setState({ imgUploaded: true });
       this.setState({ content });
     } catch (err) {
       console.log(err);
@@ -220,14 +221,21 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { content } = this.state;
+    const { content, imgUploaded } = this.state;
+    const { title, description, cover, editorContent } = this.state.content;
     const Quill_JS = editorModules.bind(this)();
+    const disabled = title === "" || description === "" || cover === "" || editorContent === "";
 
     return (
       <Container maxWidth="lg">
         <h1>Editor</h1>
 
-        <EditorPreview onHandlePostPreview={this.onHandlePostPreview} value={this.state.content} />
+        <EditorPreview
+          onHandlePostPreview={this.onHandlePostPreview}
+          imgUploaded={imgUploaded}
+          post={this.state.content}
+          postId={this.postId}
+        />
 
         {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
 
@@ -248,7 +256,13 @@ class Editor extends React.Component {
           </Grid>
         </Grid>
 
-        <Button variant="contained" color="secondary" style={{ marginTop: "12.5px" }} onClick={this.handleAddPost}>
+        <Button
+          disabled={disabled}
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: "12.5px" }}
+          onClick={this.handleAddPost}
+        >
           Publish Post
         </Button>
       </Container>
