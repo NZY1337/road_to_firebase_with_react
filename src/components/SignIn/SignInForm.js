@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import SnackBar from "../../utils/SnackBar";
 
 // rest...
 import { PasswordForgetLink } from "../PasswordForgot/passwordForgotForm";
@@ -43,7 +44,11 @@ const useStyles = (theme) => ({
 const INITIAL_STATE = {
   email: "",
   password: "",
-  error: null,
+  alert: {
+    openSnack: false,
+    severity: "",
+    error: null,
+  },
 };
 
 class SignInFormBase extends Component {
@@ -61,12 +66,15 @@ class SignInFormBase extends Component {
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
-        console.log(authUser);
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.LANDING);
       })
       .catch((error) => {
-        this.setState({ error });
+        const alert = { ...this.state.alert };
+        alert.severity = "error";
+        alert.openSnack = true;
+        alert.error = error.message;
+        this.setState({ alert });
       });
   };
 
@@ -76,15 +84,25 @@ class SignInFormBase extends Component {
     });
   };
 
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    const alert = { ...this.state.alert };
+    alert.openSnack = false;
+    this.setState({ alert });
+  };
+
   render() {
-    const { email, password, error } = this.state;
+    const { email, password, alert } = this.state;
     const isInvalid = password === "" || email === "";
     const { classes } = this.props;
 
     return (
       <>
         <Grid container alignItems="center" justify="center" spacing={3} style={{ height: "100%", width: "100%" }}>
-          <Grid item xs={3}>
+          <Grid item xs={12} md={3}>
             <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
               Sign In
             </Typography>
@@ -136,9 +154,14 @@ class SignInFormBase extends Component {
 
                 <PasswordForgetLink color={classes.forgotPw} />
               </Grid>
-
-              {error && <p>{error.message}</p>}
             </form>
+
+            <SnackBar
+              msg={this.state.alert.error}
+              handleClose={this.handleClose}
+              toggle={this.state.alert.openSnack}
+              severity={this.state.alert.severity}
+            />
           </Grid>
         </Grid>
       </>
