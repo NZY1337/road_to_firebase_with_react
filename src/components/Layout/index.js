@@ -4,13 +4,12 @@ import Navigation from "../Navigation";
 
 import Footer from "../Footer/footer";
 
-
 const Layout = ({ children }) => {
   return (
     <>
       <Navigation />
 
-      {children}
+      <div>{children}</div>
 
       <Footer />
     </>

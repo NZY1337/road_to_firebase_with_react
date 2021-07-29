@@ -32,6 +32,7 @@ import logo from "../../assets/images/beadesignful-logo.png";
 
 const CardBlog = ({
   pathname,
+  user,
   id,
   uniquePostId,
   anchorEl,
@@ -43,6 +44,7 @@ const CardBlog = ({
 }) => {
   const post = posts[id];
   const postTitle = post.title.split(" ").join("-").toLowerCase();
+  const visibility = user ? "block" : "none";
 
   return (
     <Grid item md={4}>
@@ -51,11 +53,11 @@ const CardBlog = ({
           avatar={<Avatar src={logo} aria-label="recipe" />}
           action={
             <Button
+              style={{ display: visibility }}
               color="secondary"
               endIcon={<MoreVertIcon />}
               onClick={(e) => {
                 handleClick(e, id);
-                // handleDeletePost(post.category, id);
               }}
             />
           }
@@ -63,24 +65,26 @@ const CardBlog = ({
           subheader="September 14, 2016"
         />
 
-        <Menu id={id} anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} TransitionComponent={Fade}>
-          <MenuItem onClick={handleClose}>
-            <Link
-              to={{
-                pathname: `/edit/${post.category}/${uniquePostId}/`,
-              }}
-              color="secondary"
-            >
-              Edit Post
-            </Link>
-          </MenuItem>
+        {user && (
+          <Menu id={id} anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} TransitionComponent={Fade}>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to={{
+                  pathname: `/edit/${post.category}/${uniquePostId}/`,
+                }}
+                color="secondary"
+              >
+                Edit Post
+              </Link>
+            </MenuItem>
 
-          <MenuItem>
-            <Link to="#" color="secondary" onClick={() => handleDeletePost(post.category, uniquePostId)}>
-              Delete Post
-            </Link>
-          </MenuItem>
-        </Menu>
+            <MenuItem>
+              <Link to="#" color="secondary" onClick={() => handleDeletePost(post.category, uniquePostId)}>
+                Delete Post
+              </Link>
+            </MenuItem>
+          </Menu>
+        )}
 
         <CardActionArea>
           <CardMedia style={{ height: "150px", objectFit: "cover" }} image={post.cover} title="Contemplative Reptile" />

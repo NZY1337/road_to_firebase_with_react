@@ -37,7 +37,7 @@ class Blogs extends Component {
   };
 
   fetchPosts = (user) => {
-    const postsRef = this.props.firebase.db.ref(`${this.pathname}/${user}/`);
+    const postsRef = this.props.firebase.db.ref(`${this.pathname}/`);
 
     postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
@@ -54,21 +54,19 @@ class Blogs extends Component {
   };
 
   componentDidMount() {
+    this.fetchPosts();
+
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.fetchPosts(user.uid);
-
         this.setState({ user: user.uid });
       }
     });
-
-    // setPostsNumber
   }
 
   handleDeletePost = (category, postId) => {
     const posts = { ...this.state.posts };
     const { user } = this.state;
-    const ref = `${category}/${user}`;
+    const ref = `${category}`;
     console.log(ref);
     const postRef = this.props.firebase.db.ref(ref);
 
@@ -79,27 +77,28 @@ class Blogs extends Component {
     const convertedPostsFromArrayToObject = Object.fromEntries(filteredPosts);
     this.handleClose();
 
-    // const confirm = window.confirm("are you shure you want to delete this?");
+    const confirm = window.confirm("are you shure you want to delete this?");
 
-    // if (confirm) {}
+    if (confirm) {
+      postRef.on("child_removed", (snapshot) => {
+        if (snapshot.val()) {
+          this.setState({ posts: convertedPostsFromArrayToObject });
+        }
+      });
 
-    postRef.on("child_removed", (snapshot) => {
-      if (snapshot.val()) {
-        this.setState({ posts: convertedPostsFromArrayToObject });
-      }
-    });
-
-    postRef.child(`${postId}`).remove();
+      postRef.child(`${postId}`).remove();
+    }
   };
 
   render() {
-    const { anchorEl, uniquePostId, posts } = this.state;
+    const { anchorEl, uniquePostId, posts, user } = this.state;
     const open = Boolean(anchorEl);
 
     const renderPosts = () => {
       const collection = Object.keys(posts).map((id) => {
         return (
           <CardBlog
+            user={user}
             pathname={this.pathname}
             key={id}
             id={id}

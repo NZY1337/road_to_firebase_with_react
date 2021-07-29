@@ -32,7 +32,7 @@ const Navigation = ({ firebase }) => {
       name: "Landing",
       auth: false,
     },
-    { location: ROUTES.SIGN_UP, name: "Sign Up", auth: false },
+    { location: ROUTES.SIGN_UP, name: "Register", auth: false },
     { location: ROUTES.SIGN_IN, name: "Sign In", auth: false },
     { location: ROUTES.ACCOUNT, name: "Account", auth: true },
     { location: ROUTES.ADMIN, name: "Admin", auth: true },
@@ -73,7 +73,7 @@ const Navigation = ({ firebase }) => {
   return (
     <AuthUserContext.Consumer>
       {(authuser) => (
-        <AppBar disableGutters={true} elevation={0}>
+        <AppBar style={{ backgroundColor: "rgba(0,0,0,.5)" }} disableGutters={true} elevation={0}>
           <Container>
             <Grid container>
               <Grid item container xs={11}>

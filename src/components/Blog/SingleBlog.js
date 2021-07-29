@@ -19,7 +19,7 @@ class SingleBlog extends Component {
   }
 
   fetchPost = (user) => {
-    const postsRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.userId}`);
+    const postsRef = this.props.firebase.db.ref(`${this.postType}/${this.userId}`);
 
     postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
@@ -33,11 +33,13 @@ class SingleBlog extends Component {
   };
 
   componentDidMount() {
-    this.props.firebase.auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.fetchPost(user.uid);
-      }
-    });
+    this.fetchPost();
+
+    // this.props.firebase.auth.onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.fetchPost(user.uid);
+    //   }
+    // });
   }
 
   render() {

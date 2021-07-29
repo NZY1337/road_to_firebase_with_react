@@ -1,16 +1,44 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
-
-import Container from "@material-ui/core/Container";
 
 // HOC
 import { withFirebase } from "../Firebase";
 
+// Material UI
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
+import Typography from "@material-ui/core/Typography";
+
+// rest...
+import { PasswordForgetLink } from "../PasswordForgot/passwordForgotForm";
+
+const useStyles = (theme) => ({
+  root: {
+    width: "100%",
+    "& label.MuiFormLabel-root": {
+      color: "#fff",
+    },
+    "& .MuiFilledInput-underline:after": {
+      borderBottomColor: "aqua",
+    },
+    "& .MuiInputBase-root": {
+      color: "aqua",
+      fontSize: "14px",
+    },
+  },
+  btn: {
+    border: "1px solid gray",
+    "& .MuiButton-label": {
+      color: "gray",
+    },
+  },
+  forgotPw: {
+    color: "aqua!important",
+  },
+});
 
 const INITIAL_STATE = {
   email: "",
@@ -51,13 +79,16 @@ class SignInFormBase extends Component {
   render() {
     const { email, password, error } = this.state;
     const isInvalid = password === "" || email === "";
+    const { classes } = this.props;
 
     return (
       <>
-        <Grid container spacing={3}>
-          <Grid item xs={6}>
-            <h1>Sign In</h1>
-            <form onSubmit={this.onSubmit}>
+        <Grid container alignItems="center" justify="center" spacing={3} style={{ height: "100%", width: "100%" }}>
+          <Grid item xs={3}>
+            <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
+              Sign In
+            </Typography>
+            <form id="sign-in-form" onSubmit={this.onSubmit}>
               <div>
                 <TextField
                   id="filled-email"
@@ -67,7 +98,11 @@ class SignInFormBase extends Component {
                   type="email"
                   onChange={this.onChange}
                   defaultValue={email}
-                  variant="outlined"
+                  variant="filled"
+                  className={classes.root}
+                  InputProps={{
+                    className: classes.labelColor,
+                  }}
                 />
               </div>
 
@@ -76,23 +111,31 @@ class SignInFormBase extends Component {
                   type="password"
                   name="password"
                   margin="dense"
-                  id="filled-password-one"
-                  label="Password One"
+                  id="filled-password"
+                  label="Password"
                   onChange={this.onChange}
                   defaultValue={password}
-                  variant="outlined"
+                  variant="filled"
+                  className={classes.root}
+                  InputProps={{
+                    className: classes.labelColor,
+                  }}
                 />
               </div>
 
-              <Button
-                style={{ marginTop: ".5rem" }}
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={isInvalid}
-              >
-                Sign In
-              </Button>
+              <Grid container justify="space-between" alignItems="center" item>
+                <Button
+                  className={isInvalid && classes.btn}
+                  variant="contained"
+                  color="secondary"
+                  type="submit"
+                  disabled={isInvalid}
+                >
+                  Sign In
+                </Button>
+
+                <PasswordForgetLink color={classes.forgotPw} />
+              </Grid>
 
               {error && <p>{error.message}</p>}
             </form>
@@ -103,7 +146,7 @@ class SignInFormBase extends Component {
   }
 }
 
-const SignInForm = withRouter(withFirebase(SignInFormBase));
+const SignInForm = withRouter(withFirebase(withStyles(useStyles)(SignInFormBase)));
 
 export { SignInForm };
 // export default SignInForm;

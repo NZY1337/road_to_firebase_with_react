@@ -73,8 +73,8 @@ class Editor extends React.Component {
     const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
-      : storage.ref(`${category}/${user}/${decideWhereToPlaceFile}/images`).child("cover/cover.jpg");
+      ? storage.ref(`${category}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
+      : storage.ref(`${category}/${decideWhereToPlaceFile}/images`).child("cover/cover.jpg");
 
     try {
       const imgState = await imgRef.put(file);
@@ -99,8 +99,8 @@ class Editor extends React.Component {
     const { uniqueIdStorage, category } = this.state.content;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${user}/${uniqueIdStorage}/images/content/${file.name}`)
-      : storage.ref(`${category}/${user}/${uniqueIdStorage}/images/content`).child(`${file.name}`);
+      ? storage.ref(`${category}/${uniqueIdStorage}/images/content/${file.name}`)
+      : storage.ref(`${category}/${uniqueIdStorage}/images/content`).child(`${file.name}`);
 
     try {
       const imgState = await imgRef.put(file);
@@ -121,7 +121,7 @@ class Editor extends React.Component {
     // const value = snapshot.val() ? Object.keys(snapshot.val()).length + 1 : 1;
     //   .child(`${value}`);
 
-    const postRef = this.props.firebase.db.ref(`${this.state.content.category}`).child(`${this.state.user}`);
+    const postRef = this.props.firebase.db.ref(`${this.state.content.category}`);
 
     if (this.postId) {
       postRef.child(`${this.postId}`).update(this.state.content);
@@ -132,8 +132,8 @@ class Editor extends React.Component {
     this.props.history.push(`/${this.state.content.category}`);
   };
 
-  fetchPost = (user) => {
-    const postRef = this.props.firebase.db.ref(`${this.postType}/${user}/${this.postId}`);
+  fetchPost = () => {
+    const postRef = this.props.firebase.db.ref(`${this.postType}/${this.postId}`);
 
     postRef.on("value", (snapshot) => {
       if (snapshot.val()) {
@@ -209,13 +209,13 @@ class Editor extends React.Component {
       quillEditor: this.editorRef.current,
     });
 
+    if (this.postId) this.fetchPost();
+
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           user: user.uid,
         });
-
-        if (this.postId) this.fetchPost(user.uid);
       }
     });
   }

@@ -90,7 +90,7 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, postId }) => {
           </Grid>
         )}
 
-        {postId && <img style={{ width: "100%", height: "300px" }} src={cover} />}
+        {/* {postId && <img style={{ width: "100%", height: "300px" }} src={cover} />} */}
 
         <Button
           style={{ marginBottom: "1rem", marginTop: cover ? "1rem" : "0" }}

@@ -19,13 +19,3 @@ a,
 small {
   font-family: "Lato", sans-serif !important;
 }
-
-header .MuiContainer-root,
-.backImg .MuiContainer-root {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-.MuiContainer-root {
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-}

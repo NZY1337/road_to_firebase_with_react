@@ -45,7 +45,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer style={{ marginTop: "5rem" }}>
+    <footer>
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           {footerNav.footer.map((item, index) => {

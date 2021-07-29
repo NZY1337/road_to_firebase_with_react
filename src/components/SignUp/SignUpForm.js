@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
 
 const INITIAL_STATE = {
   username: "",
@@ -123,9 +124,12 @@ class SignUpFormBase extends Component {
       passwordOne !== passwordTwo || passwordOne === "" || email === "" || username === "" || avatar === null;
 
     return (
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <form onSubmit={this.onSubmit}>
+      <Grid container alignItems="center" justify="center" spacing={3} style={{ width: "100%", height: "100%" }}>
+        <Grid item xs={3}>
+          <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
+            Sign Up
+          </Typography>
+          <form id="sign-up-form" onSubmit={this.onSubmit}>
             <div>
               <TextField
                 type="text"
@@ -135,7 +139,7 @@ class SignUpFormBase extends Component {
                 label="Username"
                 onChange={this.onChange}
                 defaultValue={username}
-                variant="outlined"
+                variant="filled"
               />
             </div>
 
@@ -148,7 +152,7 @@ class SignUpFormBase extends Component {
                 type="email"
                 onChange={this.onChange}
                 defaultValue={email}
-                variant="outlined"
+                variant="filled"
               />
             </div>
 
@@ -161,7 +165,20 @@ class SignUpFormBase extends Component {
                 label="Password One"
                 onChange={this.onChange}
                 defaultValue={passwordOne}
-                variant="outlined"
+                variant="filled"
+              />
+            </div>
+
+            <div>
+              <TextField
+                id="filled-password-two"
+                name="passwordTwo"
+                margin="dense"
+                label="PasswordTwo"
+                type="password"
+                onChange={this.onChange}
+                defaultValue={passwordTwo}
+                variant="filled"
               />
             </div>
 
@@ -175,19 +192,6 @@ class SignUpFormBase extends Component {
             </div>
 
             <div>
-              <TextField
-                id="filled-password-two"
-                name="passwordTwo"
-                margin="dense"
-                label="PasswordTwo"
-                type="password"
-                onChange={this.onChange}
-                defaultValue={passwordTwo}
-                variant="outlined"
-              />
-            </div>
-
-            <div>
               <FormControlLabel
                 value="end"
                 control={<Checkbox checked={isAdmin} name="isAdmin" onChange={this.onChangeCheckbox} color="primary" />}
@@ -197,17 +201,17 @@ class SignUpFormBase extends Component {
             </div>
 
             <Button
-              style={{ marginTop: ".5rem" }}
+              style={{ marginTop: ".5rem", color: "#fff" }}
               endIcon={<SendIcon />}
               variant="contained"
-              color="primary"
+              color="secondary"
               type="submit"
               disabled={isInvalid}
             >
               Sign Up
             </Button>
 
-            {error && <p>{error.message}</p>}
+            <div>{error && <p>{error.message}</p>}</div>
 
             {this.state.uploadStatus && <p>{Math.round(this.state.uploadStatus)} %</p>}
           </form>

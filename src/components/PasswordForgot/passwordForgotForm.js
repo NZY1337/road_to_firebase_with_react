@@ -80,11 +80,11 @@ class PasswordForgetFormBase extends Component {
   }
 }
 
-const PasswordForgetLink = () => {
+const PasswordForgetLink = ({ color }) => {
   return (
-    <Container>
-      <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
-    </Container>
+    <Link className={color} to={ROUTES.PASSWORD_FORGET}>
+      Forgot Password?
+    </Link>
   );
 };
 
