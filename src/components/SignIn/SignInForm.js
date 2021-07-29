@@ -67,7 +67,12 @@ class SignInFormBase extends Component {
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.LANDING);
+        this.props.history.push({
+          pathname: ROUTES.LANDING,
+          severity: "success",
+          openSnack: true,
+          error: "You successfully logged in!",
+        });
       })
       .catch((error) => {
         const alert = { ...this.state.alert };
@@ -95,7 +100,12 @@ class SignInFormBase extends Component {
   };
 
   render() {
-    const { email, password, alert } = this.state;
+    const {
+      email,
+      password,
+      alert: { openSnack, severity, error },
+    } = this.state;
+
     const isInvalid = password === "" || email === "";
     const { classes } = this.props;
 
@@ -156,12 +166,7 @@ class SignInFormBase extends Component {
               </Grid>
             </form>
 
-            <SnackBar
-              msg={this.state.alert.error}
-              handleClose={this.handleClose}
-              toggle={this.state.alert.openSnack}
-              severity={this.state.alert.severity}
-            />
+            <SnackBar msg={error} handleClose={this.handleClose} open={openSnack} severity={severity} />
           </Grid>
         </Grid>
       </>
