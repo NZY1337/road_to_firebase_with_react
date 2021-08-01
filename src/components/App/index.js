@@ -19,33 +19,37 @@ import { withAuthentication } from "../Sesssion";
 
 import * as ROUTES from "../../constants/routes";
 
+import SnackBarContextProvider from "../../utils/SnackBarContext";
+
 // https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
 
 const App = () => {
   return (
-    <Router>
-      <Layout>
-        <Route exact path={ROUTES.LANDING} component={LandingPage} />
-        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-        <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-        <Route path={ROUTES.HOME} component={HomePage} />
-        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-        <Route path={ROUTES.ADMIN} component={AdminPage} />
-        <Route path="/test" component={SomeComponent} />
-        <Route path="/todos" component={Todos} />
-        <Route path="/editor" component={Editor} />
+    <SnackBarContextProvider>
+      <Router>
+        <Layout>
+          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          {/* <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} /> */}
+          <Route path={ROUTES.HOME} component={HomePage} />
+          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route path={ROUTES.ADMIN} component={AdminPage} />
+          <Route path="/test" component={SomeComponent} />
+          <Route path="/todos" component={Todos} />
+          <Route path="/editor" component={Editor} />
 
-        {/* blog */}
-        <Route path="/edit/:type/:id" component={Editor} />
-        <Route path="/blog/:id/" component={SingleBlog} />
+          {/* blog */}
+          <Route path="/edit/:type/:id" component={Editor} />
+          <Route path="/blog/:id/" component={SingleBlog} />
 
-        <Route path="/blog" exact component={Blogs} />
-        {/* news */}
-        <Route path="/news/:id/" component={SingleBlog} />
-        <Route path="/news" exact component={Blogs} />
-      </Layout>
-    </Router>
+          <Route path="/blog" exact component={Blogs} />
+          {/* news */}
+          <Route path="/news/:id/" component={SingleBlog} />
+          <Route path="/news" exact component={Blogs} />
+        </Layout>
+      </Router>
+    </SnackBarContextProvider>
   );
 };
 

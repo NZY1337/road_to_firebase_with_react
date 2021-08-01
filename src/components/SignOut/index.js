@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { withFirebase } from "../Firebase/context";
 import Button from "@material-ui/core/Button";
 
+import { SnackBarContext } from "../../utils/SnackBarContext";
+
 const SignOutBtn = ({ firebase }) => {
   const history = useHistory();
+  const { handleOpen } = useContext(SnackBarContext);
   return (
     <div>
       <Button
@@ -15,6 +18,7 @@ const SignOutBtn = ({ firebase }) => {
         onClick={() => {
           history.push("/");
           firebase.doSignOut();
+          handleOpen("success", "You successfully signed out!");
         }}
       >
         Sign Out

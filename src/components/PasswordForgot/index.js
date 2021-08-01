@@ -6,7 +6,6 @@ const PasswordForgetPage = () => {
   return (
     <Container maxWidth="lg">
       <PasswordForgetForm />
-      {/* <PasswordForgetLink /> */}
     </Container>
   );
 };

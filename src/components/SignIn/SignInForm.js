@@ -11,10 +11,13 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import SnackBar from "../../utils/SnackBar";
+
+// contexts
+import { SnackBarContext } from "../../utils/SnackBarContext";
 
 // rest...
-import { PasswordForgetLink } from "../PasswordForgot/passwordForgotForm";
+import { PasswordForgetForm } from "../PasswordForgot/passwordForgotForm";
+import Modal from "../../utils/Modal";
 
 const useStyles = (theme) => ({
   root: {
@@ -44,14 +47,11 @@ const useStyles = (theme) => ({
 const INITIAL_STATE = {
   email: "",
   password: "",
-  alert: {
-    openSnack: false,
-    severity: "",
-    error: null,
-  },
 };
 
 class SignInFormBase extends Component {
+  static contextType = SnackBarContext;
+
   constructor(props) {
     super(props);
 
@@ -60,26 +60,19 @@ class SignInFormBase extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-
+    const { handleOpen } = this.context;
     const { email, password } = this.state;
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
       .then((authUser) => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push({
-          pathname: ROUTES.LANDING,
-          severity: "success",
-          openSnack: true,
-          error: "You successfully logged in!",
-        });
+
+        this.props.history.push(ROUTES.LANDING);
+        handleOpen("success", "You successfully logged in!");
       })
       .catch((error) => {
-        const alert = { ...this.state.alert };
-        alert.severity = "error";
-        alert.openSnack = true;
-        alert.error = error.message;
-        this.setState({ alert });
+        handleOpen("error", error.message);
       });
   };
 
@@ -89,22 +82,8 @@ class SignInFormBase extends Component {
     });
   };
 
-  handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    const alert = { ...this.state.alert };
-    alert.openSnack = false;
-    this.setState({ alert });
-  };
-
   render() {
-    const {
-      email,
-      password,
-      alert: { openSnack, severity, error },
-    } = this.state;
+    const { email, password } = this.state;
 
     const isInvalid = password === "" || email === "";
     const { classes } = this.props;
@@ -162,11 +141,11 @@ class SignInFormBase extends Component {
                   Sign In
                 </Button>
 
-                <PasswordForgetLink color={classes.forgotPw} />
+                <Modal title="Forgot Password ?">
+                  <PasswordForgetForm />
+                </Modal>
               </Grid>
             </form>
-
-            <SnackBar msg={error} handleClose={this.handleClose} open={openSnack} severity={severity} />
           </Grid>
         </Grid>
       </>

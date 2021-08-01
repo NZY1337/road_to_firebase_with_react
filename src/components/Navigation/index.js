@@ -36,7 +36,7 @@ const Navigation = ({ firebase }) => {
     { location: ROUTES.SIGN_IN, name: "Sign In", auth: false },
     { location: ROUTES.ACCOUNT, name: "Account", auth: true },
     { location: ROUTES.ADMIN, name: "Admin", auth: true },
-    { location: ROUTES.PASSWORD_FORGET, name: "Password Forget", auth: true },
+    // { location: ROUTES.PASSWORD_FORGET, name: "Password Forget", auth: true },
     { location: ROUTES.EDITOR, name: "Editor", auth: true },
     { location: ROUTES.BLOGS, name: "Blog", auth: false },
     { location: ROUTES.NEWS, name: "News", auth: false },
