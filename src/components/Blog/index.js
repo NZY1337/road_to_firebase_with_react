@@ -6,6 +6,7 @@ import { withFirebase } from "../Firebase";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import CardBlog from "./CardBlog";
+import HeaderContainer from "./HeaderContainer";
 
 class Blogs extends Component {
   constructor(props) {
@@ -67,10 +68,8 @@ class Blogs extends Component {
     const posts = { ...this.state.posts };
     const { user } = this.state;
     const ref = `${category}`;
-    console.log(ref);
-    const postRef = this.props.firebase.db.ref(ref);
 
-    const _this = this;
+    const postRef = this.props.firebase.db.ref(ref);
 
     const convertedPostsFromObjectToArray = Object.entries(posts);
     const filteredPosts = convertedPostsFromObjectToArray.filter(([key, value]) => key !== postId);
@@ -117,11 +116,14 @@ class Blogs extends Component {
     };
 
     return (
-      <Container maxWidth="lg">
-        <Grid spacing={2} container>
-          {renderPosts()}
-        </Grid>
-      </Container>
+      <>
+        <HeaderContainer />
+        <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
+          <Grid spacing={2} container>
+            {renderPosts()}
+          </Grid>
+        </Container>
+      </>
     );
   }
 }
