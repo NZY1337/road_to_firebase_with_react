@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-
     backgroundBlendMode: "multiply",
   },
 }));

@@ -1,5 +1,5 @@
 import React from "react";
-import { SignUpForm, SignUpLink } from "./SignUpForm";
+import { SignUpForm } from "./SignUpForm";
 import Container from "@material-ui/core/Container";
 import "./signup.scss";
 

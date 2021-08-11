@@ -174,7 +174,7 @@ class SignUpFormBase extends Component {
                 id="filled-password-two"
                 name="passwordTwo"
                 margin="dense"
-                label="PasswordTwo"
+                label="Password Two"
                 type="password"
                 onChange={this.onChange}
                 defaultValue={passwordTwo}

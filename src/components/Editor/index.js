@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { withFirebase } from "../Firebase";
 import Grid from "@material-ui/core/Grid";
+import HeaderContainer from "../Blog/HeaderContainer";
 
 // Editor Preview
 import EditorPreview from "./editorPreview";
@@ -36,6 +37,9 @@ Quill.register("modules/imageResize", ImageResize);
 // https://codesandbox.io/s/react-quilljsbasic-wm0uk?file=/src/App.js
 // https://www.carlrippon.com/event-target-v-current-target/
 
+const url =
+  "https://images.pexels.com/photos/1109541/pexels-photo-1109541.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);
@@ -56,6 +60,7 @@ class Editor extends React.Component {
         cover: "",
         title: "",
         uniqueIdStorage: "",
+        createdAt: new Date().toISOString().split("T")[0],
       },
       user: null,
     };
@@ -64,7 +69,6 @@ class Editor extends React.Component {
   //! to STORAGE
   handeUploadCoverImage = async (file) => {
     const { uniqueIdStorage, category } = this.state.content;
-    const { user } = this.state;
     const { storage } = this.props.firebase;
 
     // this.uniqueIdStorage - first time submitting the post
@@ -94,7 +98,7 @@ class Editor extends React.Component {
     /*  when uploading content images for editor we asume that we already have generated our Unique ID;
         because first we upload cover(immediately generates the UNIQUE_ID) then content
     */
-    const { user } = this.state;
+
     const { storage } = this.props.firebase;
     const { uniqueIdStorage, category } = this.state.content;
 
@@ -113,13 +117,6 @@ class Editor extends React.Component {
 
   handleAddPost = async () => {
     //! unmounting firebase events when component mountsoff
-    // https://stackoverflow.com/questions/44784275/how-to-add-update-and-list-data-into-firebase-using-js
-    // https://www.ryanjyost.com/react-routing/
-
-    // const eventref = this.props.firebase.db.ref(`${this.state.content.category}`).child(`${this.state.user}`);
-    // const snapshot = await eventref.once("value");
-    // const value = snapshot.val() ? Object.keys(snapshot.val()).length + 1 : 1;
-    //   .child(`${value}`);
 
     const postRef = this.props.firebase.db.ref(`${this.state.content.category}`);
 
@@ -185,6 +182,9 @@ class Editor extends React.Component {
             "image",
             "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"
           ),
+        });
+
+        this.setState({
           editor: this.state.quillEditor.editor.setSelection(range.index + 1),
         });
 
@@ -192,6 +192,9 @@ class Editor extends React.Component {
 
         this.setState({
           editor: this.state.quillEditor.editor.deleteText(range.index, 1),
+        });
+
+        this.setState({
           editor: this.state.quillEditor.editor.insertEmbed(range.index, "image", imgUrl),
         });
       }
@@ -220,6 +223,11 @@ class Editor extends React.Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevState.content.category);
+    console.log(this.state.content.category);
+  }
+
   render() {
     const { content, imgUploaded } = this.state;
     const { title, description, cover, editorContent } = this.state.content;
@@ -227,45 +235,48 @@ class Editor extends React.Component {
     const disabled = title === "" || description === "" || cover === "" || editorContent === "";
 
     return (
-      <Container maxWidth="lg">
-        <h1>Editor</h1>
+      <>
+        <HeaderContainer cover={url} title={title ? title : "Create your story"} />
+        <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
+          <h1>Editor</h1>
 
-        <EditorPreview
-          onHandlePostPreview={this.onHandlePostPreview}
-          imgUploaded={imgUploaded}
-          post={this.state.content}
-          postId={this.postId}
-        />
+          <EditorPreview
+            onHandlePostPreview={this.onHandlePostPreview}
+            imgUploaded={imgUploaded}
+            post={this.state.content}
+            postId={this.postId}
+          />
 
-        {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
+          {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
 
-        <Grid container direction="row" justify="space-between" alignItems="start">
-          <Grid xs={12} item>
-            <Paper elevation={3}>
-              <ReactQuill
-                onChange={this.handleChange}
-                value={content.editorContent}
-                ref={this.editorRef}
-                modules={Quill_JS.modules}
-                style={{ padding: ".5rem", height: "100vh" }}
-                theme="bubble" //bubble
-                readOnly={false}
-                placeholder="Compose your story..."
-              />
-            </Paper>
+          <Grid container direction="row" justify="space-between" alignItems="flex-start">
+            <Grid xs={12} item>
+              <Paper elevation={3}>
+                <ReactQuill
+                  onChange={this.handleChange}
+                  value={content.editorContent}
+                  ref={this.editorRef}
+                  modules={Quill_JS.modules}
+                  style={{ padding: ".5rem", height: "100vh" }}
+                  theme="bubble" //bubble
+                  readOnly={false}
+                  placeholder="Compose your story..."
+                />
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
 
-        <Button
-          disabled={disabled}
-          variant="contained"
-          color="secondary"
-          style={{ marginTop: "12.5px" }}
-          onClick={this.handleAddPost}
-        >
-          Publish Post
-        </Button>
-      </Container>
+          <Button
+            disabled={disabled}
+            variant="contained"
+            color="secondary"
+            style={{ marginTop: "12.5px" }}
+            onClick={this.handleAddPost}
+          >
+            Publish Post
+          </Button>
+        </Container>
+      </>
     );
   }
 }

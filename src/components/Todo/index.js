@@ -128,7 +128,7 @@ class Todos extends React.Component {
       <Container maxWidth="lg">
         <h1>Todo List</h1>
 
-        <Grid container direction="row" alignItems="start" justify="space-between">
+        <Grid container direction="row" alignItems="flex-start" justify="space-between">
           <Grid item md={4}>
             <TextField
               ref={this.inputRef}

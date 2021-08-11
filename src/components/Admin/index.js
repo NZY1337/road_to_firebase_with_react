@@ -57,15 +57,17 @@ class AdminPage extends React.Component {
   render() {
     const { users } = this.state;
     return (
-      <Container maxWidth="lg">
-        <h1>Admin</h1>
-        {this.props.loading && (
-          <p>
-            <b>{this.props.loadingText}</b>
-          </p>
-        )}
-        <UserList users={users} />
-      </Container>
+      <>
+        <Container maxWidth="lg">
+          <h1>Admin</h1>
+          {this.props.loading && (
+            <p>
+              <b>{this.props.loadingText}</b>
+            </p>
+          )}
+          <UserList users={users} />
+        </Container>
+      </>
     );
   }
 }

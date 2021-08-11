@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import ReactQuill from "react-quill";
-import { Container, Grid, Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 import { withFirebase } from "../Firebase";
 
-import { PostContext } from "./context";
+import HeaderContainer from "./HeaderContainer";
+
+import SocialShare from "./SocialShare";
 
 class SingleBlog extends Component {
   constructor(props) {
@@ -43,16 +45,25 @@ class SingleBlog extends Component {
   }
 
   render() {
-    const { content } = this.state;
+    const {
+      content: { title, cover, description, editorContent },
+    } = this.state;
 
     return (
-      <Container maxWidth="lg">
-        <Typography align="center" gutterBottom={true} variant="h2">
-          {this.state.content.title}
-        </Typography>
+      <>
+        <HeaderContainer style={{ marginTop: "5rem" }} cover={cover} title={title} description={description} />
 
-        <ReactQuill value={this.state.content.editorContent || ""} theme="bubble" readOnly />
-      </Container>
+        <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
+          <Grid container>
+            <Grid item md={2}>
+              <SocialShare />
+            </Grid>
+            <Grid item md={9}>
+              <ReactQuill value={editorContent || ""} theme="bubble" readOnly />
+            </Grid>
+          </Grid>
+        </Container>
+      </>
     );
   }
 }

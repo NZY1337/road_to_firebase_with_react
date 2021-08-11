@@ -66,7 +66,6 @@ class Blogs extends Component {
 
   handleDeletePost = (category, postId) => {
     const posts = { ...this.state.posts };
-    const { user } = this.state;
     const ref = `${category}`;
 
     const postRef = this.props.firebase.db.ref(ref);
@@ -92,6 +91,8 @@ class Blogs extends Component {
   render() {
     const { anchorEl, uniquePostId, posts, user } = this.state;
     const open = Boolean(anchorEl);
+    const cover =
+      "https://images.pexels.com/photos/2029670/pexels-photo-2029670.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
     const renderPosts = () => {
       const collection = Object.keys(posts).map((id) => {
@@ -117,7 +118,11 @@ class Blogs extends Component {
 
     return (
       <>
-        <HeaderContainer />
+        <HeaderContainer
+          cover={cover}
+          title="Interior Design"
+          description="The BrandNu Design and Hip Hop Architecture Camp founder sits in his remixed version of an Eames lounge chair and ottoman outside the State Capitol in Madison, Wisconsin. Photography by Hedi Lamar Photography."
+        />
         <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
           <Grid spacing={2} container>
             {renderPosts()}

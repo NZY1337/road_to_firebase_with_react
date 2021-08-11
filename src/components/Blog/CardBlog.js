@@ -1,15 +1,13 @@
 import React from "react";
 
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import AddIcon from "@material-ui/icons/Add";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -36,19 +34,30 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   "@keyframes fromRightToLeft": {
     "0%": {
-      marginLeft: "0px",
+      marginBottom: "0px",
     },
     "50%": {
-      marginLeft: "15px",
+      marginBottom: "15px",
     },
 
     "75%": {
-      marginLeft: "10px",
+      marginBottom: "10px",
     },
 
     "100%": {
-      marginRight: "0px",
+      marginBottom: "0px",
     },
+  },
+
+  cardHeader: {
+    zIndex: 1,
+    position: "relative",
+    backgroundColor: "#fff",
+  },
+
+  addAnimation: {
+    animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
+    animationDelay: "0s",
   },
 
   card: {
@@ -65,8 +74,15 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
 
-    "&:hover .cardcontent-summary p": {
-      animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
+    "& .cardcontent-summary": {
+      //   animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
+      marginBottom: "0px",
+      transition: "all .2s",
+    },
+
+    "&:hover .cardcontent-summary": {
+      //   animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
+      marginBottom: "10px",
     },
 
     "&:hover .MuiCardMedia-root": {
@@ -84,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
 
   cardContent: {
     position: "absolute",
-    bottom: "10px",
+    bottom: "0px",
     textAlign: "left",
     width: "100%",
     left: 0,
@@ -131,11 +147,12 @@ const CardBlog = ({
   const classes = useStyles();
 
   return (
-    <Grid item md={3}>
+    <Grid item md={6} lg={3} xs={12}>
       <Card className={classes.card}>
         {user && (
           <>
             <CardHeader
+              className={classes.cardHeader}
               avatar={<Avatar src={logo} aria-label="recipe" />}
               action={
                 <Button
@@ -174,7 +191,7 @@ const CardBlog = ({
 
         <CardActionArea>
           <CardMedia className={classes.cardMedia} image={post.cover} title="Contemplative Reptile" />
-          <CardContent className={classes.cardContent}>
+          <CardContent className={`${classes.cardContent}`}>
             <div className="cardcontent-summary">
               <Typography gutterBottom variant="h5" component="h2">
                 {post.title}
@@ -186,7 +203,6 @@ const CardBlog = ({
 
             <Button
               component={Link}
-              //   endIcon={<AddIcon />}
               className="view-more"
               to={`${pathname}/${id}/${postTitle}`}
               size="small"

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import RenderCategories from "./RenderCategories";
-import { Container, Grid } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 
 class Categories extends Component {
   constructor(props) {
@@ -48,11 +48,11 @@ class Categories extends Component {
 
   render() {
     const items = this.state.items.map((item) => {
-      return <RenderCategories name={item.name} img={item.img} description={item.description} />;
+      return <RenderCategories key={item.id} name={item.name} img={item.img} description={item.description} />;
     });
 
     return (
-      <Container disableGutters={true} maxWidth={false}>
+      <Container disablegutters="true" maxWidth={false}>
         <div className="parrent-wrapper">{items}</div>
         <div className="parrent-wrapper">{items}</div>
       </Container>

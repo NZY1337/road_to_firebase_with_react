@@ -21,9 +21,11 @@ import Modal from "../../utils/Modal";
 
 const useStyles = (theme) => ({
   root: {
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
     width: "100%",
     "& label.MuiFormLabel-root": {
-      color: "#fff",
+      color: "lightgray",
+      fontSize: "15px",
     },
     "& .MuiFilledInput-underline:after": {
       borderBottomColor: "aqua",

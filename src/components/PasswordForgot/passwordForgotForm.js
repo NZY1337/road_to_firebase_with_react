@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
-import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
@@ -17,7 +16,6 @@ import * as ROUTES from "../../constants/routes";
 
 const INITIAL_STATE = {
   email: "",
-  error: null,
 };
 
 const useStyles = (theme) => ({
@@ -99,7 +97,6 @@ class PasswordForgetFormBase extends Component {
         handleOpen("success", "A confirmation mail for resetting your password has been sent! Check your email.");
       })
       .catch((error) => {
-        this.setState({ error });
         handleOpen("error", error.message);
       });
   };
@@ -107,7 +104,7 @@ class PasswordForgetFormBase extends Component {
   onChange = (event) => this.setState({ [event.target.name]: event.target.value });
 
   render() {
-    const { email, error } = this.state;
+    const { email } = this.state;
     const isInvalid = email === "";
     const { classes } = this.props;
 

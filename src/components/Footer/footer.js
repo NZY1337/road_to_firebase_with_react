@@ -1,7 +1,7 @@
 import React from "react";
 import "./footer.scss";
 import logo from "../../assets/images/beadesignful-logo.png";
-import { Container, Grid, Typography, makeStyles, Link, Divider } from "@material-ui/core";
+import { Container, Grid, Typography, Link } from "@material-ui/core";
 
 export default function Footer() {
   const footerNav = {

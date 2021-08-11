@@ -1,6 +1,5 @@
 import React from "react";
 import "./categories.scss";
-import { Grid } from "@material-ui/core";
 
 function RenderCategories(props) {
   return (
@@ -14,3 +13,4 @@ function RenderCategories(props) {
 }
 
 export default RenderCategories;
+

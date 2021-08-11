@@ -48,7 +48,7 @@ export default function TransitionsModal({ children, title }) {
 
   return (
     <div>
-      <StyledButton variant="filled" size="medium" color="primary" type="button" onClick={handleOpen}>
+      <StyledButton variant="text" size="medium" color="primary" type="button" onClick={handleOpen}>
         Forgot Password ?
       </StyledButton>
       <Modal

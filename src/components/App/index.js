@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { Redirect, BrowserRouter as Router, Route } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
 import SignInPage from "../SignIn";
-import PasswordForget from "../PasswordForgot";
 import HomePage from "../Home";
 import AccountPage from "../Account";
 import AdminPage from "../Admin";
