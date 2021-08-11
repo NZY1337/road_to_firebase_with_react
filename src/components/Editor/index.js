@@ -71,7 +71,7 @@ class Editor extends React.Component {
     const { uniqueIdStorage, category } = this.state.content;
     const { storage } = this.props.firebase;
 
-    // this.uniqueIdStorage - first time submitting the post
+    // this.uniqueIdStorage - first time submitting the post cover
     // uniqueIdStorage - when the post is edited - from state
 
     const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
@@ -123,7 +123,9 @@ class Editor extends React.Component {
     if (this.postId) {
       postRef.child(`${this.postId}`).update(this.state.content);
     } else {
-      postRef.push(this.state.content);
+      postRef.push(this.state.content).then((snap) => {
+        console.log(snap.key);
+      });
     }
 
     this.props.history.push(`/${this.state.content.category}`);
@@ -223,10 +225,10 @@ class Editor extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevState.content.category);
-    console.log(this.state.content.category);
-  }
+  //   componentDidUpdate(prevProps, prevState) {
+  //     console.log(prevState.content.category);
+  //     console.log(this.state.content.category);
+  //   }
 
   render() {
     const { content, imgUploaded } = this.state;

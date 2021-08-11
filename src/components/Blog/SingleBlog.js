@@ -36,12 +36,6 @@ class SingleBlog extends Component {
 
   componentDidMount() {
     this.fetchPost();
-
-    // this.props.firebase.auth.onAuthStateChanged((user) => {
-    //   if (user) {
-    //     this.fetchPost(user.uid);
-    //   }
-    // });
   }
 
   render() {

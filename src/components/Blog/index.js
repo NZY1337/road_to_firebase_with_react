@@ -31,7 +31,6 @@ class Blogs extends Component {
 
   handleClose = () => {
     this.setState({
-      ...this.state,
       anchorEl: null,
       uniquePostId: null,
     });
@@ -64,28 +63,22 @@ class Blogs extends Component {
     });
   }
 
-  handleDeletePost = (category, postId) => {
-    const posts = { ...this.state.posts };
+  handleDeletePost = ({ category, uniqueIdStorage }, postId) => {
     const ref = `${category}`;
-
     const postRef = this.props.firebase.db.ref(ref);
 
-    const convertedPostsFromObjectToArray = Object.entries(posts);
-    const filteredPosts = convertedPostsFromObjectToArray.filter(([key, value]) => key !== postId);
-    const convertedPostsFromArrayToObject = Object.fromEntries(filteredPosts);
-    this.handleClose();
+    console.log(category, uniqueIdStorage, postId);
+    // const confirm = window.confirm("are you shure you want to delete this?");
 
-    const confirm = window.confirm("are you shure you want to delete this?");
-
-    if (confirm) {
-      postRef.on("child_removed", (snapshot) => {
-        if (snapshot.val()) {
-          this.setState({ posts: convertedPostsFromArrayToObject });
-        }
-      });
-
-      postRef.child(`${postId}`).remove();
-    }
+    // if (confirm) {
+    //   this.handleClose();
+    //   postRef
+    //     .child(`${postId}`)
+    //     .remove()
+    //     .then(() => {
+    //       console.log("file deleted successfully");
+    //     });
+    // }
   };
 
   render() {
@@ -96,6 +89,7 @@ class Blogs extends Component {
 
     const renderPosts = () => {
       const collection = Object.keys(posts).map((id) => {
+        console.log(id);
         return (
           <CardBlog
             user={user}
