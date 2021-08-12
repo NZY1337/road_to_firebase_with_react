@@ -47,7 +47,7 @@ class Editor extends React.Component {
     this.postId = this.props.match.params.id;
 
     this.postType = this.props.match.params.type;
-    this.uniqueIdStorage = uuidv4().slice(0, 6);
+    this.uniqueStorageId = uuidv4().slice(0, 6);
     this.editorRef = React.createRef();
 
     this.state = {
@@ -59,7 +59,7 @@ class Editor extends React.Component {
         description: "",
         cover: "",
         title: "",
-        uniqueIdStorage: "",
+        uniqueStorageId: "",
         createdAt: new Date().toISOString().split("T")[0],
       },
       user: null,
@@ -68,13 +68,13 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handeUploadCoverImage = async (file) => {
-    const { uniqueIdStorage, category } = this.state.content;
+    const { uniqueStorageId, category } = this.state.content;
     const { storage } = this.props.firebase;
 
-    // this.uniqueIdStorage - first time submitting the post cover
-    // uniqueIdStorage - when the post is edited - from state
+    // this.uniqueStorageId - first time submitting the post cover
+    // uniqueStorageId - when the post is edited - from state
 
-    const decideWhereToPlaceFile = this.postId ? uniqueIdStorage : this.uniqueIdStorage;
+    const decideWhereToPlaceFile = this.postId ? uniqueStorageId : this.uniqueStorageId;
 
     const imgRef = this.postId
       ? storage.ref(`${category}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
@@ -83,9 +83,10 @@ class Editor extends React.Component {
     try {
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
+      console.log(downloadUrl);
       const content = { ...this.state.content };
       content.cover = downloadUrl;
-      content.uniqueIdStorage = content.uniqueIdStorage ? content.uniqueIdStorage : this.uniqueIdStorage;
+      content.uniqueStorageId = content.uniqueStorageId ? content.uniqueStorageId : this.uniqueStorageId;
       this.setState({ imgUploaded: true });
       this.setState({ content });
     } catch (err) {
@@ -95,20 +96,22 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handleUploadContentEditorImage = async (file) => {
-    /*  when uploading content images for editor we asume that we already have generated our Unique ID;
+    /*  
+        when uploading content images for editor we asume that we already have generated our Unique ID;
         because first we upload cover(immediately generates the UNIQUE_ID) then content
     */
 
     const { storage } = this.props.firebase;
-    const { uniqueIdStorage, category } = this.state.content;
+    const { uniqueStorageId, category } = this.state.content;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${uniqueIdStorage}/images/content/${file.name}`)
-      : storage.ref(`${category}/${uniqueIdStorage}/images/content`).child(`${file.name}`);
+      ? storage.ref(`${category}/${uniqueStorageId}/images/content/${file.name}`)
+      : storage.ref(`${category}/${uniqueStorageId}/images/content`).child(`${file.name}`);
 
     try {
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
+
       return downloadUrl;
     } catch (err) {
       console.log(err);

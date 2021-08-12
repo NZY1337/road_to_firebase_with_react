@@ -181,7 +181,14 @@ const CardBlog = ({
               </MenuItem>
 
               <MenuItem>
-                <Link to="#" color="secondary" onClick={() => handleDeletePost(post, uniquePostId)}>
+                <Link
+                  to="#"
+                  color="secondary"
+                  onClick={() => {
+                    const uniqueStorageId = posts[uniquePostId].uniqueStorageId;
+                    handleDeletePost(post, uniquePostId, uniqueStorageId);
+                  }}
+                >
                   Delete Post
                 </Link>
               </MenuItem>

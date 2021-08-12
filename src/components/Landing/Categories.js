@@ -52,7 +52,7 @@ class Categories extends Component {
     });
 
     return (
-      <Container disablegutters="true" maxWidth={false}>
+      <Container disableGutters maxWidth="xl">
         <div className="parrent-wrapper">{items}</div>
         <div className="parrent-wrapper">{items}</div>
       </Container>

@@ -63,22 +63,49 @@ class Blogs extends Component {
     });
   }
 
-  handleDeletePost = ({ category, uniqueIdStorage }, postId) => {
-    const ref = `${category}`;
-    const postRef = this.props.firebase.db.ref(ref);
+  handleDeletePost = ({ category }, uniquePostId, uniqueStorageId) => {
+    const { storage } = this.props.firebase;
+    const postRefDB = this.props.firebase.db.ref(category);
 
-    console.log(category, uniqueIdStorage, postId);
-    // const confirm = window.confirm("are you shure you want to delete this?");
+    const confirm = window.confirm("are you sure you want to delete this?");
 
-    // if (confirm) {
-    //   this.handleClose();
-    //   postRef
-    //     .child(`${postId}`)
-    //     .remove()
-    //     .then(() => {
-    //       console.log("file deleted successfully");
-    //     });
-    // }
+    if (confirm) {
+      postRefDB
+        .child(`${uniquePostId}`)
+        .remove()
+        .then(() => {
+          console.log(`${category} deleted successfully`);
+        })
+        .catch((err) => console.log(err));
+
+      storage
+        .ref(`/${category}/${uniqueStorageId}/images/cover/cover.jpg`)
+        .delete()
+        .then(() => {
+          console.log(`${category} with id: ${uniqueStorageId} Cover Photo Deleted Successfully`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      storage
+        .ref(`/${category}/${uniqueStorageId}/images/content/`)
+        .listAll()
+        .then((res) => {
+          res.items.forEach((itemRef) => {
+            // All the items under listRef.
+            itemRef.getDownloadURL().then((url) => {
+              let pictureRef = storage.refFromURL(url);
+              pictureRef
+                .delete()
+                .then(() => console.log(`${category} with id: ${uniqueStorageId} Content Photos Deleted Successfully`))
+                .catch((err) => console.log(err));
+            });
+          });
+        });
+    }
+
+    this.handleClose();
   };
 
   render() {
@@ -89,7 +116,6 @@ class Blogs extends Component {
 
     const renderPosts = () => {
       const collection = Object.keys(posts).map((id) => {
-        console.log(id);
         return (
           <CardBlog
             user={user}

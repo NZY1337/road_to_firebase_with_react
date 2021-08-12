@@ -84,7 +84,7 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, postId }) => {
           )}
 
           {imgUploaded && (
-            <Grid item container alignItems="center" sty>
+            <Grid item container alignItems="center">
               <Typography gutterBottom={true} variant="h6" color="secondary" style={{ fontSize: "1rem" }}>
                 Img Uploaded Successfully
               </Typography>
