@@ -38,10 +38,10 @@ function AboutUs(props) {
   };
 
   const handleRemove = (index) => {
-    const list = [...description.values];
-    console.log(list);
-    // list.values.splice(index, 1);
-    // setDescription({ list });
+    const values = [...description.values];
+
+    values.splice(index, 1);
+    setDescription({ values });
   };
 
   const renderDescription = () => {
@@ -51,7 +51,7 @@ function AboutUs(props) {
           <TextareaAutosize
             aria-label="minimum height"
             placeholder="Description..."
-            //   defaultValue={`${desc.description}`}
+            defaultValue={value || ""}
             onChange={(e) => onChangeDescription(e, index)}
             style={{ width: "100%", height: "150px", padding: ".5rem", marginBottom: ".1rem" }}
           />
@@ -75,18 +75,16 @@ function AboutUs(props) {
     initialDescriptions[index] = e.target.value;
 
     setDescription({ values: initialDescriptions });
-
-    console.log(initialDescriptions);
   };
 
   const onChangeIntro = ({ target: { name, value } }) => {
     setIntro((prevState) => ({ ...prevState, [name]: value }));
-    console.log(intro);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(intro);
+    const boundInputStates = { ...description.values, ...intro };
+    console.log(boundInputStates);
   };
 
   return (
