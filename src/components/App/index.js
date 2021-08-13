@@ -13,6 +13,7 @@ import Editor from "../Editor";
 import Blogs from "../Blog";
 import SingleBlog from "../Blog/SingleBlog";
 import Layout from "../Layout";
+import AboutUs from "../AboutUs/AboutUs";
 
 import { withAuthentication } from "../Sesssion";
 
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/test" component={SomeComponent} />
           <Route path="/todos" component={Todos} />
           <Route path="/editor" component={Editor} />
+          <Route path={ROUTES.ABOUT_US} component={AboutUs} />
 
           {/* blog */}
           <Route path="/edit/:type/:id" component={Editor} />

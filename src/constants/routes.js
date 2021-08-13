@@ -9,3 +9,4 @@ export const TODO = "/todos";
 export const EDITOR = "/editor";
 export const BLOGS = "/blog";
 export const NEWS = "/news";
+export const ABOUT_US = "/about-us";

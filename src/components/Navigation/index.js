@@ -41,6 +41,7 @@ const Navigation = ({ firebase }) => {
     { location: ROUTES.EDITOR, name: "Editor", auth: true, id: 6 },
     { location: ROUTES.BLOGS, name: "Blog", auth: false, id: 7 },
     { location: ROUTES.NEWS, name: "News", auth: false, id: 8 },
+    { location: ROUTES.ABOUT_US, name: "About Us", auth: false, id: 9 },
   ]);
 
   const authMenu = () => {

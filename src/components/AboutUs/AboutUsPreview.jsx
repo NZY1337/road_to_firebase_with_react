@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -25,35 +27,63 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  btn: {
+    backgroundColor: "black",
+    color: "#fff",
+    width: "130px",
+    height: "40px",
+    "&:hover": {
+      backgroundColor: "rgba(223,56,0,.4)",
+    },
+  },
+  grd: {
+    display: "inline-flex",
+    flexDirection: "column",
+    height: "50%",
+    padding: "3rem",
+    background: "rgb(0,0,0)",
+    // alignItems: "center",
+  },
 }));
 
-const AboutUs = () => {
+const AboutUsPreview = () => {
   const classes = useStyles();
+  const divEl = useRef(null);
+  const parentEl = useRef(null);
+  let [deg, setDeg] = useState(300);
+
+  useEffect(() => {
+    window.addEventListener("scroll", function () {
+      const position = divEl.current && divEl.current.getBoundingClientRect();
+      const parent = parentEl.current && parentEl.current.getBoundingClientRect();
+
+      if (position) {
+        if (position.top >= 0 && position.bottom <= window.innerHeight) {
+          setDeg((deg -= 3));
+        }
+      }
+    });
+  }, []);
+
+  //   https://usefulangle.com/post/113/javascript-detecting-element-visible-during-scroll
+
   return (
-    <Container maxWidth="xl" disableGutters className={classes.root}>
-      <Grid container justify="flex-end" alignItems="flex-end" style={{ height: "100%" }}>
+    <Container maxWidth="xl" disableGutters className={classes.root} ref={parentEl}>
+      <Grid container justify="flex-end" alignItems="center" style={{ height: "100%" }}>
         <Grid
           item
           xl={6}
           md={6}
           justify="center"
+          className={classes.grd}
+          ref={divEl}
           style={{
-            backgroundColor: "black",
-            display: "inline-flex",
-            flexDirection: "column",
-            // justifyContent: "center",
-            // alignItems: "center",
-            // backgroundColor: "rgba(0,0,0,.7)",
-            height: "70%",
-            padding: "3rem",
-            background: "rgb(0,0,0)",
-
-            // background: "linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1))",
-            background: "linear-gradient(140deg, rgba(3,3,3,0) 50%, rgba(223,56,0,0.4) 100%)",
-            filter:
-              "progid:DXImageTransform.Microsoft.gradient(startColorstr='#833ab4',endColorstr='#ffffff',GradientType=1)",
+            background: `linear-gradient(${deg}deg, rgba(3,3,3,0) 50%, rgba(223,56,0,.4) 100%)`,
+            background: `-moz-linear-gradient(${deg}deg, rgba(3,3,3,0) 50%, rgba(223,56,0,.4) 100%)`,
+            background: `-webkit-linear-gradient(${deg}deg, rgba(3,3,3,0) 50%, rgba(223,56,0,.4) 100%)`,
           }}
         >
+          {/* {deg} */}
           <Typography component="h1" variant="h2">
             Despre Noi
           </Typography>
@@ -66,7 +96,7 @@ const AboutUs = () => {
             anim id est laborum.
           </Typography>
           <br />
-          <Button variant="outlined" color="primary" style={{ width: "150px" }}>
+          <Button variant="contained" className={classes.btn}>
             Read More
           </Button>
         </Grid>
@@ -75,4 +105,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default AboutUsPreview;
