@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 
-
-
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -43,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "3rem",
     background: "rgb(0,0,0)",
     // alignItems: "center",
+  },
+  margin: {
+    marginTop: "2rem",
+    marginBottom: "1rem",
   },
 }));
 
@@ -87,15 +89,13 @@ const AboutUsPreview = () => {
           <Typography component="h1" variant="h2">
             Despre Noi
           </Typography>
-          <br /> <br />
-          <Typography component="p" variant="body1">
+          <Typography component="p" variant="body1" className={classes.margin}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
             nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
             anim id est laborum.
           </Typography>
-          <br />
           <Button variant="contained" className={classes.btn}>
             Read More
           </Button>
