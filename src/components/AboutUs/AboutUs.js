@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
+import { values } from "lodash";
 
 //! REACT HOOK FORM API
 /*
@@ -34,19 +35,19 @@ function AboutUs(props) {
     subtitle: "",
   });
 
+  const [description, setDescription] = useState({ values: [""] });
+
   const sendDataToFirebase = (data) => {
     const taskRef = props.firebase.db.ref(`aboutUs`);
 
     taskRef
       .push(data)
-      .then((value) => {})
+      .then((value) => {
+        // clear states
+        setIntro({ title: "", subtitle: "" });
+        setDescription((prevState) => ({ ...prevState, values: [] }));
+      })
       .catch((err) => console.log(err));
-  };
-
-  const [description, setDescription] = useState({ values: [] });
-
-  const clearDescriptionStateValuesAfterSubmit = () => {
-    console.log(description.values);
   };
 
   const handleAddDescription = () => {
@@ -72,9 +73,7 @@ function AboutUs(props) {
   const onSubmit = (e) => {
     e.preventDefault();
     const boundInputStates = { ...description.values, ...intro };
-    // sendDataToFirebase(boundInputStates);
-    setIntro({ title: "", subtitle: "" });
-    clearDescriptionStateValuesAfterSubmit();
+    sendDataToFirebase(boundInputStates);
   };
 
   const handleDeleteDataFromDb = (e) => {
@@ -99,6 +98,7 @@ function AboutUs(props) {
     details.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
         const details = snapshot.val();
+        // console.log(details["-Mh9waBPkpYXYp-wuaq_"]);
         setDataFromDb(details);
       } else {
         setDataFromDb({});
@@ -108,24 +108,64 @@ function AboutUs(props) {
 
   useEffect(() => {
     renderDataToUx();
-  }, [dataFromDb]);
+  }, []);
+
+  const handleEditData = (id) => {
+    const editData = dataFromDb[id];
+    console.log(editData);
+    const { title, subtitle, 0: description1, 1: description2, 2: description3 } = editData;
+    console.log(description1, description2);
+
+    let values = [];
+
+    if (description1 !== undefined) {
+      values = [...values, description1];
+    }
+
+    if (description2 !== undefined) {
+      values = [...values, description2];
+    }
+
+    if (description3 !== undefined) {
+      values = [...values, description3];
+    }
+
+    setDescription((prevState) => ({ values }));
+
+    // setData back to State
+    setIntro({ title, subtitle });
+  };
 
   const renderDataToUx = () => {
-    return Object.keys(dataFromDb).map((value) => {
+    return Object.keys(dataFromDb).map((ID) => {
+      const data = dataFromDb[ID];
+      const { title, subtitle, 0: description1, 1: description2, 2: description3 } = data;
+
       return (
-        <div key={value}>
-          <div id={value} style={{ marginBottom: "1rem" }}>
-            <h1>{dataFromDb[value].title}</h1>
-            <h3>{dataFromDb[value].subtitle}</h3>
-            <p>{dataFromDb[value]["0"]}</p>
-            <p>{dataFromDb[value]["1"] && value[1]}</p>
-            <p>{dataFromDb[value]["2"] && value[2]}</p>
+        <div key={ID} style={{ marginBottom: "1rem" }}>
+          <div id={ID}>
+            <h1>{title}</h1>
+            <h3>{subtitle}</h3>
+            <p>{description1}</p>
+            <p>{description2 && description2}</p>
+            <p>{description3 && description3}</p>
           </div>
 
-          <button id={value} onClick={handleDeleteDataFromDb}>
-            Remove
-          </button>
-          <button id={value}>Edit</button>
+          <div style={{ marginBottom: "2rem", marginTop: "1rem" }}>
+            <Button
+              variant="contained"
+              size="small"
+              style={{ marginRight: "1rem" }}
+              id={ID}
+              onClick={handleDeleteDataFromDb}
+            >
+              Remove
+            </Button>
+            <Button variant="contained" size="small" id={ID} onClick={() => handleEditData(ID)}>
+              Edit
+            </Button>
+          </div>
+          <hr />
         </div>
       );
     });
@@ -138,7 +178,7 @@ function AboutUs(props) {
           <TextareaAutosize
             aria-label="minimum height"
             placeholder="Description..."
-            defaultValue={value || ""}
+            value={value || ""}
             onChange={(e) => onChangeDescription(e, index)}
             style={{ width: "100%", height: "150px", padding: ".5rem", marginBottom: "1rem" }}
           />
