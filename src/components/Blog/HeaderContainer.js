@@ -16,11 +16,11 @@ const p = {
   margin: "0 auto",
 };
 
-const HeaderContainer = ({ cover, title, description }) => {
+const HeaderContainer = ({ cover, title, description, height, children, flexEnd, shadow }) => {
   const container1 = {
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: `rgba(0, 0, 0, ${shadow || 0.4})`,
     backgroundBlendMode: "multiply",
-    height: "65vh",
+    height: height || "65vh",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
@@ -30,7 +30,7 @@ const HeaderContainer = ({ cover, title, description }) => {
   const container2 = {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: flexEnd || "center",
     height: "100%",
   };
   return (
@@ -40,6 +40,7 @@ const HeaderContainer = ({ cover, title, description }) => {
           <Typography component="h2" variant="h2" style={h6}>
             {title}
           </Typography>
+          {children}
 
           <Typography component="p" variant="body1" style={p}>
             {description}
