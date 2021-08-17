@@ -11,6 +11,7 @@ import razvan from "../../assets/images/razvan.jpg";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
+    // backgroundImage: `url(${razvan})`,
     backgroundImage: `url(https://images.unsplash.com/photo-1593035013811-2db9b3c36980?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1952&q=80)`,
     // backgroundImage: `url(https://scontent.fias1-1.fna.fbcdn.net/v/t1.6435-9/116117899_1630490850460374_5179122253420350643_n.jpg?_nc_cat=104&ccb=1-4&_nc_sid=09cbfe&_nc_ohc=vheEz6y4GuQAX9-AwKN&_nc_ht=scontent.fias1-1.fna&oh=10a527d78773519189662703ba07c2f6&oe=61396D87)`,
     color: "#fff",
