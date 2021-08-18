@@ -2,6 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import RandomTitle from "../../utils/RandomTitle";
 
 export default function AboutUsFacts({
   title,
@@ -15,11 +16,14 @@ export default function AboutUsFacts({
 }) {
   return (
     <Grid md={6} style={{ padding: "1rem" }}>
-      <Typography color="primary" variant="h4" component="h4" style={{ color: "aqua", marginBottom: "1rem" }}>
-        {title}
-      </Typography>
+      <RandomTitle title={title} />
 
-      <Typography color="primary" variant="body" component="p" style={{ color: "white" }}>
+      <Typography
+        color="secondary"
+        variant="body1"
+        component="h6"
+        style={{ color: "gray", fontStyle: "italic", marginBottom: "1.25rem" }}
+      >
         {subtitle}
       </Typography>
 
@@ -31,7 +35,7 @@ export default function AboutUsFacts({
         {description2 && description2}
       </Typography>
 
-      <Typography variant="body2" style={{ color: "white" }}>
+      <Typography variant="body2" style={{ color: "white", marignBottom: ".5rem" }}>
         {description3 && description3}
       </Typography>
 

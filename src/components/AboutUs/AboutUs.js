@@ -13,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { makeStyles } from "@material-ui/core";
+import RandomTitle from "../../utils/RandomTitle";
 
 const url =
   "https://images.pexels.com/photos/3356416/pexels-photo-3356416.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
@@ -66,11 +67,12 @@ function AboutUs(props) {
     if (itemIdToBeEdited) {
       taskRef
         .child(itemIdToBeEdited)
-        .update()
+        .update(data)
         .then((value) => {
           setIntro({ title: "", subtitle: "" });
           setDescription((prevState) => ({ ...prevState, values: [] }));
           console.log("items updated successfully");
+          setItemIdToBeEdited(null);
         })
         .catch((err) => {
           console.log(err);
@@ -316,10 +318,6 @@ function AboutUs(props) {
                     style={{ color: "white", marginBottom: "1rem" }}
                   >
                     Our Beliefs
-                  </Typography>
-                  <Typography color="primary" variant="body" component="p" style={{ color: "white" }}>
-                    The BrandNu Design and Hip Hop Architecture Camp founder sits in his remixed version of an Eames
-                    lounge chair and ottoman outside the State Capitol in Madison, Wisconsin.
                   </Typography>
                 </Grid>
 

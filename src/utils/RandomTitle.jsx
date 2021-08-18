@@ -1,0 +1,69 @@
+import React, { useState, useEffect } from "react";
+import Typography from "@material-ui/core/Typography";
+
+export default function RandomTitle({ title }) {
+  const newStr = title.split("");
+
+  const [final, setFinal] = useState(title);
+  let [timer, setTimer] = useState(0);
+  let [interval, setDefaultInterval] = useState(null);
+
+  let randomizer = [];
+
+  const randomIndexBasedOnStrLen = () => {
+    for (let i = 0; i < newStr.length; i++) {
+      let rndm = Math.floor(Math.random() * newStr.length);
+      randomizer.push(rndm);
+    }
+  };
+
+  const displayRandomUx = () => {
+    setTimer((timer += 1));
+    let final = "";
+    for (let i of randomizer) {
+      final += newStr[i];
+    }
+    setFinal(final);
+    randomizer = [];
+  };
+
+  const generateRandomStr = () => {
+    randomIndexBasedOnStrLen();
+    displayRandomUx();
+
+    // reset timer:D
+    if (timer === 5) {
+      clearInterval(interval);
+      setTimer(0);
+      setDefaultInterval(null);
+      setFinal(title);
+    }
+  };
+
+  useEffect(() => {
+    console.log(title, final);
+    startInterval();
+  }, [title]);
+
+  const startInterval = () => {
+    if (interval === null) {
+      interval = setInterval(generateRandomStr, 40);
+      setDefaultInterval(interval);
+    }
+  };
+
+  return (
+    <>
+      <Typography
+        style={{}}
+        onMouseEnter={startInterval}
+        color="primary"
+        variant="h4"
+        component="h4"
+        style={{ color: "aqua" }}
+      >
+        {final}
+      </Typography>
+    </>
+  );
+}
