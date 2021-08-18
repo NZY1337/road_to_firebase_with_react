@@ -14,6 +14,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { makeStyles } from "@material-ui/core";
 import RandomTitle from "../../utils/RandomTitle";
+import AboutUsForm from "./AboutUsForm";
 
 const url =
   "https://images.pexels.com/photos/3356416/pexels-photo-3356416.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
@@ -196,21 +197,6 @@ function AboutUs(props) {
             handleDeleteDataFromDb={handleDeleteDataFromDb}
           />
         </>
-
-        //   <div style={{ marginBottom: "2rem", marginTop: "1rem" }}>
-        //     <Button
-        //       variant="contained"
-        //       size="small"
-        //       style={{ marginRight: "1rem" }}
-        //       id={ID}
-        //       onClick={handleDeleteDataFromDb}
-        //     >
-        //       Remove
-        //     </Button>
-        //     <Button variant="contained" size="small" id={ID} onClick={() => handleEditData(ID)}>
-        //       Edit
-        //     </Button>
-        //   </div>
       );
     });
   };
@@ -249,53 +235,14 @@ function AboutUs(props) {
         description="The BrandNu Design and Hip Hop Architecture Camp founder sits in his remixed version of an Eames lounge chair and ottoman outside the State Capitol in Madison, Wisconsin. Photography by Hedi Lamar Photography."
       />
 
-      <Container className={classes.formContainer}>
-        <Grid item md={5} xs={12}>
-          <form onSubmit={onSubmit}>
-            <TextField
-              label="Title"
-              variant="outlined"
-              name="title"
-              onChange={onChangeIntro}
-              value={intro.title}
-              style={{ width: "100%" }}
-              size="small"
-            />
-
-            <br />
-            <br />
-            <TextField
-              label="Subtitle"
-              name="subtitle"
-              onChange={onChangeIntro}
-              value={intro.subtitle}
-              variant="outlined"
-              size="small"
-              style={{ width: "100%" }}
-            />
-
-            <br />
-            <br />
-
-            {renderDescription()}
-
-            <div>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleAddDescription}
-                style={{ textTransform: "capitalize" }}
-              >
-                Add Description +
-              </Button>
-            </div>
-
-            <Button style={{ marginTop: ".5rem", color: "#fff" }} variant="contained" color="secondary" type="submit">
-              Submit
-            </Button>
-          </form>
-        </Grid>
-      </Container>
+      <AboutUsForm
+        onSubmit={onSubmit}
+        classes={classes}
+        onChangeIntro={onChangeIntro}
+        renderDescription={renderDescription}
+        intro={intro}
+        handleAddDescription={handleAddDescription}
+      />
 
       <Container maxWidth="xl" className={classes.aboutUsContainer}>
         <Container maxWidth="xl">

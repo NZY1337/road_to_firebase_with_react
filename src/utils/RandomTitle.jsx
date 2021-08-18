@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 
+//TODO - optimize the component - too much rerendering;
+
 export default function RandomTitle({ title }) {
   const newStr = title.split("");
 
