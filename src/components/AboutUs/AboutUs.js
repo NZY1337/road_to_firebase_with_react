@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
     width: "100%",
     minHeight: "500px",
-    borderRadius: "0% 100% 50% 50% / 100% 0% 100% 0%",
+    borderRadius: "0% 100% 100% 0% / 100% 100% 100% 0%",
+    opacity: ".4",
     src: "https://images.pexels.com/photos/3356416/pexels-photo-3356416.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
   },
   aboutUsContainer: {
@@ -45,6 +46,31 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     "&:hover": {
       filter: "blur(0px)",
+    },
+  },
+  picDescription: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    color: "#fff",
+    fontSize: "2.5rem",
+  },
+  picDescriptionContainer: {
+    position: "relative",
+    alignSelf: "baseline",
+    position: "relative",
+    "&::after": {
+      content: "-moz-alt-content",
+      top: 0,
+      left: 0,
+      position: "absolute",
+      width: "2rem",
+      display: "block",
+      top: "50%",
+      transform: "translateY(-50%)",
+      height: "80%",
+      backgroundColor: "#000",
     },
   },
 }));

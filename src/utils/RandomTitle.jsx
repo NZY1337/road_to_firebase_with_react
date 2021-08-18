@@ -57,7 +57,7 @@ export default function RandomTitle({ title, children }) {
   return (
     <>
       <div onMouseEnter={startInterval} color="primary" variant="h4" component="h4" style={{ color: "aqua" }}>
-        <Typography variant="h3" component="h3" style={{ color: "aqua" }}>
+        <Typography variant="h4" component="h4" style={{ color: "aqua" }}>
           {final}
         </Typography>
         {children}
