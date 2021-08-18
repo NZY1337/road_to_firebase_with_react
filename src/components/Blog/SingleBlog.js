@@ -43,6 +43,8 @@ class SingleBlog extends Component {
       content: { title, cover, description, editorContent },
     } = this.state;
 
+    console.log(title);
+
     return (
       <>
         <HeaderContainer style={{ marginTop: "5rem" }} cover={cover} title={title} description={description} />

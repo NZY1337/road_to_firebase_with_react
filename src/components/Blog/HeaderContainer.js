@@ -3,6 +3,7 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import RandomTitle from "../../utils/RandomTitle";
 
 const h6 = {
   color: "aqua",
@@ -37,6 +38,7 @@ const HeaderContainer = ({ cover, title, description, height, children, flexEnd,
     <Container maxWidth={false} style={container1}>
       <Container maxWidth="lg" style={container2}>
         <Grid container item direction="column" justify="center" align="center">
+          {/* <RandomTitle title={title} /> */}
           <Typography component="h2" variant="h2" style={h6}>
             {title}
           </Typography>

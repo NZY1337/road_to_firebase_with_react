@@ -39,6 +39,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: "4rem",
     paddingBottom: "4rem",
   },
+  aboutUsContent: {
+    filter: "blur(2px)",
+    transition: "all .40s",
+    cursor: "pointer",
+    "&:hover": {
+      filter: "blur(0px)",
+    },
+  },
 }));
 
 //! REACT HOOK FORM API
@@ -57,6 +65,8 @@ function AboutUs(props) {
   const [dataFromDb, setDataFromDb] = useState({});
   const [itemIdToBeEdited, setItemIdToBeEdited] = useState("");
   const classes = useStyles();
+  const formRef = useRef(null);
+
   const [intro, setIntro] = useState({
     title: "",
     subtitle: "",
@@ -113,8 +123,8 @@ function AboutUs(props) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const boundInputStates = { ...description.values, ...intro };
 
+    const boundInputStates = { ...description.values, ...intro };
     sendDataToFirebase(boundInputStates);
   };
 
@@ -152,13 +162,19 @@ function AboutUs(props) {
     renderDataToUx();
   }, []);
 
+  //   useEffect(() => {
+  //     console.log(formRef.current);
+  //   }, []);
+
   const handleEditData = (id) => {
-    console.log(id);
+    // 120 = marginTop + header's height
+    const topPosPlusFormHeight = Number(formRef.current.offsetTop) - 120;
+    window.scrollTo({ top: topPosPlusFormHeight, behavior: "smooth" });
+
     setItemIdToBeEdited(id);
     const editData = dataFromDb[id];
-    console.log(editData);
-    const { title, subtitle, 0: description1, 1: description2, 2: description3 } = editData;
 
+    const { title, subtitle, 0: description1, 1: description2, 2: description3 } = editData;
     let values = [];
 
     if (description1 !== undefined) {
@@ -173,7 +189,7 @@ function AboutUs(props) {
       values = [...values, description3];
     }
 
-    setDescription((prevState) => ({ values }));
+    setDescription({ values });
 
     // setData back to State
     setIntro({ title, subtitle });
@@ -188,6 +204,7 @@ function AboutUs(props) {
         <>
           <AboutUsFacts
             key={ID}
+            classes={classes}
             title={title}
             subtitle={subtitle}
             description1={description1}
@@ -237,6 +254,7 @@ function AboutUs(props) {
       />
 
       <AboutUsForm
+        ref={formRef}
         onSubmit={onSubmit}
         classes={classes}
         onChangeIntro={onChangeIntro}

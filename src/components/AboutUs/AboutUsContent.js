@@ -21,7 +21,7 @@ export default function AboutUsContent({ classes, renderDataToUx }) {
 
           <Grid md="8">
             <Grid container justify="space-between">
-              <Grid md="6" style={{ padding: "1rem" }}>
+              <Grid md="4" style={{ padding: "1rem" }}>
                 <Typography
                   color="primary"
                   variant="h1"

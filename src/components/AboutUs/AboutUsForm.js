@@ -4,19 +4,11 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-export default function AboutUsForm({
-  classes,
-  onSubmit,
-  onChangeIntro,
-  intro,
-  renderDescription,
-  handleAddDescription,
-}) {
-  console.log(intro);
-  return (
+const AboutUsForm = React.forwardRef(
+  ({ classes, onSubmit, onChangeIntro, intro, renderDescription, handleAddDescription }, formRef) => (
     <Container className={classes.formContainer}>
       <Grid item md={5} xs={12}>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} id="about-us-form" ref={formRef}>
           <TextField
             label="Title"
             variant="outlined"
@@ -56,5 +48,7 @@ export default function AboutUsForm({
         </form>
       </Grid>
     </Container>
-  );
-}
+  )
+);
+
+export default AboutUsForm;

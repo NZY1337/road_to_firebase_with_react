@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import Typography from "@material-ui/core/Typography";
 
 //TODO - optimize the component - too much rerendering;
 
-export default function RandomTitle({ title }) {
+export default function RandomTitle({ title, children }) {
   const newStr = title.split("");
 
   const [final, setFinal] = useState(title);
@@ -56,9 +56,12 @@ export default function RandomTitle({ title }) {
 
   return (
     <>
-      <Typography onMouseEnter={startInterval} color="primary" variant="h4" component="h4" style={{ color: "aqua" }}>
-        {final}
-      </Typography>
+      <div onMouseEnter={startInterval} color="primary" variant="h4" component="h4" style={{ color: "aqua" }}>
+        <Typography variant="h3" component="h3" style={{ color: "aqua" }}>
+          {final}
+        </Typography>
+        {children}
+      </div>
     </>
   );
 }
