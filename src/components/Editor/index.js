@@ -38,7 +38,7 @@ Quill.register("modules/imageResize", ImageResize);
 // https://www.carlrippon.com/event-target-v-current-target/
 
 const url =
-  "https://images.pexels.com/photos/1109541/pexels-photo-1109541.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
+  "https://images.pexels.com/photos/2501965/pexels-photo-2501965.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
 class Editor extends React.Component {
   constructor(props) {
@@ -241,7 +241,7 @@ class Editor extends React.Component {
 
     return (
       <>
-        <HeaderContainer cover={url} title={title ? title : "Create your story"} />
+        <HeaderContainer cover={url} height="70vh" title={title ? title : "Create your story"} />
         <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
           <h1>Editor</h1>
 

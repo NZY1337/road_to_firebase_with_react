@@ -1,21 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import HeaderContainer from "../Blog/HeaderContainer";
 
 import AboutUsFacts from "./AboutUsFacts";
 import { withFirebase } from "../Firebase";
 
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import RemoveCircleOutlineIcon from "@material-ui/icons/RemoveCircleOutline";
 import { makeStyles } from "@material-ui/core";
-import RandomTitle from "../../utils/RandomTitle";
 import AboutUsForm from "./AboutUsForm";
 import AboutUsContent from "./AboutUsContent";
+import { SnackBarContext } from "../../utils/SnackBarContext";
 
 const url =
   "https://images.pexels.com/photos/3356416/pexels-photo-3356416.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
@@ -91,6 +86,7 @@ function AboutUs(props) {
   const [itemIdToBeEdited, setItemIdToBeEdited] = useState("");
   const classes = useStyles();
   const formRef = useRef(null);
+  const { handleOpen } = useContext(SnackBarContext);
 
   const [intro, setIntro] = useState({
     title: "",
@@ -100,29 +96,29 @@ function AboutUs(props) {
 
   const sendDataToFirebase = (data) => {
     const taskRef = props.firebase.db.ref("aboutUs");
-    console.log(data);
+
     if (itemIdToBeEdited) {
       taskRef
         .child(itemIdToBeEdited)
         .set(data)
         .then((value) => {
+          handleOpen("success", "Item Edited Successfully!");
           setIntro({ title: "", subtitle: "" });
           setDescription((prevState) => ({ ...prevState, values: [] }));
-          console.log("items updated successfully");
           setItemIdToBeEdited(null);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({ message }) => {
+          handleOpen("error", message);
         });
     } else {
       taskRef
         .push(data)
         .then((value) => {
-          // clear states
+          handleOpen("success", "New Description Added Successfully!");
           setIntro({ title: "", subtitle: "" });
           setDescription((prevState) => ({ ...prevState, values: [] }));
         })
-        .catch((err) => console.log(err));
+        .catch(({ message }) => handleOpen("error", message));
     }
   };
 
@@ -131,10 +127,11 @@ function AboutUs(props) {
   };
 
   const handleRemove = (index) => {
+    //! wondering if try/cactch should be implemented
     const values = [...description.values];
-    console.log("item deleted");
     values.splice(index, 1);
     setDescription({ values });
+    handleOpen("success", "Description deleted successfully!");
   };
 
   const onChangeDescription = (e, index) => {
@@ -165,9 +162,11 @@ function AboutUs(props) {
         .child(`${ID}`)
         .remove()
         .then(() => {
+          handleOpen("success", "Item deleted successfully!");
+
           console.log("deleted successfully");
         })
-        .catch((err) => console.log(err));
+        .catch(({ message }) => handleOpen("error", message));
     }
   };
 
