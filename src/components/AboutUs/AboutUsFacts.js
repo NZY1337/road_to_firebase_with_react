@@ -39,7 +39,7 @@ const AboutUsFacts = ({
           {description3 && description3}
         </Typography>
 
-        <div style={{ marginBottom: "2rem", marginTop: "1rem" }}>
+        {/* <div style={{ marginBottom: "2rem", marginTop: "1rem" }}>
           <Button
             variant="contained"
             style={{ marginRight: "1rem" }}
@@ -53,7 +53,7 @@ const AboutUsFacts = ({
           <Button variant="contained" color="secondary" size="small" id={ID} onClick={handleDeleteDataFromDb}>
             Remove
           </Button>
-        </div>
+        </div> */}
       </RandomTitle>
     </Grid>
   );

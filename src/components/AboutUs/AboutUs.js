@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginTop: "5rem",
     marginBottom: "5rem",
-    // display: "none",
+    display: "none",
   },
   designImg: {
     objectFit: "cover",
