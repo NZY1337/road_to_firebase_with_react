@@ -3,16 +3,17 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import FormatQuote from "@material-ui/icons/FormatQuote";
-import Paper from "@material-ui/core/Paper";
 
 const url =
-  "https://images.pexels.com/photos/3356416/pexels-photo-3356416.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
+  //   "https://images.pexels.com/photos/3308588/pexels-photo-3308588.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+  "https://images.pexels.com/photos/2130475/pexels-photo-2130475.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+//   "https://images.pexels.com/photos/2089891/pexels-photo-2089891.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
 
 export default function AboutUsContent({ classes, renderDataToUx }) {
   const { picDescription, picDescriptionContainer, aboutUsContainer, designImg } = classes;
   return (
     <Container maxWidth="xl" className={aboutUsContainer}>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" style={{ marginTop: "5rem" }}>
         <Grid container justify="space-between">
           <Grid md="3" style={{ position: "relative", alignSelf: "baseline" }} className={picDescriptionContainer}>
             <img className={designImg} src={url} />
@@ -29,7 +30,7 @@ export default function AboutUsContent({ classes, renderDataToUx }) {
 
           <Grid md="8">
             <Grid container justify="space-between">
-              <Grid md="4" style={{ padding: "1rem", textAlign: "right" }}>
+              <Grid md="5" style={{ textAlign: "right" }}>
                 <FormatQuote style={{ color: "#f50057", fontSize: "3rem" }} />
 
                 <Typography

@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   aboutUsContent: {
     filter: "blur(2px)",
     transition: "all .40s",
-    cursor: "pointer",
     "&:hover": {
       filter: "blur(0px)",
     },
@@ -101,11 +100,11 @@ function AboutUs(props) {
 
   const sendDataToFirebase = (data) => {
     const taskRef = props.firebase.db.ref("aboutUs");
-
+    console.log(data);
     if (itemIdToBeEdited) {
       taskRef
         .child(itemIdToBeEdited)
-        .update(data)
+        .set(data)
         .then((value) => {
           setIntro({ title: "", subtitle: "" });
           setDescription((prevState) => ({ ...prevState, values: [] }));
@@ -133,6 +132,7 @@ function AboutUs(props) {
 
   const handleRemove = (index) => {
     const values = [...description.values];
+    console.log("item deleted");
     values.splice(index, 1);
     setDescription({ values });
   };
@@ -151,6 +151,7 @@ function AboutUs(props) {
     e.preventDefault();
 
     const boundInputStates = { ...description.values, ...intro };
+    console.log(boundInputStates);
     sendDataToFirebase(boundInputStates);
   };
 
@@ -187,10 +188,6 @@ function AboutUs(props) {
   useEffect(() => {
     renderDataToUx();
   }, []);
-
-  //   useEffect(() => {
-  //     console.log(formRef.current);
-  //   }, []);
 
   const handleEditData = (id) => {
     // 120 = marginTop + header's height
