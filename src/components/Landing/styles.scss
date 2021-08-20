@@ -6,6 +6,11 @@
   height: 100vh;
 }
 
+.slick-dots li {
+  width: 14px !important;
+  height: 14px !important;
+}
+
 .slick-dots li.slick-active button:before {
   color: red !important;
   background: red;
@@ -13,15 +18,14 @@
 
 .slick-dots li button:before {
   color: #fff !important;
-  width: 12px !important;
-  height: 12px !important;
-  background: #fff;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .slick-dots li button {
   background-color: #fff !important;
-  width: 12px !important;
-  height: 12px !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .slick-prev:before,
@@ -88,7 +92,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: start;
   flex-basis: auto !important;
+
+  a {
+    margin-top: 1rem;
+  }
 
   p {
     color: #fff;
@@ -112,5 +121,50 @@
     // font-family: "Playfair Display", serif;
     font-style: italic;
     color: aqua;
+  }
+}
+
+.identifier-left {
+  .slick-active {
+    &:after {
+      position: absolute;
+      content: "";
+      width: 100px;
+      height: 10px;
+      top: -20px;
+      left: 0;
+      bottom: 0;
+      left: 0;
+      //   background-color: red;
+      border-left: 2px solid red;
+      border-top: 2px solid red;
+      border-right: 0;
+      border-bottom: 0;
+      margin-left: 10px;
+    }
+  }
+}
+
+.identifier-right {
+  //   position: relative;
+
+  .slick-active {
+    &:after {
+      position: absolute;
+      content: "";
+      width: 100px;
+      height: 10px;
+
+      top: -20px;
+      left: 0;
+      bottom: 0;
+      left: 0;
+      //   background-color: red;
+      border-left: 0;
+      border-top: 2px solid red;
+      border-right: 2px solid red;
+      border-bottom: 0;
+      margin-right: 10px;
+    }
   }
 }

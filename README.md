@@ -17,3 +17,12 @@
     - create withAuthentication HOC; this uses withFirebase hook because we want to have acces to the onAuthStateChanged func
     - now ./App.js will be exported with withAuthentication HOC - every component within App.js
     will consume the authUser from AuthUserContext;
+
+[1,2,3,4,5];
+[2,3,4,5,1];
+[2,4,3,1,5]
+
+- two times in a row with the same indexes;
+- on Load send first item's index to LS;
+- on rerender check the first item's id and comppare to the current first item's id
+- if the same swap their pos again [arr[first], arr[second]] = [arr[second], arr[first]];

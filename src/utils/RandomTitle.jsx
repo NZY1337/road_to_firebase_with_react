@@ -43,7 +43,6 @@ export default function RandomTitle({ title, children }) {
   };
 
   useEffect(() => {
-    console.log(title, final);
     startInterval();
   }, [title]);
 
