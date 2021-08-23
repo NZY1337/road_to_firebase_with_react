@@ -1,18 +1,17 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Popper from "@material-ui/core/Popper";
-import Fade from "@material-ui/core/Fade";
+import Popover from "@material-ui/core/Popover";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import ToggleButton from "./ToggleButton/ToggleButton";
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    border: "1px solid",
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.paper,
+  typography: {
+    padding: theme.spacing(2),
   },
 }));
 
-export default function TransitionsPopper() {
+export default function SimplePopover() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -20,22 +19,35 @@ export default function TransitionsPopper() {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const open = Boolean(anchorEl);
-  const id = open ? "transitions-popper" : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <div>
-      {/* <button aria-describedby={id} type="button" onClick={handleClick}>
-        Toggle Popper
-      </button> */}
+      {/* <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+        Open Popover
+      </Button> */}
       <ToggleButton ariaDescribedBy={id} toggle={anchorEl} handleOpenPopover={handleClick} />
-      <Popper id={id} open={open} anchorEl={anchorEl} transition>
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <div className={classes.paper}>The content of the Popper.</div>
-          </Fade>
-        )}
-      </Popper>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Typography className={classes.typography}>The content of the Popover.</Typography>
+      </Popover>
     </div>
   );
 }
