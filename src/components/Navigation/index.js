@@ -9,8 +9,9 @@ import { NavLink } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import ToggleButton from "./ToggleButton";
+import ToggleButton from "../../utils/ToggleButton/ToggleButton";
 import { makeStyles } from "@material-ui/core";
+import Popover from "../../utils/Popover";
 
 import { withFirebase } from "../Firebase";
 
@@ -31,7 +32,7 @@ const profilePic = {
 const useStyles = makeStyles((theme) => ({
   bgClass1: {
     "&.MuiPaper-root": {
-      backgroundColor: "black",
+      backgroundColor: "rgba(0,0,0, .8)",
       transition: "background-color .5s",
     },
   },
@@ -56,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: "bold",
     },
   },
+
   logo: {
     border: "2px dotted aqua",
     borderRadius: "50%",
@@ -75,7 +77,7 @@ const Navigation = ({ firebase }) => {
   const [navs, setNavs] = useState([
     {
       location: ROUTES.LANDING,
-      name: "Landing",
+      name: "Home",
       auth: false,
       id: 0,
     },
@@ -96,7 +98,6 @@ const Navigation = ({ firebase }) => {
         setHeaderClass(false);
       }
     };
-
     window.addEventListener("scroll", handleScrollEvent);
     return () => {
       window.removeEventListener("scroll", handleScrollEvent);
@@ -186,7 +187,7 @@ const Navigation = ({ firebase }) => {
                 md={2}
                 style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center" }}
               >
-                <ToggleButton />
+                <Popover toggleButton={<ToggleButton />} />
                 <SetProfile firebase={firebase} authUser={authuser} />
               </Grid>
             </Grid>
