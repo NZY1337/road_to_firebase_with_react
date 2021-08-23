@@ -5,10 +5,12 @@ import * as ROUTES from "../../constants/routes";
 import MenuItem from "@material-ui/core/MenuItem";
 import AppBar from "@material-ui/core/AppBar";
 import SignOutBtn from "../SignOut";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
-import logo from "../../assets/images/beadesignful-logo.png";
+import Typography from "@material-ui/core/Typography";
+import ToggleButton from "./ToggleButton";
+import { makeStyles } from "@material-ui/core";
 
 import { withFirebase } from "../Firebase";
 
@@ -26,7 +28,50 @@ const profilePic = {
   borderRadius: "50%",
 };
 
+const useStyles = makeStyles((theme) => ({
+  bgClass1: {
+    "&.MuiPaper-root": {
+      backgroundColor: "black",
+      transition: "background-color .5s",
+    },
+  },
+
+  bgClass2: {
+    "&.MuiPaper-root": {
+      backgroundColor: "transparent",
+      transition: "background-color .5s",
+    },
+  },
+
+  header: {
+    "&.MuiPaper-root": {
+      padding: ".5rem",
+    },
+
+    "& a": {
+      textDecoration: "none",
+    },
+
+    "& .MuiTypography-root": {
+      fontWeight: "bold",
+    },
+  },
+  logo: {
+    border: "2px dotted aqua",
+    borderRadius: "50%",
+    display: "flex",
+    width: "50px",
+    height: "50px",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 0,
+  },
+}));
+
 const Navigation = ({ firebase }) => {
+  const [headerClass, setHeaderClass] = useState(false);
+
+  const classes = useStyles();
   const [navs, setNavs] = useState([
     {
       location: ROUTES.LANDING,
@@ -43,16 +88,43 @@ const Navigation = ({ firebase }) => {
     { location: ROUTES.ABOUT_US, name: "About Us", auth: false, id: 9 },
   ]);
 
+  useEffect(() => {
+    const handleScrollEvent = () => {
+      if (window.scrollY > 50) {
+        setHeaderClass(true);
+      } else {
+        setHeaderClass(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollEvent);
+    return () => {
+      window.removeEventListener("scroll", handleScrollEvent);
+    };
+  }, [window.scrollY]);
+
   const authMenu = () => {
     const authNavs = navs.filter((nav) => nav.auth === true);
 
     return authNavs.map((nav) => {
       return (
-        <MenuItem key={nav.id}>
-          <Link style={style} to={nav.location} color="inherit">
-            {nav.name}
-          </Link>
-        </MenuItem>
+        <NavLink
+          exact
+          activeStyle={{
+            color: "aqua",
+            textTransform: "underline",
+          }}
+          key={nav.id}
+          style={style}
+          to={nav.location}
+          color="inherit"
+        >
+          <MenuItem>
+            <Typography variant="body1" component="p">
+              {nav.name}
+            </Typography>
+          </MenuItem>
+        </NavLink>
       );
     });
   };
@@ -62,11 +134,23 @@ const Navigation = ({ firebase }) => {
 
     return authNavs.map((nav) => {
       return (
-        <MenuItem key={nav.id}>
-          <Link style={style} to={nav.location} color="inherit">
-            {nav.name}
-          </Link>
-        </MenuItem>
+        <NavLink
+          exact
+          activeStyle={{
+            color: "aqua",
+            textTransform: "underline",
+          }}
+          key={nav.id}
+          style={style}
+          to={nav.location}
+          color="inherit"
+        >
+          <MenuItem>
+            <Typography variant="body1" component="p">
+              {nav.name}
+            </Typography>
+          </MenuItem>
+        </NavLink>
       );
     });
   };
@@ -74,11 +158,16 @@ const Navigation = ({ firebase }) => {
   return (
     <AuthUserContext.Consumer>
       {(authuser) => (
-        <AppBar style={{ backgroundColor: "black" }} disablegutters="true" elevation={0}>
+        <AppBar
+          elevation={headerClass ? 1 : 0}
+          className={`${classes.header} ${headerClass ? classes.bgClass1 : classes.bgClass2}`}
+        >
           <Container>
             <Grid container xs={11} alignItems="center" justify="space-between">
               <Grid item md={2}>
-                <img src={logo} style={{ width: "40px", height: "40px", objectFit: "cover" }} />
+                <h1 className={classes.logo} style={{ color: "aqua" }}>
+                  R
+                </h1>
               </Grid>
 
               <Grid item style={{ display: "flex", justifyContent: "center" }} xs={12} md={8}>
@@ -97,12 +186,9 @@ const Navigation = ({ firebase }) => {
                 md={2}
                 style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center" }}
               >
-                <h4 style={{ marginRight: "1rem" }}>☰</h4>
+                <ToggleButton />
                 <SetProfile firebase={firebase} authUser={authuser} />
               </Grid>
-
-              {/* <Grid item>
-              </Grid> */}
             </Grid>
           </Container>
         </AppBar>
