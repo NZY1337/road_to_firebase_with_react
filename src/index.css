@@ -23,3 +23,21 @@ a,
 small {
   font-family: "Lato", sans-serif !important;
 }
+/* 
+@keyframes loadingAnimation {
+  0% {
+    background-color: lightgray;
+  }
+  50% {
+    background-color: gray;
+  }
+  100% {
+    background-color: lightgray;
+  }
+}
+
+.addAnimation {
+  animation-name: loadingAnimation;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+} */

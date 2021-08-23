@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -19,6 +19,7 @@ import logo from "../../assets/images/beadesignful-logo.png";
 
 // material-ui CSS
 import { makeStyles } from "@material-ui/core/styles";
+import { useLazyLoading } from "../../utils/helpers";
 
 /*
     ***********************************************
@@ -32,20 +33,15 @@ import { makeStyles } from "@material-ui/core/styles";
 */
 
 const useStyles = makeStyles((theme) => ({
-  "@keyframes fromRightToLeft": {
+  "@keyframes loadingAnimation": {
     "0%": {
-      marginBottom: "0px",
+      backgroundColor: "rgba(211, 211, 211, .4)",
     },
     "50%": {
-      marginBottom: "15px",
+      backgroundColor: "rgba(128,128,128, .4)",
     },
-
-    "75%": {
-      marginBottom: "10px",
-    },
-
     "100%": {
-      marginBottom: "0px",
+      backgroundColor: "rgba(211, 211, 211, .4)",
     },
   },
 
@@ -55,9 +51,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
   },
 
-  addAnimation: {
-    animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
-    animationDelay: "0s",
+  myAnimation: {
+    animation: `$loadingAnimation 600ms ${theme.transitions.easing.easeInOut} infinite`,
   },
 
   card: {
@@ -75,13 +70,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     "& .cardcontent-summary": {
-      //   animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
       marginBottom: "0px",
       transition: "all .2s",
     },
 
     "&:hover .cardcontent-summary": {
-      //   animation: `$fromRightToLeft .2s ${theme.transitions.easing.easeInOut}`,
       marginBottom: "10px",
     },
 
@@ -93,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   cardMedia: {
     height: "450px",
     objectFit: "cover",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
     backgroundBlendMode: "multiply",
     transition: "all .2s",
   },
@@ -144,6 +137,9 @@ const CardBlog = ({
   const post = posts[id];
   const postTitle = post.title.split(" ").join("-").toLowerCase();
   const visibility = user ? "block" : "none";
+
+  const source = useLazyLoading(post);
+
   const classes = useStyles();
 
   return (
@@ -197,14 +193,19 @@ const CardBlog = ({
         )}
 
         <CardActionArea>
-          <CardMedia className={classes.cardMedia} image={post.cover} title="Contemplative Reptile" />
-          <CardContent className={`${classes.cardContent}`}>
+          <CardMedia
+            className={`${classes.cardMedia} ${source == null && classes.myAnimation}`}
+            image={post.cover} //!source - source drops an error
+            title="Contemplative Reptile"
+          />
+
+          <CardContent className={classes.cardContent}>
             <div className="cardcontent-summary">
               <Typography gutterBottom variant="h5" component="h2">
                 {post.title}
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
-                {post.description}
+                {post.title}
               </Typography>
             </div>
 

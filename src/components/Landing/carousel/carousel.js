@@ -20,12 +20,11 @@ const useStyles = makeStyles((theme) => ({
         height: "10px",
         top: "-20px",
         bottom: 0,
-        left: "-4px", // - margin
+        left: "7px", // - margin
         borderLeft: "2px solid red",
         borderTop: "2px solid red",
         borderRight: 0,
         borderBottom: 0,
-        marginLeft: "10px",
       },
     },
   },
@@ -35,16 +34,15 @@ const useStyles = makeStyles((theme) => ({
       "&::after": {
         position: "absolute",
         content: "''",
-        width: (width) => width.widthRight,
+        width: (w) => w.widthRight,
         height: "10px",
         top: "-20px",
         bottom: 0,
-        right: "4px", // - margin
+        right: "7px", // - margin
         borderLeft: 0,
         borderTop: "2px solid red",
         borderRight: "2px solid red",
         borderBottom: 0,
-        marginLeft: 0,
       },
     },
   },
@@ -133,7 +131,8 @@ const Carousel = (props) => {
       title: "Dark Chambers",
       id: 8,
       subtitle: "All Black",
-      description: "Photo by Jess Loiterton. The best free stock photos & videos shared by talented creators.",
+      description:
+        "We started this opencollective to support the development work of react-slick. One of the core contributor is working full time on this project to fix all the open issues and improving documentation.",
     },
   ]);
 
@@ -143,16 +142,15 @@ const Carousel = (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 5000,
     fade: true,
     beforeChange: (_, next) => {
       setIndex(next);
     },
-
     appendDots: (dots) => (
       <div>
         <ul
-          className={index > Math.floor(slides.length / 2) ? classes.identifierRight : classes.identifierLeft}
+          className={index >= Math.floor(slides.length / 2) ? classes.identifierRight : classes.identifierLeft}
           style={{ margin: "0 auto", width: "fit-content" }}
         >
           {dots}
@@ -160,14 +158,19 @@ const Carousel = (props) => {
       </div>
     ),
   };
+
   const decideWhichIdentifierStyle = () => {
-    //! don't try to understand this algorithm, I barely understand it for myself; BUT IT WOKRS as intended
+    //! don't try to understand this algorithm, I barely understand it for myself; BUT IT WOKRS as intended :D:D
     const dotWidth = 14;
     const dotMargin = 10;
+    const dotHalfWidth = dotWidth / 2; // for centering
     const totalWidthLeft =
-      [Math.round(slides.length) * (dotWidth + dotMargin) - dotMargin] - [index * (dotWidth + dotMargin)] - 7;
+      [Math.round(slides.length) * (dotWidth + dotMargin) - dotMargin] -
+      [index * (dotWidth + dotMargin)] -
+      dotHalfWidth;
 
-    const totalWidthRight = [Math.round(slides.length + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - 7;
+    const totalWidthRight =
+      [Math.round(slides.length + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
 
     objRef.current.widthLeft = totalWidthLeft;
     objRef.current.widthRight = totalWidthRight;
@@ -182,7 +185,9 @@ const Carousel = (props) => {
   const renderSlides = () => {
     return slides.map((slide, index) => {
       const { url, title, subtitle, description } = slide;
-      return <CarouselItem index={slide.id} title={title} subtitle={subtitle} description={description} url={url} />;
+      return (
+        <CarouselItem key={index} index={index} title={title} subtitle={subtitle} description={description} url={url} />
+      );
     });
   };
 

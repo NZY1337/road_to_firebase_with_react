@@ -18,11 +18,17 @@
     - now ./App.js will be exported with withAuthentication HOC - every component within App.js
     will consume the authUser from AuthUserContext;
 
-[1,2,3,4,5];
-[2,3,4,5,1];
-[2,4,3,1,5]
+https://reactjsexample.com/tag/images/
 
-- two times in a row with the same indexes;
-- on Load send first item's index to LS;
-- on rerender check the first item's id and comppare to the current first item's id
-- if the same swap their pos again [arr[first], arr[second]] = [arr[second], arr[first]];
+// GSAP
+// https://codepen.io/GreenSock/pen/obdMzZ
+// https://codepen.io/GreenSock/pen/lEiAv
+// https://codepen.io/GreenSock/pen/EqCtL
+// https://greensock.com/react/
+
+// currentTarget vs target
+// https://www.youtube.com/watch?v=M23X3zzIawA
+// https://www.youtube.com/watch?v=GvyHQi69gqM
+// https://github.com/mui-org/material-ui/issues/5085
+// https://codesandbox.io/s/react-quilljsbasic-wm0uk?file=/src/App.js
+// https://www.carlrippon.com/event-target-v-current-target/

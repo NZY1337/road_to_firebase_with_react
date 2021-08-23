@@ -71,7 +71,7 @@ const AboutUsPreview = () => {
   //   https://usefulangle.com/post/113/javascript-detecting-element-visible-during-scroll
 
   return (
-    <Container maxWidth="xl" disableGutters className={classes.root} ref={parentEl}>
+    <Container maxWidth={false} disableGutters className={classes.root} ref={parentEl}>
       <Grid container justify="flex-end" alignItems="center" style={{ height: "100%" }}>
         <Grid
           item

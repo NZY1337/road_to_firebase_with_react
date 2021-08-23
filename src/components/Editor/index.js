@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 // uuid generates uniq keys for firebase-storage to get a ref for the uploaded files
 import { v4 as uuidv4 } from "uuid";
@@ -16,31 +16,18 @@ import Button from "@material-ui/core/Button";
 import { withFirebase } from "../Firebase";
 import Grid from "@material-ui/core/Grid";
 import HeaderContainer from "../Blog/HeaderContainer";
+import { SnackBarContext } from "../../utils/SnackBarContext";
 
 // Editor Preview
 import EditorPreview from "./editorPreview";
-
 import editorModules from "./quillModules";
-
 Quill.register("modules/imageResize", ImageResize);
 
-// GSAP
-// https://codepen.io/GreenSock/pen/obdMzZ
-// https://codepen.io/GreenSock/pen/lEiAv
-// https://codepen.io/GreenSock/pen/EqCtL
-// https://greensock.com/react/
-
-// currentTarget vs target
-// https://www.youtube.com/watch?v=M23X3zzIawA
-// https://www.youtube.com/watch?v=GvyHQi69gqM
-// https://github.com/mui-org/material-ui/issues/5085
-// https://codesandbox.io/s/react-quilljsbasic-wm0uk?file=/src/App.js
-// https://www.carlrippon.com/event-target-v-current-target/
-
 const url =
-  "https://images.pexels.com/photos/2501965/pexels-photo-2501965.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
+  "https://images.pexels.com/photos/323645/pexels-photo-323645.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
 
 class Editor extends React.Component {
+  static contextType = SnackBarContext;
   constructor(props) {
     super(props);
 
@@ -70,6 +57,7 @@ class Editor extends React.Component {
   handeUploadCoverImage = async (file) => {
     const { uniqueStorageId, category } = this.state.content;
     const { storage } = this.props.firebase;
+    const { handleOpen } = this.context;
 
     // this.uniqueStorageId - first time submitting the post cover
     // uniqueStorageId - when the post is edited - from state
@@ -83,14 +71,14 @@ class Editor extends React.Component {
     try {
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
-      console.log(downloadUrl);
       const content = { ...this.state.content };
       content.cover = downloadUrl;
+      handleOpen("success", "Article's Post Cover uploaded successfully!");
       content.uniqueStorageId = content.uniqueStorageId ? content.uniqueStorageId : this.uniqueStorageId;
       this.setState({ imgUploaded: true });
       this.setState({ content });
-    } catch (err) {
-      console.log(err);
+    } catch ({ message }) {
+      handleOpen("error", message);
     }
   };
 
@@ -100,7 +88,7 @@ class Editor extends React.Component {
         when uploading content images for editor we asume that we already have generated our Unique ID;
         because first we upload cover(immediately generates the UNIQUE_ID) then content
     */
-
+    const { handleOpen } = this.context;
     const { storage } = this.props.firebase;
     const { uniqueStorageId, category } = this.state.content;
 
@@ -111,27 +99,41 @@ class Editor extends React.Component {
     try {
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
+      handleOpen("success", "Article's Image uploaded successfully!");
 
       return downloadUrl;
-    } catch (err) {
-      console.log(err);
+    } catch ({ message }) {
+      handleOpen("error", message);
     }
   };
 
   handleAddPost = async () => {
     //! unmounting firebase events when component mountsoff
-
+    const { handleOpen } = this.context;
     const postRef = this.props.firebase.db.ref(`${this.state.content.category}`);
 
     if (this.postId) {
-      postRef.child(`${this.postId}`).update(this.state.content);
+      postRef
+        .child(`${this.postId}`)
+        .update(this.state.content)
+        .then(() => {
+          handleOpen("success", "Post updated successfully!");
+          this.props.history.push(`/${this.state.content.category}`);
+        })
+        .catch(({ message }) => {
+          handleOpen("error", message);
+        });
     } else {
-      postRef.push(this.state.content).then((snap) => {
-        console.log(snap.key);
-      });
+      postRef
+        .push(this.state.content)
+        .then(() => {
+          handleOpen("success", "Post created successfully!");
+          this.props.history.push(`/${this.state.content.category}`);
+        })
+        .catch(({ message }) => {
+          handleOpen("error", message);
+        });
     }
-
-    this.props.history.push(`/${this.state.content.category}`);
   };
 
   fetchPost = () => {

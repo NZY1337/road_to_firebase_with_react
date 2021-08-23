@@ -16,7 +16,7 @@ const AboutUsFacts = ({
   handleDeleteDataFromDb,
 }) => {
   return (
-    <Grid md={6} style={{ padding: "1rem" }} className={`about-us-facts ${classes.aboutUsContent}`}>
+    <Grid key={ID} md={6} style={{ padding: "1rem" }} className={`about-us-facts ${classes.aboutUsContent}`}>
       <RandomTitle title={title}>
         <Typography
           color="secondary"

@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Container, Grid } from "@material-ui/core";
-import { Link } from "react-router-dom";
 
 const CarouselItem = ({ index, url, title, subtitle, description }) => {
+  console.log(typeof index);
   return (
-    <div key={index} className="backImg" style={{ backgroundImage: `url(${url})` }}>
+    <div className="backImg" style={{ backgroundImage: `url(${url})` }}>
       <Container maxWidth="lg">
         <Grid container direction="column" justify="center" style={{ height: "100vh" }}>
           <Grid item md={8} data-number={`0.${index + 1}`} className="carousel-info">

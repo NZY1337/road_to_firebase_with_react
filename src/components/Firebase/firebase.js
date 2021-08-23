@@ -34,7 +34,7 @@ class Firebase {
   doSignOut = () => {
     return this.auth
       .signOut()
-      .then((asd) => {
+      .then(() => {
         console.log("logged out");
         console.log(this.auth.currentUser);
       })
