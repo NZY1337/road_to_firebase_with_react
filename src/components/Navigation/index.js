@@ -32,7 +32,7 @@ const profilePic = {
 const useStyles = makeStyles((theme) => ({
   bgClass1: {
     "&.MuiPaper-root": {
-      backgroundColor: "rgba(0,0,0, .8)",
+      backgroundColor: "rgba(0,0,0, 1)",
       transition: "background-color .5s",
     },
   },
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
   header: {
     "&.MuiPaper-root": {
-      padding: ".5rem",
+      padding: "1rem",
     },
 
     "& a": {
@@ -165,13 +165,13 @@ const Navigation = ({ firebase }) => {
         >
           <Container>
             <Grid container xs={11} alignItems="center" justify="space-between">
-              <Grid item md={2}>
+              <Grid item md={1}>
                 <h1 className={classes.logo} style={{ color: "aqua" }}>
                   R
                 </h1>
               </Grid>
 
-              <Grid item style={{ display: "flex", justifyContent: "center" }} xs={12} md={8}>
+              <Grid item style={{ display: "flex", justifyContent: "center" }} xs={12} md={10}>
                 {authuser && authMenu()}
                 {nonAuthMenu()}
 
@@ -184,11 +184,11 @@ const Navigation = ({ firebase }) => {
 
               <Grid
                 item
-                md={2}
+                md={1}
                 style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center" }}
               >
                 <Popover toggleButton={<ToggleButton />} />
-                <SetProfile firebase={firebase} authUser={authuser} />
+                {/* <SetProfile firebase={firebase} authUser={authuser} /> */}
               </Grid>
             </Grid>
           </Container>

@@ -54,7 +54,7 @@ class Editor extends React.Component {
   }
 
   //! to STORAGE
-  handeUploadCoverImage = async (file) => {
+  handleUploadCoverImage = async (file) => {
     const { uniqueStorageId, category } = this.state.content;
     const { storage } = this.props.firebase;
     const { handleOpen } = this.context;
@@ -62,20 +62,21 @@ class Editor extends React.Component {
     // this.uniqueStorageId - first time submitting the post cover
     // uniqueStorageId - when the post is edited - from state
 
-    const decideWhereToPlaceFile = this.postId ? uniqueStorageId : this.uniqueStorageId;
+    const decideCoverLocation = this.postId ? uniqueStorageId : this.uniqueStorageId;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${decideWhereToPlaceFile}/images/cover/cover.jpg`)
-      : storage.ref(`${category}/${decideWhereToPlaceFile}/images`).child("cover/cover.jpg");
+      ? storage.ref(`${category}/${decideCoverLocation}/images/cover/cover.jpg`)
+      : storage.ref(`${category}/${decideCoverLocation}/images`).child("cover/cover.jpg");
 
     try {
+      this.setState({ imgUploaded: true });
       const imgState = await imgRef.put(file);
       const downloadUrl = await imgState.ref.getDownloadURL();
       const content = { ...this.state.content };
       content.cover = downloadUrl;
       handleOpen("success", "Article's Post Cover uploaded successfully!");
       content.uniqueStorageId = content.uniqueStorageId ? content.uniqueStorageId : this.uniqueStorageId;
-      this.setState({ imgUploaded: true });
+      this.setState({ imgUploaded: false });
       this.setState({ content });
     } catch ({ message }) {
       handleOpen("error", message);
@@ -156,7 +157,7 @@ class Editor extends React.Component {
 
     if (e.currentTarget.type === "file") {
       content.cover = e.currentTarget.files[0];
-      this.handeUploadCoverImage(e.currentTarget.files[0]);
+      this.handleUploadCoverImage(e.currentTarget.files[0]);
     } else {
       content[e.target.name] = e.target.value;
     }
@@ -230,13 +231,14 @@ class Editor extends React.Component {
     });
   }
 
-  //   componentDidUpdate(prevProps, prevState) {
-  //     console.log(prevState.content.category);
-  //     console.log(this.state.content.category);
-  //   }
-
   render() {
-    const { content, imgUploaded } = this.state;
+    const {
+      content,
+      imgUploaded,
+      content: {
+        cover: { name: imgCoverName },
+      },
+    } = this.state;
     const { title, description, cover, editorContent } = this.state.content;
     const Quill_JS = editorModules.bind(this)();
     const disabled = title === "" || description === "" || cover === "" || editorContent === "";
@@ -250,11 +252,10 @@ class Editor extends React.Component {
           <EditorPreview
             onHandlePostPreview={this.onHandlePostPreview}
             imgUploaded={imgUploaded}
+            imgCoverName={imgCoverName}
             post={this.state.content}
             postId={this.postId}
           />
-
-          {this.state.content.cover && <p>{this.state.content.cover.name}</p>}
 
           <Grid container direction="row" justify="space-between" alignItems="flex-start">
             <Grid xs={12} item>

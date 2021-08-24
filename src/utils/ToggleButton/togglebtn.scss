@@ -48,6 +48,7 @@ div.bars {
     -ms-transform: rotate(45deg) translate(4px, 8px);
     -webkit-transform: rotate(45deg) translate(4px, 8px);
     transform: rotate(45deg) translate(4px, 8px);
+    background-color: aqua;
   }
 
   & .bar2 {
@@ -60,5 +61,6 @@ div.bars {
     -ms-transform: rotate(-45deg) translate(2px, -6px);
     -webkit-transform: rotate(-45deg) translate(2px, -6px);
     transform: rotate(-45deg) translate(2px, -6px);
+    background-color: aqua;
   }
 }
