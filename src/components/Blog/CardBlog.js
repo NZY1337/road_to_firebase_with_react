@@ -198,6 +198,10 @@ const CardBlog = ({
             image={post.cover} //!source - source drops an error
             title="Contemplative Reptile"
           />
+          {/* <video style={{ objectFit: "cover", width: "100%", height: "auto" }}>
+            {post.cover && <source src={post.cover} type="video/mp4" />}
+            Your browser does not support the video tag.
+          </video> */}
 
           <CardContent className={classes.cardContent}>
             <div className="cardcontent-summary">

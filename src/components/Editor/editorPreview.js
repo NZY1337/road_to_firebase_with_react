@@ -25,7 +25,7 @@ const currencies = [
 
 // cover, title, description
 
-const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, postId, imgCoverName }) => {
+const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName }) => {
   const { title, description, category, cover } = post;
   const disabled = title === "" || description === "";
 
@@ -78,19 +78,28 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, postId, imgCove
             ))}
           </TextField>
 
-          <Typography gutterBottom={true} variant="h6" color="secondary">
-            {!imgUploaded && "Upload Your Post Cover"}
-            {imgUploaded && `${imgCoverName} being uploaded...`}
-            {imgUploaded && <CircularProgress color="secondary" size={20} />}
-          </Typography>
-          <Typography>
-            {post.cover && <img src={post.cover} style={{ width: "300px", height: "300px", objectFit: "cover" }} />}
-          </Typography>
+          <div>
+            <Typography gutterBottom={true} variant="h6" color="secondary">
+              {!imgUploaded && "Upload Your Post Cover"}
+              {imgUploaded && `${imgCoverName} being uploaded...`}
+              {imgUploaded && <CircularProgress color="secondary" size={20} />}
+            </Typography>
 
-          <Button style={{ marginBottom: "1rem" }} disabled={disabled} variant="contained" component="label">
-            Blog Cover
-            <input type="file" name="cover" onChange={(e) => onHandlePostPreview(e)} hidden />
-          </Button>
+            <Typography>
+              {post.cover && <img src={post.cover} style={{ height: "300px", objectFit: "cover" }} />}
+            </Typography>
+
+            <Button style={{ marginBottom: "1rem" }} disabled={disabled} variant="contained" component="label">
+              Blog Cover
+              <input
+                type="file"
+                accept="file_extension|audio/*|video/*|image/*|media_type"
+                name="cover"
+                onChange={(e) => onHandlePostPreview(e)}
+                hidden
+              />
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </>

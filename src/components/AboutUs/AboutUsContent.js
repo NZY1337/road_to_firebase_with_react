@@ -12,7 +12,6 @@ const url =
 export default function AboutUsContent({ classes, renderDataToUx }) {
   const { picDescription, picDescriptionContainer, aboutUsContainer, designImg } = classes;
   return (
-      
     <Container maxWidth="xl" className={aboutUsContainer}>
       <Container maxWidth="xl" style={{ marginTop: "5rem" }}>
         <Grid container justify="space-between">
@@ -46,7 +45,7 @@ export default function AboutUsContent({ classes, renderDataToUx }) {
                     background: "linear-gradient(#eee, gray)",
                     backgroundClip: "border-box",
                     webkitBackgroundClip: "text",
-                    webkitTextFillColor: "transparent",
+                    WebkitTextFillColor: "transparent",
                     fontStyle: "italic",
                   }}
                 >

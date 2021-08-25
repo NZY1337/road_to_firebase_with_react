@@ -46,6 +46,7 @@ class Editor extends React.Component {
         description: "",
         cover: "",
         title: "",
+        video: "",
         uniqueStorageId: "",
         createdAt: new Date().toISOString().split("T")[0],
       },
@@ -55,6 +56,12 @@ class Editor extends React.Component {
 
   //! to STORAGE
   handleUploadCoverImage = async (file) => {
+    const content = { ...this.state.content };
+    content.cover = file;
+    this.setState({ content });
+  };
+
+  handleAddCoverToFB = async (file) => {
     const { uniqueStorageId, category } = this.state.content;
     const { storage } = this.props.firebase;
     const { handleOpen } = this.context;
@@ -65,8 +72,8 @@ class Editor extends React.Component {
     const decideCoverLocation = this.postId ? uniqueStorageId : this.uniqueStorageId;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${decideCoverLocation}/images/cover/cover.jpg`)
-      : storage.ref(`${category}/${decideCoverLocation}/images`).child("cover/cover.jpg");
+      ? storage.ref(`${category}/${decideCoverLocation}/images/cover/${file.name}`)
+      : storage.ref(`${category}/${decideCoverLocation}/images`).child(`cover/${file.name}`);
 
     try {
       this.setState({ imgUploaded: true });
@@ -76,33 +83,7 @@ class Editor extends React.Component {
       content.cover = downloadUrl;
       handleOpen("success", "Article's Post Cover uploaded successfully!");
       content.uniqueStorageId = content.uniqueStorageId ? content.uniqueStorageId : this.uniqueStorageId;
-      this.setState({ imgUploaded: false });
-      this.setState({ content });
-    } catch ({ message }) {
-      handleOpen("error", message);
-    }
-  };
-
-  //! to STORAGE
-  handleUploadContentEditorImage = async (file) => {
-    /*  
-        when uploading content images for editor we asume that we already have generated our Unique ID;
-        because first we upload cover(immediately generates the UNIQUE_ID) then content
-    */
-    const { handleOpen } = this.context;
-    const { storage } = this.props.firebase;
-    const { uniqueStorageId, category } = this.state.content;
-
-    const imgRef = this.postId
-      ? storage.ref(`${category}/${uniqueStorageId}/images/content/${file.name}`)
-      : storage.ref(`${category}/${uniqueStorageId}/images/content`).child(`${file.name}`);
-
-    try {
-      const imgState = await imgRef.put(file);
-      const downloadUrl = await imgState.ref.getDownloadURL();
-      handleOpen("success", "Article's Image uploaded successfully!");
-
-      return downloadUrl;
+      this.setState({ imgUploaded: false, content: content });
     } catch ({ message }) {
       handleOpen("error", message);
     }
@@ -110,6 +91,12 @@ class Editor extends React.Component {
 
   handleAddPost = async () => {
     //! unmounting firebase events when component mountsoff
+
+    if (typeof this.state.content.cover === "object") {
+      // because file accepts a blog image, not the url from DB (url === 'string')
+      await this.handleAddCoverToFB(this.state.content.cover);
+    }
+
     const { handleOpen } = this.context;
     const postRef = this.props.firebase.db.ref(`${this.state.content.category}`);
 
@@ -137,6 +124,32 @@ class Editor extends React.Component {
     }
   };
 
+  //! to STORAGE
+  handleUploadContentEditorImage = async (file) => {
+    /*  
+        when uploading content images for editor we asume that we already have generated our Unique ID;
+        because first we upload cover(immediately generates the UNIQUE_ID) then content
+    */
+    const { handleOpen } = this.context;
+    const { storage } = this.props.firebase;
+    const { uniqueStorageId, category } = this.state.content;
+    const decideCoverLocation = this.postId ? uniqueStorageId : this.uniqueStorageId;
+
+    const imgRef = this.postId
+      ? storage.ref(`${category}/${decideCoverLocation}/images/content/${file.name}`)
+      : storage.ref(`${category}/${decideCoverLocation}/images/content`).child(`${file.name}`);
+
+    try {
+      const imgState = await imgRef.put(file);
+      const downloadUrl = await imgState.ref.getDownloadURL();
+      handleOpen("success", "Article's Image uploaded successfully!");
+
+      return downloadUrl;
+    } catch ({ message }) {
+      handleOpen("error", message);
+    }
+  };
+
   fetchPost = () => {
     const postRef = this.props.firebase.db.ref(`${this.postType}/${this.postId}`);
 
@@ -158,12 +171,14 @@ class Editor extends React.Component {
     if (e.currentTarget.type === "file") {
       content.cover = e.currentTarget.files[0];
       this.handleUploadCoverImage(e.currentTarget.files[0]);
+    } else if (e.currentTarget.type === "video") {
+      content.video = e.currentTarget.files[0];
     } else {
       content[e.target.name] = e.target.value;
     }
 
     this.setState({
-      content: content,
+      content,
     });
   };
 
@@ -247,8 +262,6 @@ class Editor extends React.Component {
       <>
         <HeaderContainer cover={url} height="70vh" title={title ? title : "Create your story"} />
         <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
-          <h1>Editor</h1>
-
           <EditorPreview
             onHandlePostPreview={this.onHandlePostPreview}
             imgUploaded={imgUploaded}

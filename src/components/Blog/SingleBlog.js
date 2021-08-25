@@ -3,6 +3,7 @@ import ReactQuill from "react-quill";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { withFirebase } from "../Firebase";
+import { checkIfUrlIsAnImgOrVideo } from "../../utils/helpers";
 
 import HeaderContainer from "./HeaderContainer";
 
@@ -42,8 +43,6 @@ class SingleBlog extends Component {
     const {
       content: { title, cover, description, editorContent },
     } = this.state;
-
-    console.log(title);
 
     return (
       <>
