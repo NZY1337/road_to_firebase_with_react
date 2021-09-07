@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { checkIfUrlIsAnImgOrVideo } from "../../utils/helpers";
 import VideoPlayer from "../../utils/VideoPlayer";
 
 const h6 = {
@@ -36,29 +35,11 @@ const HeaderContainer = ({ cover, title, description, height, children, flexEnd,
     height: "100%",
   };
 
-  //   const renderVideoIfExists = () => {
-  //     if (cover) {
-  //       const type = checkIfUrlIsAnImgOrVideo(cover);
-
-  //       if (type) {
-  //         return (
-  //           <video style={{ objectFit: "cover", width: "100%", height: "100%" }} autoPlay>
-  //             {cover && <source src={cover} type="video/mp4" />}
-  //           </video>
-  //         );
-  //       } else {
-  //         return null;
-  //       }
-  //     }
-  //   };
-
   return (
     <Container maxWidth={false} style={container1} disableGutters={true}>
-      {/* {renderVideoIfExists()} */}
-      <VideoPlayer url={cover} />
+      <VideoPlayer url={cover} autoPlay={true} controls={false} />
       <Container maxWidth="lg" style={container2}>
         <Grid container item direction="column" justify="center" align="center">
-          {/* <RandomTitle title={title} /> */}
           <Typography component="h2" variant="h2" style={h6}>
             {title}
           </Typography>

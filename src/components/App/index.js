@@ -45,9 +45,9 @@ const App = () => {
           <Route path="/blog/:id/" component={SingleBlog} />
 
           <Route path="/blog" exact component={Blogs} />
-          {/* news */}
-          <Route path="/news/:id/" component={SingleBlog} />
-          <Route path="/news" exact component={Blogs} />
+          {/* portfolio */}
+          <Route path="/portfolio/:id/" component={SingleBlog} />
+          <Route path="/portfolio" exact component={Blogs} />
         </Layout>
       </Router>
     </SnackBarContextProvider>

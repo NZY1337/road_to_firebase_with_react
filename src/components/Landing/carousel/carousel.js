@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { randomIndexBasedOnArrLen } from "../../../utils/helpers";
 import { makeStyles } from "@material-ui/core";
+import { withFirebase } from "../../Firebase/context";
 
 import CarouselItem from "./CarouselItem";
 
@@ -50,91 +51,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Carousel = (props) => {
   const objRef = useRef({
-    widthLeft: null,
-    widthRight: null,
+    widthLeft: 0,
+    widthRight: 0,
   });
 
   const classes = useStyles(objRef.current);
-  const [index, setIndex] = useState(null);
 
-  const [slides, setSlides] = useState([
-    {
-      url: "https://images.pexels.com/photos/7018391/pexels-photo-7018391.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "All Seasons",
-      id: 0,
-      subtitle: "Luxury",
-      description:
-        "The basic write operation through the REST API is PUT. To demonstrate saving data, we'll build a blogging application with posts and users.",
-    },
-
-    {
-      url: "https://images.pexels.com/photos/7018257/pexels-photo-7018257.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-      title: "Focus Club As a FullTime Job",
-      id: 1,
-      subtitle: "Key Binding",
-      description:
-        "So far, Carrie has been delivering chic New Yorker style, Miranda sleek pant looks, and Charlotte elegant (and uptown-worthy) day dresses. All that’s missing is Kim Cattrall in her signature Samantha power suits, and the original",
-    },
-
-    {
-      url: "https://images.pexels.com/photos/337897/pexels-photo-337897.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "All White",
-      id: 2,
-      subtitle: "The Proposal",
-      description:
-        "One of the first pieces we saw make a return was Carrie’s wide, studded black leather belt by Streets Ahead. In the new reboot, Carrie wears it with a pink Carolina Herrera shirtdress and black pumps;",
-    },
-    {
-      url: "https://images.pexels.com/photos/1329711/pexels-photo-1329711.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "Design Factory",
-      id: 3,
-      subtitle: "Interlude",
-      description:
-        "So keep your eyes peeled for even more pieces to be revived, because something tells us Carrie’s 2021 style mantra.",
-    },
-
-    {
-      url: "https://images.pexels.com/photos/3797991/pexels-photo-3797991.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "Blue Lagoon",
-      id: 4,
-      subtitle: "Awesome Bedroom",
-      description:
-        "check stats again... i already wrote chrome is slower beacuse they optimized Math, on all other the bitwise floor and while is faster. ",
-    },
-    {
-      url: "https://images.pexels.com/photos/3044536/pexels-photo-3044536.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "Amanta's Love Affair",
-      id: 5,
-      subtitle: "Out Of Your League",
-      description:
-        "Some solutions on this page aren't reliable (they only partially randomise the array). Other solutions are significantly less efficient. ",
-    },
-
-    {
-      url: "https://images.pexels.com/photos/1029803/pexels-photo-1029803.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "Business Intelectuals",
-      id: 6,
-      subtitle: "My Turn",
-      description: "Checks if the current environment matches a given media query and returns the appropriate value.",
-    },
-
-    {
-      url: "https://images.pexels.com/photos/1770808/pexels-photo-1770808.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "Road To Valhalla",
-      id: 7,
-      subtitle: "Hell's Road",
-      description: "Photo by Jess Loiterton. The best free stock photos & videos shared by talented creators.",
-    },
-
-    {
-      url: "https://images.pexels.com/photos/1738986/pexels-photo-1738986.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      title: "Dark Chambers",
-      id: 8,
-      subtitle: "All Black",
-      description:
-        "We started this opencollective to support the development work of react-slick. One of the core contributor is working full time on this project to fix all the open issues and improving documentation.",
-    },
-  ]);
+  const [index, setIndex] = useState(0);
+  const [posts, setPosts] = useState({});
 
   var settings = {
     dots: true,
@@ -144,54 +68,77 @@ const Carousel = (props) => {
     autoplay: true,
     autoplaySpeed: 5000,
     fade: true,
-    beforeChange: (_, next) => {
-      setIndex(next);
+    postsLen: posts && Object.keys(posts).length,
+    currentIndex: null,
+    beforeChange: (oldIndex, prevIndex) => {
+      setIndex(prevIndex);
+      decideWhichIdentifierStyle(settings.postsLen, prevIndex);
     },
-    appendDots: (dots) => (
-      <div>
-        <ul
-          className={index >= Math.floor(slides.length / 2) ? classes.identifierRight : classes.identifierLeft}
-          style={{ margin: "0 auto", width: "fit-content" }}
-        >
-          {dots}
-        </ul>
-      </div>
-    ),
+
+    appendDots: (dots) => {
+      return (
+        <div>
+          <ul
+            className={index >= Math.floor(settings.postsLen / 2) ? classes.identifierRight : classes.identifierLeft}
+            style={{ margin: "0 auto", width: "fit-content" }}
+          >
+            {dots}
+          </ul>
+        </div>
+      );
+    },
   };
 
-  const decideWhichIdentifierStyle = () => {
-    //! don't try to understand this algorithm, I barely understand it for myself; BUT IT WOKRS as intended :D:D
+  const decideWhichIdentifierStyle = (postsLen, index) => {
     const dotWidth = 14;
     const dotMargin = 10;
     const dotHalfWidth = dotWidth / 2; // for centering
     const totalWidthLeft =
-      [Math.round(slides.length) * (dotWidth + dotMargin) - dotMargin] -
-      [index * (dotWidth + dotMargin)] -
-      dotHalfWidth;
+      [Math.round(postsLen) * (dotWidth + dotMargin) - dotMargin] - [index * (dotWidth + dotMargin)] - dotHalfWidth;
 
     const totalWidthRight =
-      [Math.round(slides.length + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
+      [Math.round(postsLen + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
 
     objRef.current.widthLeft = totalWidthLeft;
     objRef.current.widthRight = totalWidthRight;
   };
 
   useEffect(() => {
-    const randomSlides = randomIndexBasedOnArrLen(slides);
-    setSlides(randomSlides);
-    decideWhichIdentifierStyle();
-  }, [index]);
+    const blogRef = props.firebase.db.ref("blog");
+
+    blogRef.on("value", (snapshot) => {
+      if (snapshot.val() !== null) {
+        let posts = snapshot.val();
+        const randomSlides = randomIndexBasedOnArrLen(posts);
+        setPosts(randomSlides);
+      } else {
+        setPosts({});
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    decideWhichIdentifierStyle(Object.keys(posts).length, index);
+  }, [posts]);
 
   const renderSlides = () => {
-    return slides.map((slide, index) => {
-      const { url, title, subtitle, description } = slide;
+    return Object.keys(posts).map((post, index) => {
+      const { cover, title, subtitle, description } = posts[post];
+
       return (
-        <CarouselItem key={index} index={index} title={title} subtitle={subtitle} description={description} url={url} />
+        <CarouselItem
+          key={index}
+          index={index}
+          title={title}
+          subtitle={subtitle}
+          description={description}
+          url={cover}
+        />
       );
     });
   };
 
-  return <Slider {...settings}>{renderSlides()}</Slider>;
+  return <>{posts && <Slider {...settings}>{renderSlides()}</Slider>}</>;
 };
 
-export default Carousel;
+export default withFirebase(Carousel);

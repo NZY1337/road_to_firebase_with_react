@@ -79,10 +79,19 @@ class Blogs extends Component {
         .catch((err) => console.log(err));
 
       storage
-        .ref(`/${category}/${uniqueStorageId}/images/cover/cover.jpg`)
-        .delete()
-        .then(() => {
-          console.log(`${category} with id: ${uniqueStorageId} Cover Photo Deleted Successfully`);
+        .ref(`/${category}/${uniqueStorageId}/images/cover`)
+        .listAll()
+        .then((res) => {
+          res.items.forEach((itemRef) => {
+            // All the items under listRef.
+            itemRef.getDownloadURL().then((url) => {
+              let pictureRef = storage.refFromURL(url);
+              pictureRef
+                .delete()
+                .then(() => console.log(`${category} with id: ${uniqueStorageId} Cover Photo Deleted Successfully`))
+                .catch((err) => console.log(err));
+            });
+          });
         })
         .catch((err) => {
           console.log(err);

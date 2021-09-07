@@ -4,9 +4,8 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import VideoPlayer from "../../utils/VideoPlayer";
 
 const currencies = [
   {
@@ -14,12 +13,8 @@ const currencies = [
     label: "blog",
   },
   {
-    value: "news",
-    label: "news",
-  },
-  {
-    value: "articles",
-    label: "articles",
+    value: "portfolio",
+    label: "portfolio",
   },
 ];
 
@@ -80,14 +75,13 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName })
 
           <div>
             <Typography gutterBottom={true} variant="h6" color="secondary">
-              {!imgUploaded && "Upload Your Post Cover"}
+              {!imgUploaded & !imgCoverName ? "Upload Your Post Cover" : imgCoverName}
+
               {imgUploaded && `${imgCoverName} being uploaded...`}
               {imgUploaded && <CircularProgress color="secondary" size={20} />}
             </Typography>
 
-            <Typography>
-              {post.cover && <img src={post.cover} style={{ height: "300px", objectFit: "cover" }} />}
-            </Typography>
+            <VideoPlayer url={post.cover} controls={false} autoPlay={false} location="editor" />
 
             <Button style={{ marginBottom: "1rem" }} disabled={disabled} variant="contained" component="label">
               Blog Cover

@@ -16,6 +16,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
 import logo from "../../assets/images/beadesignful-logo.png";
+import VideoPlayer from "../../utils/VideoPlayer";
 
 // material-ui CSS
 import { makeStyles } from "@material-ui/core/styles";
@@ -139,7 +140,6 @@ const CardBlog = ({
   const visibility = user ? "block" : "none";
 
   const source = useLazyLoading(post);
-
   const classes = useStyles();
 
   return (
@@ -197,11 +197,9 @@ const CardBlog = ({
             className={`${classes.cardMedia} ${source == null && classes.myAnimation}`}
             image={post.cover} //!source - source drops an error
             title="Contemplative Reptile"
-          />
-          {/* <video style={{ objectFit: "cover", width: "100%", height: "auto" }}>
-            {post.cover && <source src={post.cover} type="video/mp4" />}
-            Your browser does not support the video tag.
-          </video> */}
+          >
+            <VideoPlayer url={post.cover} autoPlay={false} controls={false} />
+          </CardMedia>
 
           <CardContent className={classes.cardContent}>
             <div className="cardcontent-summary">
