@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
       "&::after": {
         position: "absolute",
         content: "''",
-        width: (width) => width.widthLeft,
+        width: (w) => Number(w.widthLeft),
         height: "10px",
         top: "-20px",
         bottom: 0,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       "&::after": {
         position: "absolute",
         content: "''",
-        width: (w) => w.widthRight,
+        width: (w) => Number(w.widthRight),
         height: "10px",
         top: "-20px",
         bottom: 0,
@@ -50,12 +50,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Carousel = (props) => {
-  const objRef = useRef({
+  const [width, setWidth] = useState({
     widthLeft: 0,
     widthRight: 0,
   });
 
-  const classes = useStyles(objRef.current);
+  const classes = useStyles(width);
 
   const [index, setIndex] = useState(0);
   const [posts, setPosts] = useState({});
@@ -65,7 +65,7 @@ const Carousel = (props) => {
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 5000,
     fade: true,
     postsLen: posts && Object.keys(posts).length,
@@ -99,8 +99,11 @@ const Carousel = (props) => {
     const totalWidthRight =
       [Math.round(postsLen + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
 
-    objRef.current.widthLeft = totalWidthLeft;
-    objRef.current.widthRight = totalWidthRight;
+    setWidth((prevState) => ({
+      ...prevState,
+      widthLeft: totalWidthLeft,
+      widthRight: totalWidthRight,
+    }));
   };
 
   useEffect(() => {
@@ -111,15 +114,12 @@ const Carousel = (props) => {
         let posts = snapshot.val();
         const randomSlides = randomIndexBasedOnArrLen(posts);
         setPosts(randomSlides);
+        decideWhichIdentifierStyle(Object.keys(posts).length, index);
       } else {
         setPosts({});
       }
     });
   }, []);
-
-  useEffect(() => {
-    decideWhichIdentifierStyle(Object.keys(posts).length, index);
-  }, [posts]);
 
   const renderSlides = () => {
     return Object.keys(posts).map((post, index) => {
@@ -132,7 +132,7 @@ const Carousel = (props) => {
           title={title}
           subtitle={subtitle}
           description={description}
-          url={cover}
+          //   url={cover}
         />
       );
     });
