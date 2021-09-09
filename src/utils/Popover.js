@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Popover from "@material-ui/core/Popover";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import Categories from "../components/Blog/categories";
 import ToggleButton from "./ToggleButton/ToggleButton";
 
 import "../assets/scss/toggleCategories.scss";
@@ -58,14 +58,7 @@ export default function SimplePopover() {
         }}
       >
         <Typography className={classes.typography}>
-          <ul style={{ listStyle: "none" }} className={`menu-categories`}>
-            <li className="a-c1">Abstract</li>
-            <li className="a-c2">Daylife</li>
-            <li className="a-c3">Baroc</li>
-            <li className="a-c4">Dynamic</li>
-            <li className="a-c5">Pastel</li>
-            <li className="a-c6">Sportiv</li>
-          </ul>
+          <Categories />
         </Typography>
       </Popover>
     </div>

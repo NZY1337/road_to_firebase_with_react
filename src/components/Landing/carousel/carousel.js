@@ -96,7 +96,7 @@ const Carousel = (props) => {
     const dotMargin = 10;
     const dotHalfWidth = dotWidth / 2; // for centering
     const totalWidthLeft =
-      [Math.round(postsLen) * (dotWidth + dotMargin) - dotMargin] - [index * (dotWidth + dotMargin)] - dotHalfWidth;
+      [Math.round(postsLen) * (dotWidth + dotMargin) - dotMargin] - [index * (dotWidth + dotMargin)] - dotHalfWidth * 2;
 
     const totalWidthRight =
       [Math.round(postsLen + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
@@ -127,13 +127,15 @@ const Carousel = (props) => {
   }, []);
 
   const renderSlides = () => {
-    return Object.keys(posts).map((post, index) => {
-      const { cover, title, subtitle, description } = posts[post];
+    return Object.keys(posts).map((id, index) => {
+      const { cover, title, subtitle, description, category } = posts[id];
 
       return (
         <CarouselItem
           key={index}
+          category={category}
           index={index}
+          blogId={id}
           title={title}
           subtitle={subtitle}
           description={description}

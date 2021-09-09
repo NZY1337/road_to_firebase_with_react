@@ -31,7 +31,6 @@ const App = () => {
           <Route exact path={ROUTES.LANDING} component={LandingPage} />
           <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          {/* <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} /> */}
           <Route path={ROUTES.HOME} component={HomePage} />
           <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
@@ -42,7 +41,7 @@ const App = () => {
 
           {/* blog */}
           <Route path="/edit/:type/:id" component={Editor} />
-          <Route path="/blog/:id/" component={SingleBlog} />
+          <Route path="/blog/:id/:postTitle" component={SingleBlog} />
 
           <Route path="/blog" exact component={Blogs} />
           {/* portfolio */}

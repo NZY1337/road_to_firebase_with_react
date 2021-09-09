@@ -48,6 +48,7 @@ class Editor extends React.Component {
         title: "",
         video: "",
         uniqueStorageId: "",
+        postViews: 0,
         createdAt: new Date().toISOString().split("T")[0],
       },
       user: null,

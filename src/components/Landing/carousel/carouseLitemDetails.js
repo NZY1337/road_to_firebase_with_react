@@ -2,8 +2,10 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
-export default function CarouseLitemDetails({ title, subtitle, description, index, carouselInfo }) {
+export default function CarouseLitemDetails({ title, subtitle, description, index, carouselInfo, category, blogId }) {
+  const postTitle = title.split(" ").join("-").toLowerCase();
   return (
     <Container maxWidth="lg">
       <Grid container direction="column" justify="center" style={{ height: "100vh" }}>
@@ -12,9 +14,11 @@ export default function CarouseLitemDetails({ title, subtitle, description, inde
           <h2 style={{ margin: 0 }}>{subtitle}</h2>
           <p>{description}</p>
 
-          <Button size="small" href="https://google.com" target="_blank" color="default" variant="contained">
-            Read More
-          </Button>
+          <Link to={`${category}/${blogId}/${postTitle}`}>
+            <Button size="small" href="https://google.com" target="_blank" color="default" variant="contained">
+              Read More
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </Container>

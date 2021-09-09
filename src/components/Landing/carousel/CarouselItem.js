@@ -2,28 +2,19 @@ import React from "react";
 import CarouseLitemDetails from "./carouseLitemDetails";
 import { makeStyles } from "@material-ui/core";
 
-// .carousel-info {
-
-//     a {
-//       margin-top: 1rem;
-//     }
-
-//     p {
-//       color: #fff;
-//       margin-top: 2rem;
-//     }
-
-//     h2 {
-//       // font-family: "Playfair Display", serif;
-//       font-style: italic;
-//       color: aqua;
-//     }
-//   }
-
 const useStyles = makeStyles((theme) => ({
   videoWrapper: {
     position: "relative",
     height: "100vh",
+
+    "& h1": {
+      color: "#fff",
+      fontSize: "3rem",
+    },
+
+    "& h2": {
+      fontSize: "2rem",
+    },
 
     "& video": {
       width: "100%",
@@ -115,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CarouselItem = ({ index, url, title, subtitle, description }) => {
+const CarouselItem = ({ index, url, title, subtitle, description, category, blogId }) => {
   const classes = useStyles();
   const { carouselInfo } = classes;
 
@@ -147,6 +138,8 @@ const CarouselItem = ({ index, url, title, subtitle, description }) => {
             description={description}
             subtitle={subtitle}
             carouselInfo={carouselInfo}
+            category={category}
+            blogId={blogId}
           />
         </div>
       );

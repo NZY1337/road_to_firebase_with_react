@@ -3,7 +3,6 @@ import ReactQuill from "react-quill";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { withFirebase } from "../Firebase";
-import { checkIfUrlIsAnImgOrVideo } from "../../utils/helpers";
 
 import HeaderContainer from "./HeaderContainer";
 
@@ -27,16 +26,24 @@ class SingleBlog extends Component {
     postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
         let content = snapshot.val();
-
         this.setState({
-          content: content,
+          content,
         });
       }
     });
   };
 
+  updatePostViewCounter = () => {
+    const postRef = this.props.firebase.db.ref(`${this.postType}/${this.userId}/postViews`);
+
+    postRef.transaction((views) => {
+      return views + 1;
+    });
+  };
+
   componentDidMount() {
     this.fetchPost();
+    this.updatePostViewCounter();
   }
 
   render() {
@@ -52,6 +59,7 @@ class SingleBlog extends Component {
           <Grid container>
             <Grid item md={2}>
               <SocialShare />
+              {this.state.content.postViews}
             </Grid>
             <Grid item md={9}>
               <ReactQuill value={editorContent || ""} theme="bubble" readOnly />
