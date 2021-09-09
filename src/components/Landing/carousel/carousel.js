@@ -55,9 +55,10 @@ const Carousel = (props) => {
     widthRight: 0,
   });
 
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
   const classes = useStyles(width);
 
-  const [index, setIndex] = useState(0);
   const [posts, setPosts] = useState({});
 
   var settings = {
@@ -70,16 +71,17 @@ const Carousel = (props) => {
     fade: true,
     postsLen: posts && Object.keys(posts).length,
     currentIndex: null,
-    beforeChange: (oldIndex, prevIndex) => {
-      setIndex(prevIndex);
-      decideWhichIdentifierStyle(settings.postsLen, prevIndex);
+    beforeChange: (_, prevIndex) => {
+      setCarouselIndex(prevIndex);
     },
 
     appendDots: (dots) => {
       return (
         <div>
           <ul
-            className={index >= Math.floor(settings.postsLen / 2) ? classes.identifierRight : classes.identifierLeft}
+            className={
+              carouselIndex >= Math.floor(settings.postsLen / 2) ? classes.identifierRight : classes.identifierLeft
+            }
             style={{ margin: "0 auto", width: "fit-content" }}
           >
             {dots}
@@ -89,7 +91,7 @@ const Carousel = (props) => {
     },
   };
 
-  const decideWhichIdentifierStyle = (postsLen, index) => {
+  const changeDivPosition = (postsLen, index) => {
     const dotWidth = 14;
     const dotMargin = 10;
     const dotHalfWidth = dotWidth / 2; // for centering
@@ -107,6 +109,10 @@ const Carousel = (props) => {
   };
 
   useEffect(() => {
+    changeDivPosition(Object.keys(posts).length, carouselIndex);
+  }, [carouselIndex, posts]);
+
+  useEffect(() => {
     const blogRef = props.firebase.db.ref("blog");
 
     blogRef.on("value", (snapshot) => {
@@ -114,7 +120,6 @@ const Carousel = (props) => {
         let posts = snapshot.val();
         const randomSlides = randomIndexBasedOnArrLen(posts);
         setPosts(randomSlides);
-        decideWhichIdentifierStyle(Object.keys(posts).length, index);
       } else {
         setPosts({});
       }
@@ -132,7 +137,7 @@ const Carousel = (props) => {
           title={title}
           subtitle={subtitle}
           description={description}
-          //   url={cover}
+          url={cover}
         />
       );
     });
