@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { randomIndexBasedOnArrLen } from "../../../utils/helpers";
 import { makeStyles } from "@material-ui/core";
 import { withFirebase } from "../../Firebase/context";
-
+import Skeleton from "react-loading-skeleton";
 import CarouselItem from "./CarouselItem";
 
 import "../styles.scss";
@@ -59,7 +59,7 @@ const Carousel = (props) => {
 
   const classes = useStyles(width);
 
-  const [posts, setPosts] = useState({});
+  const [posts, setPosts] = useState(null);
 
   var settings = {
     dots: true,
@@ -109,7 +109,7 @@ const Carousel = (props) => {
   };
 
   useEffect(() => {
-    changeDivPosition(Object.keys(posts).length, carouselIndex);
+    posts && changeDivPosition(Object.keys(posts).length, carouselIndex);
   }, [carouselIndex, posts]);
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const Carousel = (props) => {
         const randomSlides = randomIndexBasedOnArrLen(posts);
         setPosts(randomSlides);
       } else {
-        setPosts({});
+        setPosts(null);
       }
     });
   }, []);
@@ -145,7 +145,12 @@ const Carousel = (props) => {
     });
   };
 
-  return <>{posts && <Slider {...settings}>{renderSlides()}</Slider>}</>;
+  return (
+    <div style={{ height: "100vh", background: "black" }}>
+      {posts && <Slider {...settings}>{renderSlides()}</Slider>}
+      {!posts && <Skeleton width="100%" height="100vh" count={1} delay={1} />}
+    </div>
+  );
 };
 
 export default withFirebase(Carousel);

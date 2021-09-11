@@ -131,7 +131,11 @@ const CarouselItem = ({ index, url, title, subtitle, description, category, blog
       );
     } else {
       return (
-        <div className={classes.carouselBgImg} style={{ backgroundImage: `url(${url})` }}>
+        <div
+          className={classes.carouselBgImg}
+          onLoad={() => console.log("div loaded")}
+          style={{ backgroundImage: `url(${url})` }}
+        >
           <CarouseLitemDetails
             index={index}
             title={title}

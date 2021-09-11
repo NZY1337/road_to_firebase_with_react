@@ -17,14 +17,26 @@ export const randomIndexBasedOnArrLen = (obj) => {
   return newObj;
 };
 
-export const useLazyLoading = (data) => {
+export const UseLazyLoading = (data) => {
   const [source, setSource] = useState(null);
+  const [source2, setSource2] = useState(false);
 
   useEffect(() => {
-    const img = new Image();
-    img.src = data.cover;
-    img.onload = () => setSource(data.cover);
+    if (data.cover.includes(".mp4")) {
+      const video = document.createElement("video");
+      video.src = data.cover;
+
+      video.onloadeddata = () => {
+        setSource2(true);
+      };
+    } else {
+      const img = new Image();
+      img.src = data.cover;
+      img.onload = () => {
+        setSource(data.cover);
+      };
+    }
   }, [data.cover]);
 
-  return source;
+  return [source, source2];
 };

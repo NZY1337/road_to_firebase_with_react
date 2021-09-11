@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -20,7 +20,11 @@ import VideoPlayer from "../../utils/VideoPlayer";
 
 // material-ui CSS
 import { makeStyles } from "@material-ui/core/styles";
-import { useLazyLoading } from "../../utils/helpers";
+import { UseLazyLoading } from "../../utils/helpers";
+
+import Skeleton from "react-loading-skeleton";
+
+// conext
 
 /*
     ***********************************************
@@ -139,92 +143,195 @@ const CardBlog = ({
   const postTitle = post.title.split(" ").join("-").toLowerCase();
   const visibility = user ? "block" : "none";
 
-  const source = useLazyLoading(post);
+  const [imgLoaded, videoLoaded] = UseLazyLoading(post);
   const classes = useStyles();
 
   return (
-    <Grid item md={6} lg={3} xs={12}>
-      <Card className={classes.card}>
-        {user && (
-          <>
-            <CardHeader
-              className={classes.cardHeader}
-              avatar={<Avatar src={logo} aria-label="recipe" />}
-              action={
-                <Button
-                  style={{ display: visibility }}
-                  color="secondary"
-                  endIcon={<MoreVertIcon />}
-                  onClick={(e) => {
-                    handleClick(e, id);
-                  }}
+    <>
+      <Grid item md={6} lg={3} xs={12}>
+        {imgLoaded && (
+          <Card className={classes.card}>
+            {user && (
+              <>
+                <CardHeader
+                  className={classes.cardHeader}
+                  avatar={<Avatar src={logo} aria-label="recipe" />}
+                  action={
+                    <Button
+                      style={{ display: visibility }}
+                      color="secondary"
+                      endIcon={<MoreVertIcon />}
+                      onClick={(e) => {
+                        handleClick(e, id);
+                      }}
+                    />
+                  }
+                  title="Razvan Puricescu"
+                  subheader="September 14, 2016"
                 />
-              }
-              title="Razvan Puricescu"
-              subheader="September 14, 2016"
-            />
 
-            <Menu id={id} anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} TransitionComponent={Fade}>
-              <MenuItem onClick={handleClose}>
-                <Link
-                  to={{
-                    pathname: `/edit/${post.category}/${uniquePostId}/`,
-                  }}
-                  color="secondary"
+                <Menu
+                  id={id}
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}
                 >
-                  Edit Post
-                </Link>
-              </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to={{
+                        pathname: `/edit/${post.category}/${uniquePostId}/`,
+                      }}
+                      color="secondary"
+                    >
+                      Edit Post
+                    </Link>
+                  </MenuItem>
 
-              <MenuItem>
-                <Link
-                  to="#"
-                  color="secondary"
-                  onClick={() => {
-                    const uniqueStorageId = posts[uniquePostId].uniqueStorageId;
-                    handleDeletePost(post, uniquePostId, uniqueStorageId);
-                  }}
+                  <MenuItem>
+                    <Link
+                      to="#"
+                      color="secondary"
+                      onClick={() => {
+                        const uniqueStorageId = posts[uniquePostId].uniqueStorageId;
+                        handleDeletePost(post, uniquePostId, uniqueStorageId);
+                      }}
+                    >
+                      Delete Post
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+
+            <CardActionArea>
+              <CardMedia
+                //   className={`${classes.cardMedia} ${source == null && classes.myAnimation}`}
+                className={`${classes.cardMedia}`}
+                image={post.cover} //!source - source drops an error
+                title="Contemplative Reptile"
+              ></CardMedia>
+
+              <CardContent className={classes.cardContent}>
+                <div className="cardcontent-summary">
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {post.title}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {post.title}
+                  </Typography>
+                </div>
+
+                <Button
+                  component={Link}
+                  className="view-more"
+                  to={`${pathname}/${id}/${postTitle}`}
+                  size="small"
+                  variant="outlined"
+                  color="primary"
                 >
-                  Delete Post
-                </Link>
-              </MenuItem>
-            </Menu>
-          </>
+                  Read More
+                </Button>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         )}
 
-        <CardActionArea>
-          <CardMedia
-            className={`${classes.cardMedia} ${source == null && classes.myAnimation}`}
-            image={post.cover} //!source - source drops an error
-            title="Contemplative Reptile"
-          >
-            <VideoPlayer url={post.cover} autoPlay={false} controls={false} />
-          </CardMedia>
+        {videoLoaded && (
+          <Card className={classes.card}>
+            {user && (
+              <>
+                <CardHeader
+                  className={classes.cardHeader}
+                  avatar={<Avatar src={logo} aria-label="recipe" />}
+                  action={
+                    <Button
+                      style={{ display: visibility }}
+                      color="secondary"
+                      endIcon={<MoreVertIcon />}
+                      onClick={(e) => {
+                        handleClick(e, id);
+                      }}
+                    />
+                  }
+                  title="Razvan Puricescu"
+                  subheader="September 14, 2016"
+                />
 
-          <CardContent className={classes.cardContent}>
-            <div className="cardcontent-summary">
-              <Typography gutterBottom variant="h5" component="h2">
-                {post.title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {post.title}
-              </Typography>
-            </div>
+                <Menu
+                  id={id}
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to={{
+                        pathname: `/edit/${post.category}/${uniquePostId}/`,
+                      }}
+                      color="secondary"
+                    >
+                      Edit Post
+                    </Link>
+                  </MenuItem>
 
-            <Button
-              component={Link}
-              className="view-more"
-              to={`${pathname}/${id}/${postTitle}`}
-              size="small"
-              variant="outlined"
-              color="primary"
-            >
-              Read More
-            </Button>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </Grid>
+                  <MenuItem>
+                    <Link
+                      to="#"
+                      color="secondary"
+                      onClick={() => {
+                        const uniqueStorageId = posts[uniquePostId].uniqueStorageId;
+                        handleDeletePost(post, uniquePostId, uniqueStorageId);
+                      }}
+                    >
+                      Delete Post
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+
+            <CardActionArea>
+              <CardMedia
+                className={`${classes.cardMedia}`}
+                image={post.cover} //!source - source drops an error
+                title="Contemplative Reptile"
+              >
+                <VideoPlayer url={post.cover} autoPlay={false} controls={false} />
+              </CardMedia>
+
+              <CardContent className={classes.cardContent}>
+                <div className="cardcontent-summary">
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {post.title}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    {post.title}
+                  </Typography>
+                </div>
+
+                <Button
+                  component={Link}
+                  className="view-more"
+                  to={`${pathname}/${id}/${postTitle}`}
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                >
+                  Read More
+                </Button>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        )}
+
+        {!imgLoaded && !post.cover.includes(".mp4") && <Skeleton width="100%" height="500px" count={1} delay={1} />}
+        {!videoLoaded && post.cover.includes(".mp4") && <Skeleton width="100%" height="500px" count={1} delay={1} />}
+      </Grid>
+    </>
   );
 };
 
