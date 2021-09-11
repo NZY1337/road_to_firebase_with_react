@@ -120,6 +120,7 @@ const Carousel = (props) => {
         let posts = snapshot.val();
         const randomSlides = randomIndexBasedOnArrLen(posts);
         setPosts(randomSlides);
+        setPosts(posts);
       } else {
         setPosts(null);
       }
@@ -128,7 +129,7 @@ const Carousel = (props) => {
 
   const renderSlides = () => {
     return Object.keys(posts).map((id, index) => {
-      const { cover, title, subtitle, description, category } = posts[id];
+      const { cover, title, description, category } = posts[id];
 
       return (
         <CarouselItem
@@ -137,7 +138,6 @@ const Carousel = (props) => {
           index={index}
           blogId={id}
           title={title}
-          subtitle={subtitle}
           description={description}
           url={cover}
         />
@@ -148,7 +148,7 @@ const Carousel = (props) => {
   return (
     <div style={{ height: "100vh", background: "black" }}>
       {posts && <Slider {...settings}>{renderSlides()}</Slider>}
-      {!posts && <Skeleton width="100%" height="100vh" count={1} delay={1} />}
+      {/* {!posts && <Skeleton width="100%" height="100vh" count={1} delay={1} />} */}
     </div>
   );
 };

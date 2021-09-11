@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
   videoWrapper: {
     position: "relative",
     height: "100vh",
+    zIndex: 1,
 
     "& h1": {
       color: "#fff",
@@ -44,17 +45,17 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     backgroundBlendMode: "multiply",
 
-    "&::before": {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      width: "100%",
-      height: "100vh",
-      backgroundColor: "red",
-      zIndex: 1,
-    },
+    // "&::before": {
+    //   position: "absolute",
+    //   top: 0,
+    //   left: 0,
+    //   right: 0,
+    //   bottom: 0,
+    //   width: "100%",
+    //   height: "100vh",
+    //   backgroundColor: "red",
+    //   zIndex: 1,
+    // },
 
     "& h1": {
       color: "#fff",
@@ -125,17 +126,15 @@ const CarouselItem = ({ index, url, title, subtitle, description, category, blog
               description={description}
               subtitle={subtitle}
               carouselInfo={carouselInfo}
+              category={category}
+              blogId={blogId}
             />
           </div>
         </div>
       );
     } else {
       return (
-        <div
-          className={classes.carouselBgImg}
-          onLoad={() => console.log("div loaded")}
-          style={{ backgroundImage: `url(${url})` }}
-        >
+        <div className={classes.carouselBgImg} style={{ backgroundImage: `url(${url})` }}>
           <CarouseLitemDetails
             index={index}
             title={title}
