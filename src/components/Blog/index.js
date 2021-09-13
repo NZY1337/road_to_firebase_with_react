@@ -44,7 +44,7 @@ class Blogs extends Component {
       if (snapshot.val() !== null) {
         let posts = snapshot.val();
         this.setState({
-          posts: posts,
+          posts,
         });
       } else {
         this.setState({

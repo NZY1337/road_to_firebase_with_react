@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CarouselItem = ({ index, url, title, subtitle, description, category, blogId }) => {
+const CarouselItem = ({ index, url, title, subtitle, description, postType, blogId }) => {
   const classes = useStyles();
   const { carouselInfo } = classes;
 
@@ -114,7 +114,7 @@ const CarouselItem = ({ index, url, title, subtitle, description, category, blog
               description={description}
               subtitle={subtitle}
               carouselInfo={carouselInfo}
-              category={category}
+              postType={postType}
               blogId={blogId}
             />
           </div>
@@ -129,7 +129,7 @@ const CarouselItem = ({ index, url, title, subtitle, description, category, blog
             description={description}
             subtitle={subtitle}
             carouselInfo={carouselInfo}
-            category={category}
+            postType={postType}
             blogId={blogId}
           />
         </div>

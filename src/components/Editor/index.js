@@ -92,7 +92,7 @@ class Editor extends React.Component {
   };
 
   handleAddPost = async () => {
-    //! unmounting firebase events when component mountsoff
+    //! unmount firebase events when component unmounts
 
     if (typeof this.state.content.cover === "object") {
       // because file accepts a blog image, not the url from DB (url === 'string')
@@ -253,7 +253,7 @@ class Editor extends React.Component {
       content,
       imgUploaded,
       content: {
-        cover: { name: imgCoverName },
+        cover: { name: coverImgName },
       },
     } = this.state;
     const { title, description, cover, editorContent } = this.state.content;
@@ -267,7 +267,7 @@ class Editor extends React.Component {
           <EditorPreview
             onHandlePostPreview={this.onHandlePostPreview}
             imgUploaded={imgUploaded}
-            imgCoverName={imgCoverName}
+            coverImgName={coverImgName}
             post={this.state.content}
             postId={this.postId}
           />

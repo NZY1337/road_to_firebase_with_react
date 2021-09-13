@@ -4,7 +4,7 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
-export default function CarouseLitemDetails({ title, description, index, carouselInfo, category, blogId }) {
+export default function CarouseLitemDetails({ title, description, index, carouselInfo, postType, blogId }) {
   const postTitle = title.split(" ").join("-").toLowerCase();
 
   return (
@@ -15,7 +15,7 @@ export default function CarouseLitemDetails({ title, description, index, carouse
 
           <p>{description}</p>
 
-          <Link to={`${category}/${blogId}/${postTitle}`}>
+          <Link to={`${postType}/${blogId}/${postTitle}`}>
             <Button size="small" target="_blank" color="default" variant="contained">
               Read More
             </Button>

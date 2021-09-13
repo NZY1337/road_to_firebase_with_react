@@ -129,12 +129,12 @@ const Carousel = (props) => {
 
   const renderSlides = () => {
     return Object.keys(posts).map((id, index) => {
-      const { cover, title, description, category } = posts[id];
+      const { cover, title, description, postType } = posts[id];
 
       return (
         <CarouselItem
           key={index}
-          category={category}
+          postType={postType}
           index={index}
           blogId={id}
           title={title}

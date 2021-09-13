@@ -12,7 +12,6 @@ class SingleBlog extends Component {
   constructor(props) {
     super(props);
 
-    this.postLoaded = false;
     this.postTypeId = this.props.match.params.id;
     this.postType = this.props.location.pathname.split("/")[1];
 
@@ -28,34 +27,28 @@ class SingleBlog extends Component {
       if (snapshot.val() !== null) {
         let content = snapshot.val();
 
-        this.postLoaded &&
-          this.setState({
-            content,
-          });
+        this.setState({
+          content,
+        });
       }
     });
   };
 
   updatePostViewCounter = () => {
-    this.postRefCounter = this.props.firebase.db.ref(`${this.postType}/${this.postTypeId}/postViews`);
+    this.postRefCounter = this.props.firebase.db.ref(`${this.postType}`).child(`${this.postTypeId}`).child("postViews");
 
-    this.postLoaded &&
-      this.postRefCounter.transaction((views) => {
-        return views + 1;
-      });
+    this.postRefCounter.transaction((views) => {
+      return views + 1;
+    });
   };
 
   componentDidMount() {
-    this.postLoaded = true;
-
-    if (this.postLoaded) {
-      this.fetchPost();
-      //   this.updatePostViewCounter();
-    }
+    this.fetchPost();
+    // this.updatePostViewCounter();
   }
 
   componentWillUnmount() {
-    this.postLoaded = false;
+    this.postRef.off("value");
   }
 
   render() {
