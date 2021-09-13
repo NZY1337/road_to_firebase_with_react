@@ -12,7 +12,8 @@ class SingleBlog extends Component {
   constructor(props) {
     super(props);
 
-    this.userId = this.props.match.params.id;
+    this.postLoaded = false;
+    this.postTypeId = this.props.match.params.id;
     this.postType = this.props.location.pathname.split("/")[1];
 
     this.state = {
@@ -21,29 +22,40 @@ class SingleBlog extends Component {
   }
 
   fetchPost = (user) => {
-    const postsRef = this.props.firebase.db.ref(`${this.postType}/${this.userId}`);
+    this.postRef = this.props.firebase.db.ref(`${this.postType}/${this.postTypeId}`);
 
-    postsRef.on("value", (snapshot) => {
+    this.postRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
         let content = snapshot.val();
-        this.setState({
-          content,
-        });
+
+        this.postLoaded &&
+          this.setState({
+            content,
+          });
       }
     });
   };
 
   updatePostViewCounter = () => {
-    const postRef = this.props.firebase.db.ref(`${this.postType}/${this.userId}/postViews`);
+    this.postRefCounter = this.props.firebase.db.ref(`${this.postType}/${this.postTypeId}/postViews`);
 
-    postRef.transaction((views) => {
-      return views + 1;
-    });
+    this.postLoaded &&
+      this.postRefCounter.transaction((views) => {
+        return views + 1;
+      });
   };
 
   componentDidMount() {
-    this.fetchPost();
-    this.updatePostViewCounter();
+    this.postLoaded = true;
+
+    if (this.postLoaded) {
+      this.fetchPost();
+      //   this.updatePostViewCounter();
+    }
+  }
+
+  componentWillUnmount() {
+    this.postLoaded = false;
   }
 
   render() {

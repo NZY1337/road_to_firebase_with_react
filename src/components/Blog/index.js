@@ -13,6 +13,7 @@ class Blogs extends Component {
     super(props);
 
     this.pathname = this.props.location.pathname;
+    console.log(this.pathname);
 
     this.state = {
       posts: {},
@@ -128,7 +129,6 @@ class Blogs extends Component {
         return (
           <CardBlog
             user={user}
-            pathname={this.pathname}
             key={id}
             id={id}
             uniquePostId={uniquePostId}

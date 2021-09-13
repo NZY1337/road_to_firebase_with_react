@@ -8,5 +8,5 @@ export const PASSWORD_FORGET = "/pw-forget";
 export const TODO = "/todos";
 export const EDITOR = "/editor";
 export const BLOGS = "/blog";
-export const PORTFOLIO = "/portfolio";
+export const PORTFOLIO = "/portofoliu";
 export const ABOUT_US = "/about-us";

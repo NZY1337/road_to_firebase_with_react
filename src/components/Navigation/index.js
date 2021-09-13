@@ -86,7 +86,7 @@ const Navigation = ({ firebase }) => {
     { location: ROUTES.ACCOUNT, name: "Account", auth: true, id: 3 },
     { location: ROUTES.EDITOR, name: "Editor", auth: true, id: 6 },
     { location: ROUTES.BLOGS, name: "Blog", auth: false, id: 7 },
-    { location: ROUTES.PORTFOLIO, name: "Portfolio", auth: false, id: 8 },
+    { location: ROUTES.PORTFOLIO, name: "Portofoliu", auth: false, id: 8 },
     { location: ROUTES.ABOUT_US, name: "About Us", auth: false, id: 9 },
   ]);
 

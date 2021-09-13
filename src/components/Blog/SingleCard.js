@@ -120,7 +120,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardBlog = ({
-  pathname,
   user,
   id,
   uniquePostId,
@@ -131,7 +130,7 @@ const CardBlog = ({
   handleClick,
   handleDeletePost,
   children,
-  category,
+  postType,
   cover,
   title,
   description,
@@ -141,7 +140,6 @@ const CardBlog = ({
 }) => {
   const classes = useStyles();
 
-  //   console.log(postTitle);
   return (
     <>
       <Card className={classes.card}>
@@ -168,7 +166,7 @@ const CardBlog = ({
               <MenuItem onClick={handleClose}>
                 <Link
                   to={{
-                    pathname: `/edit/${category}/${uniquePostId}/`,
+                    pathname: `/edit/${postType}/${uniquePostId}/`,
                   }}
                   color="secondary"
                 >
@@ -214,7 +212,7 @@ const CardBlog = ({
             <Button
               component={Link}
               className="view-more"
-              to={`${pathname}/${id}/${postTitle}`}
+              to={`${postType}/${id}/${postTitle}`}
               size="small"
               variant="outlined"
               color="primary"

@@ -10,19 +10,31 @@ import VideoPlayer from "../../utils/VideoPlayer";
 const currencies = [
   {
     value: "blog",
-    label: "blog",
   },
   {
-    value: "portfolio",
-    label: "portfolio",
+    value: "portofoliu",
+  },
+];
+
+const categories = [
+  {
+    value: "design interior",
+  },
+  {
+    value: "design de produs",
+  },
+  {
+    value: "pictura",
   },
 ];
 
 // cover, title, description
 
 const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName }) => {
-  const { title, description, category, cover } = post;
+  const { title, description, postType, category } = post;
   const disabled = title === "" || description === "";
+  const disabledCategory = postType !== "portofoliu";
+
 
   return (
     <>
@@ -40,7 +52,6 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName })
             onChange={(e) => onHandlePostPreview(e)}
             variant="outlined"
           />
-
           <TextField
             fullWidth
             rows={3}
@@ -54,25 +65,44 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName })
             onChange={(e) => onHandlePostPreview(e)}
             variant="outlined"
           />
-
           <TextField
-            id="category"
+            id="postType"
             select
-            name="category"
-            label="Category"
+            name="postType"
+            label="Post Type"
             variant="outlined"
             margin="dense"
             size="small"
-            value={category}
+            value={postType}
             onChange={(e) => onHandlePostPreview(e)}
           >
             {currencies.map((option) => (
               <MenuItem key={option.value} value={option.value}>
-                {option.label}
+                {option.value}
               </MenuItem>
             ))}
           </TextField>
 
+          <div>
+            <TextField
+              id="category"
+              select
+              name="category"
+              label="Category"
+              variant="outlined"
+              margin="dense"
+              size="small"
+              value={category}
+              onChange={(e) => onHandlePostPreview(e)}
+              disabled={disabledCategory}
+            >
+              {categories.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.value}
+                </MenuItem>
+              ))}
+            </TextField>
+          </div>
           <div>
             <Typography gutterBottom={true} variant="h6" color="secondary">
               {!imgUploaded & !imgCoverName ? "Upload Your Post Cover" : imgCoverName}

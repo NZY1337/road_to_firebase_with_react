@@ -45,18 +45,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
     backgroundBlendMode: "multiply",
 
-    // "&::before": {
-    //   position: "absolute",
-    //   top: 0,
-    //   left: 0,
-    //   right: 0,
-    //   bottom: 0,
-    //   width: "100%",
-    //   height: "100vh",
-    //   backgroundColor: "red",
-    //   zIndex: 1,
-    // },
-
     "& h1": {
       color: "#fff",
       fontSize: "3rem",

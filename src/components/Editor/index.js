@@ -42,7 +42,8 @@ class Editor extends React.Component {
       quillEditor: null,
       content: {
         editorContent: "",
-        category: "blog",
+        postType: "blog",
+        category: "design de produs",
         description: "",
         cover: "",
         title: "",
@@ -63,7 +64,7 @@ class Editor extends React.Component {
   };
 
   handleAddCoverToFB = async (file) => {
-    const { uniqueStorageId, category } = this.state.content;
+    const { uniqueStorageId, postType } = this.state.content;
     const { storage } = this.props.firebase;
     const { handleOpen } = this.context;
 
@@ -73,8 +74,8 @@ class Editor extends React.Component {
     const decideCoverLocation = this.postId ? uniqueStorageId : this.uniqueStorageId;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${decideCoverLocation}/images/cover/${file.name}`)
-      : storage.ref(`${category}/${decideCoverLocation}/images`).child(`cover/${file.name}`);
+      ? storage.ref(`${postType}/${decideCoverLocation}/images/cover/${file.name}`)
+      : storage.ref(`${postType}/${decideCoverLocation}/images`).child(`cover/${file.name}`);
 
     try {
       this.setState({ imgUploaded: true });
@@ -99,7 +100,7 @@ class Editor extends React.Component {
     }
 
     const { handleOpen } = this.context;
-    const postRef = this.props.firebase.db.ref(`${this.state.content.category}`);
+    const postRef = this.props.firebase.db.ref(`${this.state.content.postType}`);
 
     if (this.postId) {
       postRef
@@ -107,7 +108,7 @@ class Editor extends React.Component {
         .update(this.state.content)
         .then(() => {
           handleOpen("success", "Post updated successfully!");
-          this.props.history.push(`/${this.state.content.category}`);
+          this.props.history.push(`/${this.state.content.postType}`);
         })
         .catch(({ message }) => {
           handleOpen("error", message);
@@ -117,7 +118,7 @@ class Editor extends React.Component {
         .push(this.state.content)
         .then(() => {
           handleOpen("success", "Post created successfully!");
-          this.props.history.push(`/${this.state.content.category}`);
+          this.props.history.push(`/${this.state.content.postType}`);
         })
         .catch(({ message }) => {
           handleOpen("error", message);
@@ -133,12 +134,12 @@ class Editor extends React.Component {
     */
     const { handleOpen } = this.context;
     const { storage } = this.props.firebase;
-    const { uniqueStorageId, category } = this.state.content;
+    const { uniqueStorageId, postType } = this.state.content;
     const decideCoverLocation = this.postId ? uniqueStorageId : this.uniqueStorageId;
 
     const imgRef = this.postId
-      ? storage.ref(`${category}/${decideCoverLocation}/images/content/${file.name}`)
-      : storage.ref(`${category}/${decideCoverLocation}/images/content`).child(`${file.name}`);
+      ? storage.ref(`${postType}/${decideCoverLocation}/images/content/${file.name}`)
+      : storage.ref(`${postType}/${decideCoverLocation}/images/content`).child(`${file.name}`);
 
     try {
       const imgState = await imgRef.put(file);
@@ -261,7 +262,7 @@ class Editor extends React.Component {
 
     return (
       <>
-        <HeaderContainer cover={url} height="70vh" title={title ? title : "Create your story"} />
+        <HeaderContainer cover={url} height="50vh" title={title ? title : "Create your story"} />
         <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
           <EditorPreview
             onHandlePostPreview={this.onHandlePostPreview}

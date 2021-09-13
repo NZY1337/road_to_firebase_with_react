@@ -54,9 +54,9 @@ const CardBlog = ({
   const post = posts[id];
   const postTitle = post.title.split(" ").join("-").toLowerCase();
   const visibility = user ? "block" : "none";
-  console.log(postTitle);
 
-  const { category, cover, title, description } = post;
+
+  const { postType, cover, title, description } = post;
 
   const [imgLoaded, videoLoaded] = UseLazyLoading(post);
 
@@ -65,7 +65,6 @@ const CardBlog = ({
       <Grid item md={6} lg={3} xs={12}>
         {imgLoaded && (
           <SingleCard
-            pathname={pathname}
             user={user}
             id={id}
             uniquePostId={uniquePostId}
@@ -75,7 +74,7 @@ const CardBlog = ({
             handleClose={handleClose}
             handleClick={handleClick}
             handleDeletePost={handleDeletePost}
-            category={category}
+            postType={postType}
             cover={cover}
             title={title}
             description={description}
@@ -87,7 +86,6 @@ const CardBlog = ({
 
         {videoLoaded && (
           <SingleCard
-            pathname={pathname}
             user={user}
             id={id}
             uniquePostId={uniquePostId}
@@ -97,7 +95,7 @@ const CardBlog = ({
             handleClose={handleClose}
             handleClick={handleClick}
             handleDeletePost={handleDeletePost}
-            category={category}
+            postType={postType}
             cover={cover}
             title={title}
             description={description}
