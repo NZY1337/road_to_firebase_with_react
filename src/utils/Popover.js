@@ -57,9 +57,9 @@ export default function SimplePopover() {
           horizontal: "center",
         }}
       >
-        <Typography className={classes.typography}>
+        <div className={classes.typography}>
           <Categories />
-        </Typography>
+        </div>
       </Popover>
     </div>
   );

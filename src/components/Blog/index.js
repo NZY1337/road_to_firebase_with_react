@@ -13,13 +13,13 @@ class Blogs extends Component {
     super(props);
 
     this.pathname = this.props.location.pathname;
-    console.log(this.pathname);
-
     this.state = {
       posts: {},
+      filteredPosts: null,
       user: null,
       anchorEl: null,
       uniquePostId: null,
+      setCateg: null,
     };
   }
 
@@ -54,14 +54,41 @@ class Blogs extends Component {
     });
   };
 
-  componentDidMount() {
-    this.fetchPosts();
+  fetchPortofolioByCateg = (categ) => {
+    const posts = { ...this.state.posts };
 
+    const filteredPosts = Object.keys(posts)
+      .filter((key) => posts[key].category === categ)
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: posts[key],
+        };
+      }, {});
+
+    this.setState({
+      filteredPosts,
+    });
+  };
+
+  fetchUser() {
     this.props.firebase.auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user: user.uid });
       }
     });
+  }
+
+  componentDidMount() {
+    this.fetchPosts();
+    console.log("component updated");
+    // this.fetchUser()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.categ !== this.props.location.categ) {
+      this.fetchPortofolioByCateg(this.props.location.categ);
+    }
   }
 
   handleDeletePost = ({ postType }, uniquePostId, uniqueStorageId) => {
@@ -121,13 +148,15 @@ class Blogs extends Component {
   };
 
   render() {
-    const { anchorEl, uniquePostId, posts, user } = this.state;
+    const { anchorEl, uniquePostId, posts, user, filteredPosts } = this.state;
+
     const open = Boolean(anchorEl);
     const cover =
       "https://images.pexels.com/photos/2029670/pexels-photo-2029670.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
     const renderPosts = () => {
-      const collection = Object.keys(posts).map((id) => {
+      const decideWhatToRender = filteredPosts ? filteredPosts : posts;
+      const collection = Object.keys(decideWhatToRender).map((id) => {
         return (
           <CardBlog
             user={user}

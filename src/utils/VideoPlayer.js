@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 
 export default function VideoPlayer({ url, autoPlay, controls, location, position }) {
   const renderVideoIfExists = () => {

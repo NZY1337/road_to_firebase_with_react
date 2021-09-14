@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 
 export function Categories({ firebase }) {
+  //   const [portfolioByCateg, setPortfolioByCateg] = useState(null);
   const [categories, setCategories] = useState([
     {
       categ: "design de produs",
@@ -21,9 +22,21 @@ export function Categories({ firebase }) {
     },
   ]);
 
-  useEffect(() => {
+  //   useEffect(() => {
+  //     const ref = firebase.db.ref("portofoliu");
 
-  },[])
+  //     ref.on("value", (snapshot) => {
+  //       if (snapshot.val() !== null) {
+  //         let portfolioByCateg = snapshot.val();
+  //         console.log(portfolioByCateg);
+  //         setPortfolioByCateg(portfolioByCateg);
+  //       }
+  //     });
+
+  //     return () => {
+  //       ref.off("value");
+  //     };
+  //   }, []);
 
   const renderCategories = () => {
     return (
@@ -31,7 +44,14 @@ export function Categories({ firebase }) {
         {categories.map((c) => {
           return (
             <li className={`a-c${c.id}`} key={c.id}>
-              <Link>{c.slug}</Link>
+              <Link
+                to={{
+                  pathname: "/portofoliu",
+                  categ: c.categ,
+                }}
+              >
+                {c.slug}
+              </Link>
             </li>
           );
         })}

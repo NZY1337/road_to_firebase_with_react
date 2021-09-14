@@ -20,7 +20,7 @@ function SingleCategoryItem({ item, id }) {
 
   const portfolioRoute = `${postType}/${id}/${portfolioTitle}`;
 
-  const decideWhatTypeOfUrl = () => {
+  const decideUrlType = () => {
     if (cover.includes(".mp4")) {
       return (
         <Link to={portfolioRoute} alt={title} className="item-categ">
@@ -46,7 +46,7 @@ function SingleCategoryItem({ item, id }) {
     }
   };
 
-  return <>{decideWhatTypeOfUrl()}</>;
+  return <>{decideUrlType()}</>;
 }
 
 export default SingleCategoryItem;
