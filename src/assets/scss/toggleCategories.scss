@@ -2,34 +2,15 @@ $delay: 0.05s;
 
 .menu-categories {
   li {
-    color: #fff;
-    font-weight: bold;
-    transition: color 0.2s;
+    a {
+      color: #fff;
+      font-weight: bold;
+      transition: color 0.2s;
+      text-decoration: none;
 
-    &:hover {
-      color: aqua;
+      &:hover {
+        color: aqua;
+      }
     }
-  }
-}
-
-.v-hidden li {
-  visibility: hidden;
-}
-
-.v-shown li {
-  visibility: visible;
-}
-
-@for $i from 1 through 6 {
-  .v-hidden li:nth-child(#{$i}) {
-    transition-delay: $delay * $i;
-    visibility: hidden;
-  }
-}
-
-@for $i from 1 through 6 {
-  .v-shown li:nth-child(#{$i}) {
-    transition-delay: $delay * $i;
-    visibility: visible;
   }
 }

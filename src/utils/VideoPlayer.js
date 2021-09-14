@@ -1,11 +1,15 @@
 import React, { useState, useContext } from "react";
 
-export default function VideoPlayer({ url, autoPlay, controls, location }) {
+export default function VideoPlayer({ url, autoPlay, controls, location, position }) {
   const renderVideoIfExists = () => {
     if (url && typeof url === "string") {
       if (url.includes(".mp4")) {
         return (
-          <video style={{ objectFit: "cover", width: "100%", height: "100%" }} autoPlay={autoPlay} controls={controls}>
+          <video
+            style={{ objectFit: "cover", width: "100%", height: "100%", position: position }}
+            autoPlay={autoPlay}
+            controls={controls}
+          >
             <source src={url} type="video/mp4" />
           </video>
         );

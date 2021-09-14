@@ -1,7 +1,7 @@
 import React from "react";
 
 import Carousel from "./carousel/carousel";
-import Categories from "./Categories";
+import Categories from "./category/Categories";
 import AboutUsPreview from "../AboutUs/AboutUsPreview";
 
 const Landing = () => {

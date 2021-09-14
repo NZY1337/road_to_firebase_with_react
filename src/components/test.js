@@ -6,7 +6,6 @@ const SomeComponent = () => {
   return (
     <FirebaseContext.Consumer>
       {(firebase) => {
-        console.log(firebase);
         return <div>i have accessed Firebase and render smth</div>;
       }}
     </FirebaseContext.Consumer>

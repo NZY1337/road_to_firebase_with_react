@@ -64,9 +64,9 @@ class Blogs extends Component {
     });
   }
 
-  handleDeletePost = ({ category }, uniquePostId, uniqueStorageId) => {
+  handleDeletePost = ({ postType }, uniquePostId, uniqueStorageId) => {
     const { storage } = this.props.firebase;
-    const postRefDB = this.props.firebase.db.ref(category);
+    const postRefDB = this.props.firebase.db.ref(postType);
 
     const confirm = window.confirm("are you sure you want to delete this?");
 
@@ -75,12 +75,13 @@ class Blogs extends Component {
         .child(`${uniquePostId}`)
         .remove()
         .then(() => {
-          console.log(`${category} deleted successfully`);
+          console.log(`${postType} deleted successfully`);
         })
         .catch((err) => console.log(err));
 
+      //! duplication
       storage
-        .ref(`/${category}/${uniqueStorageId}/images/cover`)
+        .ref(`/${postType}/${uniqueStorageId}/images/cover`)
         .listAll()
         .then((res) => {
           res.items.forEach((itemRef) => {
@@ -89,7 +90,7 @@ class Blogs extends Component {
               let pictureRef = storage.refFromURL(url);
               pictureRef
                 .delete()
-                .then(() => console.log(`${category} with id: ${uniqueStorageId} Cover Photo Deleted Successfully`))
+                .then(() => console.log(`${postType} with id: ${uniqueStorageId} Cover Photo Deleted Successfully`))
                 .catch((err) => console.log(err));
             });
           });
@@ -98,8 +99,9 @@ class Blogs extends Component {
           console.log(err);
         });
 
+      //! duplication
       storage
-        .ref(`/${category}/${uniqueStorageId}/images/content/`)
+        .ref(`/${postType}/${uniqueStorageId}/images/content/`)
         .listAll()
         .then((res) => {
           res.items.forEach((itemRef) => {
@@ -108,7 +110,7 @@ class Blogs extends Component {
               let pictureRef = storage.refFromURL(url);
               pictureRef
                 .delete()
-                .then(() => console.log(`${category} with id: ${uniqueStorageId} Content Photos Deleted Successfully`))
+                .then(() => console.log(`${postType} with id: ${uniqueStorageId} Content Photos Deleted Successfully`))
                 .catch((err) => console.log(err));
             });
           });

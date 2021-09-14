@@ -30,11 +30,10 @@ const categories = [
 
 // cover, title, description
 
-const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName }) => {
+const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, coverImgName }) => {
   const { title, description, postType, category } = post;
   const disabled = title === "" || description === "";
   const disabledCategory = postType !== "portofoliu";
-
 
   return (
     <>
@@ -65,6 +64,7 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName })
             onChange={(e) => onHandlePostPreview(e)}
             variant="outlined"
           />
+
           <TextField
             id="postType"
             select
@@ -83,31 +83,34 @@ const EditorPreview = ({ onHandlePostPreview, post, imgUploaded, imgCoverName })
             ))}
           </TextField>
 
-          <div>
-            <TextField
-              id="category"
-              select
-              name="category"
-              label="Category"
-              variant="outlined"
-              margin="dense"
-              size="small"
-              value={category}
-              onChange={(e) => onHandlePostPreview(e)}
-              disabled={disabledCategory}
-            >
-              {categories.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.value}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
+          {category && (
+            <div>
+              <TextField
+                id="category"
+                select
+                name="category"
+                label="Category"
+                variant="outlined"
+                margin="dense"
+                size="small"
+                value={category}
+                onChange={(e) => onHandlePostPreview(e)}
+                disabled={disabledCategory}
+              >
+                {categories.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.value}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+          )}
+
           <div>
             <Typography gutterBottom={true} variant="h6" color="secondary">
-              {!imgUploaded & !imgCoverName ? "Upload Your Post Cover" : imgCoverName}
+              {!imgUploaded & !coverImgName ? "Upload Your Post Cover" : coverImgName}
 
-              {imgUploaded && `${imgCoverName} being uploaded...`}
+              {imgUploaded && `${coverImgName} being uploaded...`}
               {imgUploaded && <CircularProgress color="secondary" size={20} />}
             </Typography>
 

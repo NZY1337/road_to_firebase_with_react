@@ -1,0 +1,39 @@
+.parrent-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  a {
+    text-decoration: none;
+  }
+
+  .item-categ {
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.4);
+    background-blend-mode: multiply;
+    transition: 0.3s;
+    height: 600px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &:hover,
+    &:focus {
+      flex: 1.3;
+    }
+
+    &_details {
+      width: 300px;
+      height: 100%;
+      display: flex;
+      position: relative;
+      z-index: 1;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      color: white;
+      margin: 0 auto;
+      transition: 0.2s all ease-in;
+    }
+  }
+}

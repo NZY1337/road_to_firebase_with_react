@@ -94,6 +94,14 @@ class Editor extends React.Component {
   handleAddPost = async () => {
     //! unmount firebase events when component unmounts
 
+    const content = { ...this.state.content };
+
+    if (content.postType === "blog") {
+      delete content.category;
+    }
+
+    this.setState({ content });
+
     if (typeof this.state.content.cover === "object") {
       // because file accepts a blog image, not the url from DB (url === 'string')
       await this.handleAddCoverToFB(this.state.content.cover);
