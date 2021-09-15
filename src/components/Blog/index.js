@@ -13,6 +13,7 @@ class Blogs extends Component {
     super(props);
 
     this.pathname = this.props.location.pathname;
+    this.defineCategory = this.props.location.categ;
     this.state = {
       posts: {},
       filteredPosts: null,
@@ -37,15 +38,24 @@ class Blogs extends Component {
     });
   };
 
-  fetchPosts = (user) => {
-    const postsRef = this.props.firebase.db.ref(`${this.pathname}/`);
+  fetchPosts = () => {
+    this.postsRef = this.props.firebase.db.ref(`${this.pathname}`);
 
-    postsRef.on("value", (snapshot) => {
+    this.postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
         let posts = snapshot.val();
-        this.setState({
-          posts,
-        });
+
+        this.setState(
+          {
+            posts,
+          },
+          () => {
+            // as soon as we've got the posts - filter them then display them.
+            if (this.defineCategory) {
+              this.fetchItemsByCategory(this.defineCategory, posts);
+            }
+          }
+        );
       } else {
         this.setState({
           posts: {},
@@ -54,8 +64,8 @@ class Blogs extends Component {
     });
   };
 
-  fetchPortofolioByCateg = (categ) => {
-    const posts = { ...this.state.posts };
+  fetchItemsByCategory = (categ, items) => {
+    const posts = { ...items };
 
     const filteredPosts = Object.keys(posts)
       .filter((key) => posts[key].category === categ)
@@ -81,13 +91,16 @@ class Blogs extends Component {
 
   componentDidMount() {
     this.fetchPosts();
-    console.log("component updated");
-    // this.fetchUser()
+    this.fetchUser();
+  }
+
+  componentWillUnmount() {
+    this.postsRef.off("value");
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.location.categ !== this.props.location.categ) {
-      this.fetchPortofolioByCateg(this.props.location.categ);
+      this.fetchItemsByCategory(this.props.location.categ, this.state.posts);
     }
   }
 
