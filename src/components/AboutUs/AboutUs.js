@@ -53,10 +53,10 @@ const useStyles = makeStyles((theme) => ({
   picDescriptionContainer: {
     position: "relative",
     alignSelf: "baseline",
-    position: "relative",
+
     "&::after": {
       content: "-moz-alt-content",
-      top: 0,
+      //   top: 0,
       left: 0,
       position: "absolute",
       width: "2rem",
@@ -148,7 +148,7 @@ function AboutUs(props) {
     e.preventDefault();
 
     const boundInputStates = { ...description.values, ...intro };
-    console.log(boundInputStates);
+
     sendDataToFirebase(boundInputStates);
   };
 
@@ -182,7 +182,7 @@ function AboutUs(props) {
         setDataFromDb({});
       }
     });
-  }, []);
+  }, [props.firebase.db]);
 
   useEffect(() => {
     renderDataToUx();
@@ -223,7 +223,7 @@ function AboutUs(props) {
       const { title, subtitle, 0: description1, 1: description2, 2: description3 } = data;
 
       return (
-        <>
+        <React.Fragment key={ID}>
           <AboutUsFacts
             key={ID}
             classes={classes}
@@ -236,7 +236,7 @@ function AboutUs(props) {
             ID={ID}
             handleDeleteDataFromDb={handleDeleteDataFromDb}
           />
-        </>
+        </React.Fragment>
       );
     });
   };

@@ -15,7 +15,7 @@ export default function VideoPlayer({ url, autoPlay, controls, location, positio
         );
       } else {
         if (location === "editor") {
-          return <img src={url} style={{ height: "300px", objectFit: "cover" }} />;
+          return <img alt="article preview cover" src={url} style={{ height: "300px", objectFit: "cover" }} />;
         }
       }
     }

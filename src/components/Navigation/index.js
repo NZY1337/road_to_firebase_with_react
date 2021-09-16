@@ -102,7 +102,7 @@ const Navigation = ({ firebase }) => {
     return () => {
       window.removeEventListener("scroll", handleScrollEvent);
     };
-  }, [window.scrollY]);
+  }, []);
 
   const authMenu = () => {
     const authNavs = navs.filter((nav) => nav.auth === true);
@@ -164,7 +164,7 @@ const Navigation = ({ firebase }) => {
           className={`${classes.header} ${headerClass ? classes.bgClass1 : classes.bgClass2}`}
         >
           <Container>
-            <Grid container xs={11} alignItems="center" justify="space-between">
+            <Grid container alignItems="center" justify="space-between">
               <Grid item md={1}>
                 <h1 className={classes.logo} style={{ color: "aqua" }}>
                   R
@@ -210,9 +210,9 @@ const SetProfile = ({ firebase, authUser }) => {
         setProfileImg(data);
       });
     }
-  }, [authUser]);
+  }, [authUser, firebase.db]);
 
-  return authUser && <img src={profileImg} style={profilePic} />;
+  return authUser && <img alt="use profile img" src={profileImg} style={profilePic} />;
 };
 
 export default withFirebase(Navigation);

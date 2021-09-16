@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 
 // uuid generates uniq keys for firebase-storage to get a ref for the uploaded files
 import { v4 as uuidv4 } from "uuid";

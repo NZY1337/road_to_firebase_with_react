@@ -6,8 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core";
 
-import razvan from "../../assets/images/razvan.jpg";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
@@ -52,13 +50,15 @@ const useStyles = makeStyles((theme) => ({
 const AboutUsPreview = () => {
   const classes = useStyles();
   const divEl = useRef(null);
-  const parentEl = useRef(null);
+
+  //  Assignments to the 'deg' variable from inside React Hook useEffect will be lost after each render.
+  //  To preserve the value over time, store it in a useRef Hook and keep
+  //  the mutable value in the '.current' property. Otherwise, you can move this variable directly inside useEffect  react-hooks/exhaustive-deps
   let [deg, setDeg] = useState(300);
 
   useEffect(() => {
     window.addEventListener("scroll", function () {
       const position = divEl.current && divEl.current.getBoundingClientRect();
-      const parent = parentEl.current && parentEl.current.getBoundingClientRect();
 
       if (position) {
         if (position.top >= 0 && position.bottom <= window.innerHeight) {
@@ -71,19 +71,16 @@ const AboutUsPreview = () => {
   //   https://usefulangle.com/post/113/javascript-detecting-element-visible-during-scroll
 
   return (
-    <Container maxWidth={false} disableGutters className={classes.root} ref={parentEl}>
+    <Container maxWidth={false} disableGutters className={classes.root}>
       <Grid container justify="flex-end" alignItems="center" style={{ height: "100%" }}>
         <Grid
           item
           xl={6}
           md={6}
-          justify="center"
           className={classes.grd}
           ref={divEl}
           style={{
             background: `linear-gradient(${deg}deg, rgba(3,3,3,0) 50%, rgba(223,56,0,.4) 100%)`,
-            background: `-moz-linear-gradient(${deg}deg, rgba(3,3,3,0) 50%, rgba(223,56,0,.4) 100%)`,
-            background: `-webkit-linear-gradient(${deg}deg, rgba(3,3,3,0) 50%, rgba(223,56,0,.4) 100%)`,
           }}
         >
           {/* {deg} */}

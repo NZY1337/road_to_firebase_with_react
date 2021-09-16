@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 
 //TODO - optimize the component - too much rerendering;
@@ -42,20 +42,20 @@ export default function RandomTitle({ title, children }) {
     }
   };
 
-  useEffect(() => {
-    startInterval();
-  }, [title]);
-
-  const startInterval = () => {
+  const startIntervalTimer = () => {
     if (interval === null) {
       interval = setInterval(generateRandomStr, 40);
       setDefaultInterval(interval);
     }
   };
 
+  //   useEffect(() => {
+  //     startIntervalTimer();
+  //   }, [title]);
+
   return (
     <>
-      <div onMouseEnter={startInterval} color="primary" variant="h4" component="h4" style={{ color: "aqua" }}>
+      <div onMouseEnter={startIntervalTimer} color="primary" variant="h4" component="h4" style={{ color: "aqua" }}>
         <Typography variant="h4" component="h4" style={{ color: "aqua" }}>
           {final}
         </Typography>

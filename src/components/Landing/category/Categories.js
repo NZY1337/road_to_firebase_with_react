@@ -26,7 +26,7 @@ const Categories = ({ firebase }) => {
     return Object.keys(portfolios).map((id) => {
       const item = portfolios[id];
 
-      return <RenderCategories item={item} id={id} />;
+      return <RenderCategories item={item} key={id} id={id} />;
     });
   };
 

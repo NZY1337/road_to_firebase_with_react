@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { withFirebase } from "../Firebase";
 
-export function Categories({ firebase }) {
-  //   const [portfolioByCateg, setPortfolioByCateg] = useState(null);
+export function Categories() {
   const [categories, setCategories] = useState([
     {
       categ: "design de produs",
@@ -22,28 +20,12 @@ export function Categories({ firebase }) {
     },
   ]);
 
-  //   useEffect(() => {
-  //     const ref = firebase.db.ref("portofoliu");
-
-  //     ref.on("value", (snapshot) => {
-  //       if (snapshot.val() !== null) {
-  //         let portfolioByCateg = snapshot.val();
-  //         console.log(portfolioByCateg);
-  //         setPortfolioByCateg(portfolioByCateg);
-  //       }
-  //     });
-
-  //     return () => {
-  //       ref.off("value");
-  //     };
-  //   }, []);
-
   const renderCategories = () => {
     return (
       <ul className={`menu-categories`} style={{ listStyle: "none" }}>
         {categories.map((c) => {
           return (
-            <li className={`a-c${c.id}`} key={c.id}>
+            <li className={`a-c${c.id}`} key={c.id} style={{ marginBottom: ".3rem" }}>
               <Link
                 to={{
                   pathname: "/portofoliu",
@@ -61,4 +43,4 @@ export function Categories({ firebase }) {
   return <>{renderCategories()}</>;
 }
 
-export default withFirebase(Categories);
+export default Categories;

@@ -16,7 +16,7 @@ const AboutUsFacts = ({
   handleDeleteDataFromDb,
 }) => {
   return (
-    <Grid key={ID} md={6} style={{ padding: "1rem" }} className={`about-us-facts ${classes.aboutUsContent}`}>
+    <Grid item md={6} style={{ padding: "1rem" }} className={`about-us-facts ${classes.aboutUsContent}`}>
       <RandomTitle title={title}>
         <Typography
           color="secondary"
@@ -39,7 +39,7 @@ const AboutUsFacts = ({
           {description3 && description3}
         </Typography>
 
-        {/* <div style={{ marginBottom: "2rem", marginTop: "1rem" }}>
+        <div style={{ marginBottom: "2rem", marginTop: "1rem" }}>
           <Button
             variant="contained"
             style={{ marginRight: "1rem" }}
@@ -53,7 +53,7 @@ const AboutUsFacts = ({
           <Button variant="contained" color="secondary" size="small" id={ID} onClick={handleDeleteDataFromDb}>
             Remove
           </Button>
-        </div> */}
+        </div>
       </RandomTitle>
     </Grid>
   );

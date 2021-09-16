@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { randomIndexBasedOnArrLen } from "../../../utils/helpers";
 import { makeStyles } from "@material-ui/core";
 import { withFirebase } from "../../Firebase/context";
-import Skeleton from "react-loading-skeleton";
+
 import CarouselItem from "./CarouselItem";
 
 import "../styles.scss";
@@ -125,7 +125,7 @@ const Carousel = (props) => {
         setPosts(null);
       }
     });
-  }, []);
+  }, [props.firebase.db]);
 
   const renderSlides = () => {
     return Object.keys(posts).map((id, index) => {
@@ -148,7 +148,6 @@ const Carousel = (props) => {
   return (
     <div style={{ height: "100vh", background: "black" }}>
       {posts && <Slider {...settings}>{renderSlides()}</Slider>}
-      {/* {!posts && <Skeleton width="100%" height="100vh" count={1} delay={1} />} */}
     </div>
   );
 };

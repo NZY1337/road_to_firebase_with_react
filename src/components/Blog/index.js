@@ -13,9 +13,10 @@ class Blogs extends Component {
     super(props);
 
     this.pathname = this.props.location.pathname;
-    this.defineCategory = this.props.location.categ;
+    this.definedCategory = this.props.location.categ;
     this.state = {
-      posts: {},
+      latestDoc: null,
+      posts: null,
       filteredPosts: null,
       user: null,
       anchorEl: null,
@@ -39,7 +40,19 @@ class Blogs extends Component {
   };
 
   fetchPosts = () => {
-    this.postsRef = this.props.firebase.db.ref(`${this.pathname}`);
+    let limitPosts = null;
+    this.postsRef = this.props.firebase.db.ref(`${this.pathname}`).orderByChild("title");
+
+    // this.postsRef.on("child_added", (snap) => {
+    //   console.log(snap.val().title);
+    // });
+
+    this.postsRef.on("child_added", (snap) => {
+      //   console.log(snap.key);
+      const key = snap.key;
+      console.log(key);
+      console.log(snap.val().title);
+    });
 
     this.postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
@@ -51,15 +64,11 @@ class Blogs extends Component {
           },
           () => {
             // as soon as we've got the posts - filter them then display them.
-            if (this.defineCategory) {
-              this.fetchItemsByCategory(this.defineCategory, posts);
+            if (this.definedCategory) {
+              this.fetchItemsByCategory(this.definedCategory, posts);
             }
           }
         );
-      } else {
-        this.setState({
-          posts: {},
-        });
       }
     });
   };
@@ -169,24 +178,25 @@ class Blogs extends Component {
 
     const renderPosts = () => {
       const decideWhatToRender = filteredPosts ? filteredPosts : posts;
-      const collection = Object.keys(decideWhatToRender).map((id) => {
-        return (
-          <CardBlog
-            user={user}
-            key={id}
-            id={id}
-            uniquePostId={uniquePostId}
-            anchorEl={anchorEl}
-            open={open}
-            posts={posts}
-            handleClick={this.handleClick}
-            handleClose={this.handleClose}
-            handleDeletePost={this.handleDeletePost}
-          />
-        );
-      });
-
-      return collection;
+      return (
+        decideWhatToRender &&
+        Object.keys(decideWhatToRender).map((id) => {
+          return (
+            <CardBlog
+              user={user}
+              key={id}
+              id={id}
+              uniquePostId={uniquePostId}
+              anchorEl={anchorEl}
+              open={open}
+              posts={posts}
+              handleClick={this.handleClick}
+              handleClose={this.handleClose}
+              handleDeletePost={this.handleDeletePost}
+            />
+          );
+        })
+      );
     };
 
     return (
@@ -199,6 +209,9 @@ class Blogs extends Component {
         <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
           <Grid spacing={2} container>
             {renderPosts()}
+          </Grid>
+          <Grid>
+            <button style={{ width: "300px" }}>Load More</button>
           </Grid>
         </Container>
       </>
