@@ -125,104 +125,97 @@ const CardBlog = ({
   uniquePostId,
   anchorEl,
   open,
-  posts,
   handleClose,
   handleClick,
   handleDeletePost,
   children,
   postType,
-  cover,
-  title,
-  description,
-  postTitle,
-  visibility,
   post,
+  uniqueStorageIdCallback,
 }) => {
   const classes = useStyles();
+  const postTitle = post.title.split(" ").join("-").toLowerCase();
+  const { cover, title, description } = post;
 
   return (
-    <>
-      <Card className={classes.card}>
-        {user && (
-          <>
-            <CardHeader
-              className={classes.cardHeader}
-              avatar={<Avatar src={logo} aria-label="recipe" />}
-              action={
-                <Button
-                  style={{ display: visibility }}
-                  color="secondary"
-                  endIcon={<MoreVertIcon />}
-                  onClick={(e) => {
-                    handleClick(e, id);
-                  }}
-                />
-              }
-              title="Razvan Puricescu"
-              subheader="September 14, 2016"
-            />
+    <Card className={classes.card} key={title}>
+      {user && (
+        <>
+          <CardHeader
+            className={classes.cardHeader}
+            avatar={<Avatar src={logo} aria-label="recipe" />}
+            action={
+              <Button
+                color="secondary"
+                endIcon={<MoreVertIcon />}
+                onClick={(e) => {
+                  handleClick(e, id);
+                }}
+              />
+            }
+            title="Razvan Puricescu"
+            subheader="September 14, 2016"
+          />
 
-            <Menu id={id} anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} TransitionComponent={Fade}>
-              <MenuItem onClick={handleClose}>
-                <Link
-                  to={{
-                    pathname: `/edit/${postType}/${uniquePostId}/`,
-                  }}
-                  color="secondary"
-                >
-                  Edit Post
-                </Link>
-              </MenuItem>
+          <Menu id={id} anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} TransitionComponent={Fade}>
+            <MenuItem onClick={handleClose}>
+              <Link
+                to={{
+                  pathname: `/edit/${postType}/${uniquePostId}/`,
+                }}
+                color="secondary"
+              >
+                Edit Post
+              </Link>
+            </MenuItem>
 
-              <MenuItem>
-                <Link
-                  to="#"
-                  color="secondary"
-                  onClick={() => {
-                    const uniqueStorageId = posts[uniquePostId].uniqueStorageId;
-                    handleDeletePost(post, uniquePostId, uniqueStorageId);
-                  }}
-                >
-                  Delete Post
-                </Link>
-              </MenuItem>
-            </Menu>
-          </>
-        )}
+            <MenuItem>
+              <Link
+                to="#"
+                color="secondary"
+                onClick={() => {
+                  handleDeletePost(post, uniquePostId, uniqueStorageIdCallback);
+                }}
+              >
+                Delete Post
+              </Link>
+            </MenuItem>
+          </Menu>
+        </>
+      )}
 
-        <CardActionArea>
-          <CardMedia
-            className={`${classes.cardMedia}`}
-            image={cover} //!source - source drops an error
-            title="Contemplative Reptile"
+      <CardActionArea>
+        <CardMedia
+          className={`${classes.cardMedia}`}
+          image={cover} //!source - source drops an error
+          title="Contemplative Reptile"
+        >
+          {children}
+        </CardMedia>
+
+        <CardContent className={classes.cardContent}>
+          <div className="cardcontent-summary">
+            <Typography gutterBottom variant="h5" component="h2">
+              {title}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {description}
+            </Typography>
+          </div>
+
+          <Button
+            component={Link}
+            className="view-more"
+            to={`${postType}/${id}/${postTitle}`}
+            size="small"
+            variant="outlined"
+            color="primary"
           >
-            {children}
-          </CardMedia>
-
-          <CardContent className={classes.cardContent}>
-            <div className="cardcontent-summary">
-              <Typography gutterBottom variant="h5" component="h2">
-                {title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {description}
-              </Typography>
-            </div>
-
-            <Button
-              component={Link}
-              className="view-more"
-              to={`${postType}/${id}/${postTitle}`}
-              size="small"
-              variant="outlined"
-              color="primary"
-            >
-              Read More
-            </Button>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    </>
+            Read More
+          </Button>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 };
 

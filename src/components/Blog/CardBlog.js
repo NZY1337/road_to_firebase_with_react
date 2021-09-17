@@ -29,70 +29,55 @@ const CardBlog = ({
   uniquePostId,
   anchorEl,
   open,
-  posts,
+  post,
   handleClose,
   handleClick,
   handleDeletePost,
+  uniqueStorageIdCallback,
 }) => {
-  const post = posts[id];
-  const postTitle = post.title.split(" ").join("-").toLowerCase();
-  const visibility = user ? "block" : "none";
-
   const { postType, cover, title, description } = post;
 
   const [imgLoaded, videoLoaded] = UseLazyLoading(post);
 
   return (
-    <>
-      <Grid item md={6} lg={3} xs={12}>
-        {imgLoaded && (
-          <SingleCard
-            user={user}
-            id={id}
-            uniquePostId={uniquePostId}
-            anchorEl={anchorEl}
-            open={open}
-            posts={posts}
-            handleClose={handleClose}
-            handleClick={handleClick}
-            handleDeletePost={handleDeletePost}
-            postType={postType}
-            cover={cover}
-            title={title}
-            description={description}
-            visibility={visibility}
-            post={post}
-            postTitle={postTitle}
-          />
-        )}
+    <Grid item md={6} lg={3} xs={12}>
+      {imgLoaded && (
+        <SingleCard
+          user={user}
+          id={id}
+          uniquePostId={uniquePostId}
+          anchorEl={anchorEl}
+          open={open}
+          handleClose={handleClose}
+          handleClick={handleClick}
+          handleDeletePost={handleDeletePost}
+          postType={postType}
+          post={post}
+          uniqueStorageIdCallback={uniqueStorageIdCallback}
+        />
+      )}
 
-        {videoLoaded && (
-          <SingleCard
-            user={user}
-            id={id}
-            uniquePostId={uniquePostId}
-            anchorEl={anchorEl}
-            open={open}
-            posts={posts}
-            handleClose={handleClose}
-            handleClick={handleClick}
-            handleDeletePost={handleDeletePost}
-            postType={postType}
-            cover={cover}
-            title={title}
-            description={description}
-            visibility={visibility}
-            post={post}
-            postTitle={postTitle}
-          >
-            <VideoPlayer url={cover} autoPlay={false} controls={false} />
-          </SingleCard>
-        )}
+      {videoLoaded && (
+        <SingleCard
+          user={user}
+          id={id}
+          uniquePostId={uniquePostId}
+          anchorEl={anchorEl}
+          open={open}
+          handleClose={handleClose}
+          handleClick={handleClick}
+          handleDeletePost={handleDeletePost}
+          postType={postType}
+          post={post}
+          uniqueStorageIdCallback={uniqueStorageIdCallback}
+        >
+          <VideoPlayer url={cover} autoPlay={false} controls={false} />
+        </SingleCard>
+      )}
 
-        {!imgLoaded && !post.cover.includes(".mp4") && <Skeleton width="100%" height="500px" count={1} delay={1} />}
-        {!videoLoaded && post.cover.includes(".mp4") && <Skeleton width="100%" height="500px" count={1} delay={1} />}
-      </Grid>
-    </>
+      {!imgLoaded && !post.cover.includes(".mp4") && <Skeleton width="100%" height="500px" count={1} delay={1} />}
+      {!videoLoaded && post.cover.includes(".mp4") && <Skeleton width="100%" height="500px" count={1} delay={1} />}
+    </Grid>
   );
 };
 
