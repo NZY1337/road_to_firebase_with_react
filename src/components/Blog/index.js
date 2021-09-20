@@ -60,17 +60,28 @@ class Blogs extends Component {
     });
   };
 
-  fetchPosts = () => {
-    this.fetchPostsRef = this.props.firebase.db.ref(`${this.pathname}`).limitToFirst(4);
+  fetchPosts = (next) => {
+    if (next) {
+      this.fetchPostsRef = this.props.firebase.db.ref(`${this.pathname}`).orderByKey().limitToFirst(4);
+    } else {
+      this.fetchPostsRef = this.props.firebase.db
+        .ref(`${this.pathname}`)
+        .orderByKey()
+        .startAfter(this.state.lastKey)
+        .limitToFirst(4);
+    }
 
     this.fetchPostsRef.on("child_added", (snapshot) => {
       if (snapshot.val() !== null) {
         let post = { ...snapshot.val(), postId: snapshot.key };
 
         this.setState(
-          {
-            posts: [...this.state.posts, post],
-            lastKey: snapshot.key,
+          (prevState) => {
+            return {
+              ...prevState,
+              posts: [...prevState.posts, post],
+              lastKey: snapshot.key,
+            };
           },
           () => {
             if (this.definedCategory) {
@@ -78,28 +89,6 @@ class Blogs extends Component {
             }
           }
         );
-      }
-    });
-  };
-
-  fetchNextPosts = () => {
-    this.fetchNewPostsRef = this.props.firebase.db
-      .ref(`${this.pathname}`)
-      .orderByKey()
-      .startAfter(this.state.lastKey)
-      .limitToFirst(4);
-
-    this.fetchNewPostsRef.on("child_added", (snapshot) => {
-      if (snapshot.val() !== null) {
-        let post = { ...snapshot.val(), postId: snapshot.key };
-
-        // oldPosts - outside of the function - closure - will grab all posts
-        // lastKey inside function loop - will grab only the last key
-
-        this.setState({
-          posts: [...this.state.posts, post],
-          lastKey: snapshot.key,
-        });
       }
     });
   };
@@ -124,12 +113,12 @@ class Blogs extends Component {
 
   componentDidMount() {
     this.getTheLengthOfRefferenceNode();
-    this.fetchPosts();
+    this.fetchPosts(true);
     this.fetchUser();
 
     window.addEventListener("scroll", () => {
       if (window.innerHeight + window.scrollY + 100 >= document.body.offsetHeight && this.state.nodeLength) {
-        this.handleScrollLoadPosts();
+        this.fetchPosts();
       }
     });
 
@@ -137,7 +126,6 @@ class Blogs extends Component {
   }
 
   componentWillUnmount() {
-    this.fetchNewPostsRef && this.fetchNewPostsRef.off("child_added", this.fetchNextPosts);
     this.fetchPostsRef.off("child_added", this.fetchPosts);
     this.lenOfTheRef.off("value", this.getTheLengthOfRefferenceNode);
   }
