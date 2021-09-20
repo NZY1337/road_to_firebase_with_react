@@ -21,6 +21,7 @@ class Blogs extends Component {
       anchorEl: null,
       uniquePostId: null,
       setCateg: null,
+      lastKey: null,
     };
   }
 
@@ -39,15 +40,21 @@ class Blogs extends Component {
   };
 
   fetchPosts = () => {
-    this.postsRef = this.props.firebase.db.ref(`${this.pathname}`);
+    this.postsRef = this.props.firebase.db.ref(`${this.pathname}`).limitToFirst(2);
+    let lastKey = null;
 
     this.postsRef.on("value", (snapshot) => {
       if (snapshot.val() !== null) {
         let posts = snapshot.val();
 
+        snapshot.forEach((snap) => {
+          lastKey = snap.key;
+        });
+
         this.setState(
           {
             posts,
+            lastKey,
           },
           () => {
             // as soon as we've got the posts - filter them then display them.
@@ -59,6 +66,27 @@ class Blogs extends Component {
       } else {
         this.setState({
           posts: {},
+        });
+      }
+    });
+  };
+
+  loadNextPosts = () => {
+    this.postsRef = this.props.firebase.db
+      .ref(`${this.pathname}`)
+      .orderByKey()
+      .startAfter(this.state.lastKey)
+      .limitToFirst(1);
+
+    this.postsRef.on("child_added", (snapshot) => {
+      if (snapshot.val() !== null) {
+        let newObj = { [snapshot.key]: { ...snapshot.val() } };
+
+        // oldPosts - outside of the function - closure - will grab all posts
+        // lastKey inside function loop - will grab only the last key
+        this.setState({
+          posts: { ...this.state.posts, ...newObj },
+          lastKey: snapshot.key,
         });
       }
     });
@@ -110,6 +138,8 @@ class Blogs extends Component {
 
     const confirm = window.confirm("are you sure you want to delete this?");
 
+    // https://stackoverflow.com/questions/47763653/how-to-write-delete-handler-in-reactjs-that-will-also-remove-data-in-firebase
+
     if (confirm) {
       postRefDB
         .child(`${uniquePostId}`)
@@ -118,7 +148,6 @@ class Blogs extends Component {
           console.log(`${postType} deleted successfully`);
         })
         .catch((err) => console.log(err));
-
       //! duplication
       storage
         .ref(`/${postType}/${uniqueStorageId}/images/cover`)
@@ -138,7 +167,6 @@ class Blogs extends Component {
         .catch((err) => {
           console.log(err);
         });
-
       //! duplication
       storage
         .ref(`/${postType}/${uniqueStorageId}/images/content/`)
@@ -199,6 +227,9 @@ class Blogs extends Component {
         <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
           <Grid spacing={2} container>
             {renderPosts()}
+          </Grid>
+          <Grid>
+            <button onClick={this.loadNextPosts}>Load More Posts</button>
           </Grid>
         </Container>
       </>
