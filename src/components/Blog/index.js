@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import CardBlog from "./CardBlog";
 import HeaderContainer from "./HeaderContainer";
 import { SnackBarContext } from "../../utils/SnackBarContext";
+import { Typography } from "@material-ui/core";
 
 class Blogs extends Component {
   static contextType = SnackBarContext;
@@ -17,8 +18,6 @@ class Blogs extends Component {
 
     this.pathname = this.props.location.pathname;
     this.definedCategory = this.props.location.categ;
-    this.loadMoreRef = createRef();
-    this.containerRef = createRef();
 
     this.state = {
       latestDoc: null,
@@ -29,7 +28,7 @@ class Blogs extends Component {
       uniquePostId: null,
       uniqueStorageIdCallback: null,
       setCateg: null,
-      lastKey: null,
+      lastKey: "",
       limit: 4,
       nodeLength: null,
     };
@@ -53,8 +52,8 @@ class Blogs extends Component {
   };
 
   getTheLengthOfRefferenceNode = () => {
-    this.lenOfTheReff = this.props.firebase.db.ref(`${this.pathname}`);
-    this.lenOfTheReff.on("value", (snapshot) => {
+    this.lenOfTheRef = this.props.firebase.db.ref(`${this.pathname}`);
+    this.lenOfTheRef.on("value", (snapshot) => {
       this.setState({
         nodeLength: snapshot.numChildren(),
       });
@@ -62,23 +61,18 @@ class Blogs extends Component {
   };
 
   fetchPosts = () => {
-    this.postsRef = this.props.firebase.db.ref(`${this.pathname}`).limitToFirst(8);
+    this.fetchPostsRef = this.props.firebase.db.ref(`${this.pathname}`).limitToFirst(4);
 
-    const newPosts = [];
-
-    this.postsRef.on("child_added", (snapshot) => {
+    this.fetchPostsRef.on("child_added", (snapshot) => {
       if (snapshot.val() !== null) {
         let post = { ...snapshot.val(), postId: snapshot.key };
-        newPosts.push(post);
 
         this.setState(
           {
-            posts: newPosts,
+            posts: [...this.state.posts, post],
             lastKey: snapshot.key,
           },
           () => {
-            //! as soon as we've got the posts - filter them then display them.
-            //! - we make sure that this.state.posts exists
             if (this.definedCategory) {
               this.fetchItemsByCategory(this.definedCategory, this.state.posts);
             }
@@ -88,24 +82,22 @@ class Blogs extends Component {
     });
   };
 
-  loadNextPosts = () => {
-    this.postsRef = this.props.firebase.db
+  fetchNextPosts = () => {
+    this.fetchNewPostsRef = this.props.firebase.db
       .ref(`${this.pathname}`)
       .orderByKey()
       .startAfter(this.state.lastKey)
       .limitToFirst(4);
 
-    const oldPosts = [...this.state.posts];
-
-    this.postsRef.on("child_added", (snapshot) => {
+    this.fetchNewPostsRef.on("child_added", (snapshot) => {
       if (snapshot.val() !== null) {
         let post = { ...snapshot.val(), postId: snapshot.key };
-        oldPosts.push(post);
 
         // oldPosts - outside of the function - closure - will grab all posts
         // lastKey inside function loop - will grab only the last key
+
         this.setState({
-          posts: oldPosts,
+          posts: [...this.state.posts, post],
           lastKey: snapshot.key,
         });
       }
@@ -135,32 +127,37 @@ class Blogs extends Component {
     this.fetchPosts();
     this.fetchUser();
 
+    window.addEventListener("scroll", () => {
+      if (window.innerHeight + window.scrollY + 100 >= document.body.offsetHeight && this.state.nodeLength) {
+        this.handleScrollLoadPosts();
+      }
+    });
+
     this.snackBar = this.context;
   }
 
   componentWillUnmount() {
-    this.postsRef.off("child_added");
-    this.lenOfTheReff.off("value");
+    this.fetchNewPostsRef && this.fetchNewPostsRef.off("child_added", this.fetchNextPosts);
+    this.fetchPostsRef.off("child_added", this.fetchPosts);
+    this.lenOfTheRef.off("value", this.getTheLengthOfRefferenceNode);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.location.categ !== this.props.location.categ) {
       this.fetchItemsByCategory(this.props.location.categ, this.state.posts);
     }
   }
 
   handleDeletePost = ({ postType }, uniquePostId, uniqueStorageId) => {
-    console.log(postType, uniquePostId, uniqueStorageId);
+    // console.log(postType, uniquePostId, uniqueStorageId);
     const { storage } = this.props.firebase;
     const postRefDB = this.props.firebase.db.ref(postType);
 
     const confirm = window.confirm("are you sure you want to delete this?");
 
     if (confirm) {
-      postRefDB.on("child_removed", (snapshot) => {
-        const deletedPost = snapshot.val();
-        console.log("The blog post titled '" + deletedPost.title + "' has been deleted");
-      });
+      const deletededPosts = this.state.posts.filter((post) => post.postId !== uniquePostId);
+      this.setState({ posts: deletededPosts });
 
       postRefDB
         .child(`${uniquePostId}`)
@@ -213,14 +210,11 @@ class Blogs extends Component {
   };
 
   handleScrollLoadPosts = () => {
-    let triggerHeight = this.containerRef.current.scrollTop + this.containerRef.current.offsetHeight;
-
-    if (triggerHeight >= this.containerRef.current.scrollHeight) {
-      this.loadNextPosts();
-    }
+    this.fetchNextPosts();
 
     if (this.state.nodeLength === this.state.posts.length) {
-      this.containerRef.current.removeEventListener("scroll", this.handleScrollLoadPosts);
+      console.log("event removed");
+      window.removeEventListener("scroll", this.handleScrollLoadPosts);
     }
   };
 
@@ -237,7 +231,6 @@ class Blogs extends Component {
       return (
         decideWhatToRender &&
         decideWhatToRender.map((post) => {
-          console.log(post.title);
           return (
             <CardBlog
               key={post.title}
@@ -262,17 +255,11 @@ class Blogs extends Component {
         <HeaderContainer
           cover={cover}
           title="Interior Design"
-          height="50vh"
+          //   height="50vh"
           description="The BrandNu Design and Hip Hop Architecture Camp founder sits in his remixed version of an Eames lounge chair and ottoman outside the State Capitol in Madison, Wisconsin. Photography by Hedi Lamar Photography."
         />
-        <Container maxWidth="lg" style={{ marginTop: "5rem", marginBottom: "5rem" }}>
-          <Grid
-            style={{ maxHeight: "530px", overflow: "auto", scrollbarWidth: "none" }}
-            spacing={2}
-            ref={this.containerRef}
-            onScroll={this.handleScrollLoadPosts}
-            container
-          >
+        <Container maxWidth="lg" style={{ marginTop: "7rem", marginBottom: "7rem" }}>
+          <Grid spacing={2} ref={this.containerRef} onScroll={this.handleScrollLoadPosts} container>
             {renderPosts()}
           </Grid>
         </Container>
