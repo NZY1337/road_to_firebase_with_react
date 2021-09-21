@@ -44,6 +44,27 @@ class Firebase {
       });
   };
 
+  doRemoveItemsFromStorage = (ref, location) => {
+    this.storage
+      .ref(ref)
+      .listAll()
+      .then((res) => {
+        res.items.forEach((itemRef) => {
+          // All the items under listRef.
+          itemRef.getDownloadURL().then((url) => {
+            let pictureRef = this.storage.refFromURL(url);
+            pictureRef
+              .delete()
+              .then(() => console.log(` ${location} Deleted Successfully`))
+              .catch((err) => console.log(err));
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
   doPasswordUpdate = (password) => this.auth.currentUser.updatePassword(password);

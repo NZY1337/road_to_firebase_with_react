@@ -101,6 +101,7 @@ const Carousel = (props) => {
     const totalWidthRight =
       [Math.round(postsLen + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
 
+    //! do I really need to use prevState?
     setWidth((prevState) => ({
       ...prevState,
       widthLeft: totalWidthLeft,
@@ -125,6 +126,10 @@ const Carousel = (props) => {
         setPosts(null);
       }
     });
+
+    return () => {
+      blogRef.off("value");
+    };
   }, [props.firebase.db]);
 
   const renderSlides = () => {

@@ -24,6 +24,11 @@
 
     &_details {
       width: 300px;
+
+      @media (min-width: 1600px) {
+        width: 400px;
+      }
+
       height: 100%;
       display: flex;
       position: relative;

@@ -60,8 +60,8 @@ class Blogs extends Component {
     });
   };
 
-  fetchPosts = (next) => {
-    if (next) {
+  fetchPosts = (onLoad) => {
+    if (onLoad) {
       this.fetchPostsRef = this.props.firebase.db.ref(`${this.pathname}`).orderByKey().limitToFirst(4);
     } else {
       this.fetchPostsRef = this.props.firebase.db
@@ -137,10 +137,10 @@ class Blogs extends Component {
   }
 
   handleDeletePost = ({ postType }, uniquePostId, uniqueStorageId) => {
-    // console.log(postType, uniquePostId, uniqueStorageId);
-    const { storage } = this.props.firebase;
+    const { storage, doRemoveItemsFromStorage } = this.props.firebase;
     const postRefDB = this.props.firebase.db.ref(postType);
 
+    console.log(doRemoveItemsFromStorage);
     const confirm = window.confirm("are you sure you want to delete this?");
 
     if (confirm) {
@@ -155,43 +155,9 @@ class Blogs extends Component {
         })
         .catch((err) => console.log(err));
 
-      //! duplication
-      storage
-        .ref(`/${postType}/${uniqueStorageId}/images/cover`)
-        .listAll()
-        .then((res) => {
-          res.items.forEach((itemRef) => {
-            // All the items under listRef.
-            itemRef.getDownloadURL().then((url) => {
-              let pictureRef = storage.refFromURL(url);
-              pictureRef
-                .delete()
-                .then(() => console.log(`${postType} with id: ${uniqueStorageId} Cover Photo Deleted Successfully`))
-                .catch((err) => console.log(err));
-            });
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      doRemoveItemsFromStorage(`/${postType}/${uniqueStorageId}/images/cover`, "Cover Photo");
 
-      //! duplication
-      storage
-        .ref(`/${postType}/${uniqueStorageId}/images/content/`)
-        .listAll()
-        .then((res) => {
-          console.log("content");
-          res.items.forEach((itemRef) => {
-            // All the items under listRef.
-            itemRef.getDownloadURL().then((url) => {
-              let pictureRef = storage.refFromURL(url);
-              pictureRef
-                .delete()
-                .then(() => console.log(`${postType} with id: ${uniqueStorageId} Content Photos Deleted Successfully`))
-                .catch((err) => console.log(err));
-            });
-          });
-        });
+      doRemoveItemsFromStorage(`/${postType}/${uniqueStorageId}/images/content/`, "Content Photos");
     }
 
     this.handleClose();
