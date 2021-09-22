@@ -14,6 +14,7 @@ import Blogs from "../Blog";
 import SingleBlog from "../Blog/SingleBlog";
 import Layout from "../Layout";
 import AboutUs from "../AboutUs/AboutUs";
+import DotsEditor from "../DotsEditor";
 
 import { withAuthentication } from "../Sesssion";
 
@@ -36,14 +37,18 @@ const App = () => {
           <Route path={ROUTES.ADMIN} component={AdminPage} />
           <Route path="/test" component={SomeComponent} />
           <Route path="/todos" component={Todos} />
-          <Route path="/editor" component={Editor} />
+
+          {/* editors */}
+          <Route path={ROUTES.EDITOR} component={Editor} />
+          <Route path={ROUTES.DOTS_EDITOR} component={DotsEditor} />
+
           <Route path={ROUTES.ABOUT_US} component={AboutUs} />
 
           {/* blog */}
           <Route path="/edit/:type/:id" component={Editor} />
           <Route path="/blog/:id/:postTitle" component={SingleBlog} />
-
           <Route path="/blog" exact component={Blogs} />
+
           {/* portfolio */}
           <Route path="/portofoliu/:id/:postTitle" component={SingleBlog} />
           <Route path="/portofoliu" exact component={Blogs} />

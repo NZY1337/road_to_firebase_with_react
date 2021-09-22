@@ -71,7 +71,7 @@ export default function TransitionsModal({ children, title }) {
             xs={5}
             container
             justify="center"
-            style={{ position: "absolute", bottom: "60px", right: "60px" }}
+            style={{ position: "absolute", bottom: "15%", right: "10%" }}
           >
             <div className={classes.paper} style={{ width: "100%" }}>
               {children}

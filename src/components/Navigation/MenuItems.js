@@ -5,8 +5,7 @@ import { NavLink } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Dropdown from "./Dropdown";
 
-export function MenuItems({ id, location, name, submenu }) {
-  console.log(submenu);
+export function MenuItems({ id, location, name, submenu, defaultColorToDrowdown }) {
   return (
     <>
       {!submenu ? (
@@ -28,7 +27,7 @@ export function MenuItems({ id, location, name, submenu }) {
           </MenuItem>
         </NavLink>
       ) : (
-        <Dropdown submenu={submenu} />
+        <Dropdown submenu={submenu} submenuName={name} defaultColorToDrowdown={defaultColorToDrowdown} />
       )}
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -53,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Navigation = ({ firebase }) => {
   const [headerClass, setHeaderClass] = useState(false);
+  const [defaultColorToDrowdown, setdefaultColorToDrowdown] = useState(false);
+  const location = useLocation();
 
   const classes = useStyles();
   const [navs, setNavs] = useState([
@@ -84,6 +87,7 @@ const Navigation = ({ firebase }) => {
         },
       ],
     },
+
     { location: ROUTES.BLOGS, name: "Blog", auth: false, id: "blog" },
     { location: ROUTES.PORTFOLIO, name: "Portofoliu", auth: false, id: "portfoliu" },
     { location: ROUTES.ABOUT_US, name: "About Us", auth: false, id: "about_us" },
@@ -94,8 +98,16 @@ const Navigation = ({ firebase }) => {
 
     return menu.map((nav) => {
       const { location, id, name, submenu } = nav;
-
-      return <MenuItems name={name} location={location} id={id} submenu={submenu} />;
+      return (
+        <MenuItems
+          defaultColorToDrowdown={defaultColorToDrowdown}
+          key={id}
+          name={name}
+          location={location}
+          id={id}
+          submenu={submenu}
+        />
+      );
     });
   };
 
@@ -104,7 +116,7 @@ const Navigation = ({ firebase }) => {
 
     return menu.map((nav) => {
       const { location, id, name } = nav;
-      return <MenuItems name={name} location={location} id={id} />;
+      return <MenuItems key={id} name={name} location={location} id={id} />;
     });
   };
 
@@ -121,6 +133,15 @@ const Navigation = ({ firebase }) => {
       window.removeEventListener("scroll", handleScrollEvent);
     };
   }, []);
+
+  useEffect(() => {
+    const { pathname } = location;
+    if (pathname === "/editor" || pathname === "/dots-editor") {
+      setdefaultColorToDrowdown(true);
+    } else {
+      setdefaultColorToDrowdown(false);
+    }
+  }, [location]);
 
   return (
     <AuthUserContext.Consumer>

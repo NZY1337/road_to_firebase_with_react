@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Dropdown({ submenu }) {
+export function Dropdown({ submenu, submenuName, defaultColorToDrowdown }) {
+  console.log(defaultColorToDrowdown);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
   const handleClick = (event) => {
@@ -52,7 +53,7 @@ export function Dropdown({ submenu }) {
           color="inherit"
         >
           <MenuItem>
-            <Typography variant="body1" component="p" style={{ color: "aqua", fontWeight: "bold" }}>
+            <Typography variant="body1" component="p" style={{ color: "#fff", fontWeight: "bold" }}>
               {name}
             </Typography>
           </MenuItem>
@@ -64,13 +65,13 @@ export function Dropdown({ submenu }) {
   return (
     <div>
       <Button
-        style={{ color: "#fff", fontSize: "inherit", textTransform: "none" }}
+        style={{ color: defaultColorToDrowdown ? "aqua" : "#fff", fontSize: "inherit", textTransform: "none" }}
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
         className={classes.root}
       >
-        Editors
+        {submenuName}
       </Button>
       <Menu
         id="simple-menu"

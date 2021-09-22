@@ -10,9 +10,10 @@ const h6 = {
   marginBottom: "2rem",
 };
 
-const p = {
+const descriptionStyle = {
   color: "#fff",
   marginTop: "1rem",
+  fontSize: "1.3rem",
   width: "50%",
   margin: "0 auto",
 };
@@ -45,7 +46,7 @@ const HeaderContainer = ({ cover, title, description, height, children, flexEnd,
           </Typography>
           {children}
 
-          <Typography component="p" variant="body1" style={p}>
+          <Typography component="p" variant="body1" style={descriptionStyle}>
             {description}
           </Typography>
         </Grid>
