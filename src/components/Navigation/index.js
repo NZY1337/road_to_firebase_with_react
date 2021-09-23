@@ -81,9 +81,9 @@ const Navigation = ({ firebase }) => {
         },
 
         {
-          location: ROUTES.DOTS_EDITOR,
-          name: "Dots Editor",
-          id: "dots_editor",
+          location: ROUTES.DATA_VISUALIZATION_EDITOR,
+          name: "Data Visualization Editor",
+          id: "data_visualization",
         },
       ],
     },

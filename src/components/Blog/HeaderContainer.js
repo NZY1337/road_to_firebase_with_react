@@ -20,7 +20,7 @@ const descriptionStyle = {
 
 const HeaderContainer = ({ cover, title, description, height, children, flexEnd, shadow }) => {
   const container1 = {
-    backgroundColor: `rgba(0, 0, 0, ${shadow || 0.4})`,
+    backgroundColor: `rgba(0, 0, 0, ${shadow || 0.6})`,
     backgroundBlendMode: "multiply",
     height: height || "100vh",
     backgroundSize: "cover",

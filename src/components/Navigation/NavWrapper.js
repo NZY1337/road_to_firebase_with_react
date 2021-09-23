@@ -41,7 +41,7 @@ export function NavWrapper({ headerClass, classes, authUser, authMenu, nonAuthMe
             style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center" }}
           >
             <Popover toggleButton={<ToggleButton />} />
-            <ProfileImage firebase={firebase} authUser={authUser} />
+            {/* <ProfileImage firebase={firebase} authUser={authUser} /> */}
           </Grid>
         </Grid>
       </Container>

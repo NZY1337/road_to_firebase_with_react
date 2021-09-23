@@ -4,7 +4,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import { NavLink } from "react-router-dom";
-
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +72,7 @@ export function Dropdown({ submenu, submenuName, defaultColorToDrowdown }) {
         className={classes.root}
       >
         {submenuName}
+        <ArrowDropUpIcon />
       </Button>
       <Menu
         id="simple-menu"

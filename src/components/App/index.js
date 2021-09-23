@@ -40,7 +40,7 @@ const App = () => {
 
           {/* editors */}
           <Route path={ROUTES.EDITOR} component={Editor} />
-          <Route path={ROUTES.DOTS_EDITOR} component={DotsEditor} />
+          <Route path={ROUTES.DATA_VISUALIZATION_EDITOR} component={DotsEditor} />
 
           <Route path={ROUTES.ABOUT_US} component={AboutUs} />
 
