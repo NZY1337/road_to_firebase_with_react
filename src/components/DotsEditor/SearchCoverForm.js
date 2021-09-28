@@ -10,30 +10,13 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // "& .MuiFilledInput-root": {
-    //   backgroundColor: "#fff",
-    //   border: "1px solid lightgray",
-    // },
-    width: "100%",
-    "& label.MuiFormLabel-root": {
-      color: "gray",
-      fontSize: "15px",
-    },
-    "& .MuiFilledInput-underline:after": {
-      borderBottomColor: "aqua",
-    },
-    "& .MuiInputBase-root": {
-      color: "#000",
-      fontSize: "14px",
-    },
+    // width: "100%",
   },
+
   btn: {
     "& .MuiButton-label": {
       color: "gray",
     },
-  },
-  forgotPw: {
-    color: "aqua!important",
   },
 }));
 
@@ -54,19 +37,13 @@ export function SearchCoverForm({ values, onSubmitHandler, onChangeHandler }) {
   const isInvalid = title === "" || post === "";
 
   return (
-    <form id="search-cover-form" onSubmit={onSubmitHandler} autoComplete="off" style={{ marginBottom: "1rem" }}>
-      {/* <TextField
-        id="search-title"
-        name="title"
-        margin="dense"
-        label="Title"
-        type="title"
-        onChange={onChangeHandler}
-        defaultValue={title}
-        variant="outlined"
-        className={classes.root}
-      /> */}
-
+    <form
+      id="search-cover-form"
+      onSubmit={onSubmitHandler}
+      autoComplete="off"
+      className={classes.root}
+      style={{ marginBottom: ".5rem" }}
+    >
       <div>
         <TextField
           id="search-post"
@@ -77,6 +54,7 @@ export function SearchCoverForm({ values, onSubmitHandler, onChangeHandler }) {
           margin="dense"
           size="small"
           value={post}
+          defaultValue="asd"
           onChange={onChangeHandler}
           //   fullWidth
           SelectProps={{

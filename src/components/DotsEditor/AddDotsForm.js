@@ -8,15 +8,12 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // "& .MuiFilledInput-root": {
-    //   backgroundColor: "#fff",
-    //   border: "1px solid lightgray",
-    // },
-    width: "100%",
-    "& label.MuiFormLabel-root": {
-      color: "gray",
-      fontSize: "15px",
+    "& .MuiInputLabel-root": {
+      fontSize: "14px",
     },
+
+    width: "100%",
+
     "& .MuiFilledInput-underline:after": {
       borderBottomColor: "aqua",
     },
@@ -36,72 +33,77 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export function AddDotsForm({ values, onSubmitHandler, onChangeHandler }) {
-  const { title, cover, description } = values;
+  const { company, cover, description } = values;
   const classes = useStyles();
 
-  const isInvalid = title === "" || cover === "" || description === "";
+  const isInvalid = company === "" || cover === "" || description === "";
 
   return (
-    <form id="sign-in-form" onSubmit={onSubmitHandler} autoComplete="off">
-      <TextField
-        id="dots-title"
-        name="title"
-        margin="dense"
-        label="Title"
-        type="title"
-        onChange={onChangeHandler}
-        defaultValue={title}
-        variant="outlined"
-        className={classes.root}
-        InputProps={{
-          className: classes.labelColor,
-        }}
-      />
+    <React.Fragment>
+      <Typography style={{ textAlign: "left", color: "black" }} component="p" variant="body2">
+        Add your bullets. Remember that each bullet is <b>draggable</b>.
+      </Typography>
+      <form id="sign-in-form" onSubmit={onSubmitHandler} autoComplete="off">
+        <TextField
+          id="dots-company"
+          name="company"
+          margin="dense"
+          label="Company"
+          type="url"
+          onChange={onChangeHandler}
+          value={company}
+          variant="outlined"
+          className={classes.root}
+          InputProps={{
+            className: classes.labelColor,
+          }}
+        />
 
-      <TextField
-        id="dots-cover"
-        name="cover"
-        margin="dense"
-        label="Cover"
-        type="cover"
-        onChange={onChangeHandler}
-        defaultValue={cover}
-        variant="outlined"
-        className={classes.root}
-        style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
-        InputProps={{
-          className: classes.labelColor,
-        }}
-      />
+        <TextField
+          id="dots-cover"
+          name="cover"
+          margin="dense"
+          label="Cover"
+          type="company"
+          onChange={onChangeHandler}
+          value={cover}
+          variant="outlined"
+          className={classes.root}
+          style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
+          InputProps={{
+            className: classes.labelColor,
+          }}
+        />
 
-      <TextField
-        type="description"
-        name="description"
-        margin="dense"
-        id="dots-description"
-        label="Description"
-        onChange={onChangeHandler}
-        defaultValue={description}
-        variant="outlined"
-        className={classes.root}
-        InputProps={{
-          className: classes.labelColor,
-        }}
-      />
+        <TextField
+          type="description"
+          name="description"
+          margin="dense"
+          id="dots-description"
+          label="Description"
+          onChange={onChangeHandler}
+          value={description}
+          variant="outlined"
+          className={classes.root}
+          InputProps={{
+            className: classes.labelColor,
+          }}
+        />
 
-      <Grid container justify="space-between" alignItems="center" item>
-        <Button
-          className={isInvalid && classes.btn}
-          variant="contained"
-          color="secondary"
-          type="submit"
-          disabled={isInvalid}
-          style={{ marginTop: ".5rem", textTransform: "capitalize" }}
-        >
-          <Typography component="p">Submit New Data Bullet</Typography>
-        </Button>
-      </Grid>
-    </form>
+        <Grid container justify="space-between" alignItems="center" item>
+          <Button
+            className={isInvalid && classes.btn}
+            variant="contained"
+            color="secondary"
+            type="submit"
+            disabled={isInvalid}
+            style={{ marginTop: ".5rem", textTransform: "capitalize" }}
+          >
+            <Typography component="p">Submit Data Bullet</Typography>
+          </Button>
+        </Grid>
+      </form>
+    </React.Fragment>
   );
 }
 

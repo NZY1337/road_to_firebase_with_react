@@ -9,23 +9,29 @@ import AddDotsForm from "./AddDotsForm";
 import SearchCoverForm from "./SearchCoverForm";
 import ComboBox from "../../utils/Autocomplete";
 import { withFirebase } from "../Firebase";
+import { Typography } from "@material-ui/core";
+import DotsModule from "./DotsModule";
+
+import { v4 as uuidv4 } from "uuid";
 
 const defaultCover =
   "https://images.pexels.com/photos/936722/pexels-photo-936722.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
 export function DotsEditor({ firebase }) {
   const [dotsValues, setDotsValues] = useState({
-    title: "",
+    company: "",
     cover: "",
     description: "",
   });
 
   const [searchValues, setSearchValues] = useState({
-    title: "",
     post: "blog",
   });
 
-  const [bulletCover, setBulletCover] = useState("");
+  //? all bullets from BulletsForm
+  const [dots, setDots] = useState([]);
+
+  const [dotCover, setDotCover] = useState("");
 
   const [posts, setPosts] = useState([]);
 
@@ -52,11 +58,20 @@ export function DotsEditor({ firebase }) {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    const dotId = uuidv4().slice(0, 6);
+
+    setDots([...dots, { ...dotsValues, id: dotId }]);
+
+    setDotsValues({
+      company: "",
+      cover: "",
+      description: "",
+    });
   };
 
   const handleAutocompleteChange = (_, post) => {
     // console.log(post);
-    post && setBulletCover(post.cover);
+    post && setDotCover(post.cover);
   };
 
   useEffect(() => {
@@ -69,37 +84,49 @@ export function DotsEditor({ firebase }) {
         setPosts(posts);
       });
     });
-
-    // return () => postsRef.off("value");
   }, [searchValues.post]);
 
   return (
-    <>
+    <div style={{ backgroundColor: "snow" }}>
       <HeaderContainer
-        style={{ marginTop: "5rem" }}
-        cover={bulletCover || defaultCover}
+        cover={dotCover || defaultCover}
         title="Data Visualization Editor"
-        description="A visualization of the most important detatails of an interior design creation."
-      />
+        description="A visualization of the most important detatails of an interior
+        design creation."
+      >
+        <DotsModule dots={dots} />
+      </HeaderContainer>
 
-      <Container maxWidth="lg" style={{ marginTop: "2.5rem", marginBottom: "2.5rem" }}>
-        <Grid container justify="space-between">
+      <Container maxWidth="lg" style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
+        <Grid container justify="space-between" alignItems="flex-start">
           <Grid container item lg={5} direction="column" justify="center" align="center">
             <AddDotsForm values={dotsValues} onChangeHandler={onChangeHandler} onSubmitHandler={onSubmitHandler} />
           </Grid>
 
           <Grid container item lg={5} direction="column" justify="center">
+            <Typography component="h4" style={{ color: "#f50057" }}>
+              Please choose your <b>Post Type</b>.{" "}
+            </Typography>
+
+            <Typography component="p" style={{ marginBottom: "1rem", color: "gray" }}>
+              <i>Then select your title.</i>
+            </Typography>
+
             <SearchCoverForm
               values={searchValues}
               onChangeHandler={onChangeHandler}
               onSubmitHandler={onSubmitHandler}
             />
 
-            <ComboBox posts={posts} handleAutocompleteChange={handleAutocompleteChange} />
+            <ComboBox
+              posts={posts}
+              //   autoCompleteValue={dotCover}
+              handleAutocompleteChange={handleAutocompleteChange}
+            />
           </Grid>
         </Grid>
       </Container>
-    </>
+    </div>
   );
 }
 

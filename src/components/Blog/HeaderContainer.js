@@ -27,30 +27,33 @@ const HeaderContainer = ({ cover, title, description, height, children, flexEnd,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
     backgroundImage: `url(${cover})`,
-  };
-
-  const container2 = {
+    position: "relative",
+    overflow: "hidden",
     display: "flex",
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: flexEnd || "center",
-    height: "100%",
   };
 
   return (
     <Container maxWidth={false} style={container1} disableGutters={true}>
-      <VideoPlayer url={cover} autoPlay={true} controls={false} />
-      <Container maxWidth="lg" style={container2}>
-        <Grid container item direction="column" justify="center" align="center">
-          <Typography component="h2" variant="h2" style={h6}>
-            {title}
-          </Typography>
-          {children}
+      {children ? (
+        children
+      ) : (
+        <div style={{ height: "100%" }}>
+          <VideoPlayer url={cover} autoPlay={true} controls={false} />
 
-          <Typography component="p" variant="body1" style={descriptionStyle}>
-            {description}
-          </Typography>
-        </Grid>
-      </Container>
+          <Grid container style={{ height: "100%" }} item direction="column" justify="center" align="center">
+            <Typography component="h2" variant="h2" style={h6}>
+              {title}
+            </Typography>
+            {children}
+
+            <Typography component="p" variant="body1" style={descriptionStyle}>
+              {description}
+            </Typography>
+          </Grid>
+        </div>
+      )}
     </Container>
   );
 };
