@@ -12,12 +12,12 @@ export function DotsModule({ dots }) {
 
   let [active, setActive] = useState(false);
 
-  
   const dragStart = (e) => {
-    const actualDot = dotsArr.find((dot) => dot.id === e.target.id);
+    // this means that we have at least on child, the click isn't triggered by the parrent
 
-    if (actualDot) {
-      const id = actualDot.id;
+    if (e.target.id !== "asd") {
+      setActive(true);
+      const id = e.target.id;
       setCurrentDotId(id);
 
       setAsd({
@@ -28,10 +28,6 @@ export function DotsModule({ dots }) {
           initialY: e.clientY - asd[id].offsetY,
         },
       });
-    }
-
-    if (e.target === dotRef.current) {
-      setActive(true);
     }
   };
 
@@ -51,14 +47,15 @@ export function DotsModule({ dots }) {
   };
 
   const dragEnd = (e) => {
-    setAsd({
-      ...asd,
-      [currentDotId]: {
-        ...asd[currentDotId],
-        initialX: asd[currentDotId].currentX,
-        initialY: asd[currentDotId].currentY,
-      },
-    });
+    active &&
+      setAsd({
+        ...asd,
+        [currentDotId]: {
+          ...asd[currentDotId],
+          initialX: asd[currentDotId].currentX,
+          initialY: asd[currentDotId].currentY,
+        },
+      });
 
     setActive(false);
   };
@@ -85,11 +82,8 @@ export function DotsModule({ dots }) {
     dotsArr.map((dot) => (
       <DraggableDot
         key={dot.id}
-        currentX={asd[currentDotId] && asd[currentDotId].currentX}
-        currentY={asd[currentDotId] && asd[currentDotId].currentY}
-        dragStart={dragStart}
-        dragEnd={dragEnd}
-        drag={drag}
+        currentX={asd[dot.id].currentX}
+        currentY={asd[dot.id].currentY}
         ref={dotRef}
         dot={dot}
         active={active}
@@ -104,7 +98,7 @@ export function DotsModule({ dots }) {
       id="asd"
       style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
     >
-      {renderDots()}
+      {dotsArr && renderDots()}
     </div>
   );
 }
