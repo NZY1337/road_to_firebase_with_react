@@ -1,26 +1,26 @@
-import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import LandingPage from "../Landing";
-import SignUpPage from "../SignUp";
-import SignInPage from "../SignIn";
-import HomePage from "../Home";
-import AccountPage from "../Account";
-import AdminPage from "../Admin";
-import SomeComponent from "../test";
-import Todos from "../Todo";
-import Editor from "../Editor";
-import Blogs from "../Blog";
-import SingleBlog from "../Blog/SingleBlog";
-import Layout from "../Layout";
-import AboutUs from "../AboutUs/AboutUs";
-import DotsEditor from "../DotsEditor";
+import LandingPage from '../Landing'
+import SignUpPage from '../SignUp'
+import SignInPage from '../SignIn'
+import HomePage from '../Home'
+import AccountPage from '../Account'
+import AdminPage from '../Admin'
+import SomeComponent from '../test'
+import Todos from '../Todo'
+import Editor from '../Editor'
+import Blogs from '../Blog'
+import SingleBlog from '../Blog/SingleBlog'
+import Layout from '../Layout'
+import AboutUs from '../AboutUs/AboutUs'
+import DotsEditor from '../DotsEditor'
 
-import { withAuthentication } from "../Sesssion";
+import { withAuthentication } from '../Sesssion'
 
-import * as ROUTES from "../../constants/routes";
+import * as ROUTES from '../../constants/routes'
 
-import SnackBarContextProvider from "../../utils/SnackBarContext";
+import SnackBarContextProvider from '../../utils/SnackBarContext'
 
 // https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
 
@@ -40,7 +40,10 @@ const App = () => {
 
           {/* editors */}
           <Route path={ROUTES.EDITOR} component={Editor} />
-          <Route path={ROUTES.DATA_VISUALIZATION_EDITOR} component={DotsEditor} />
+          <Route
+            path={ROUTES.DATA_VISUALIZATION_EDITOR}
+            component={DotsEditor}
+          />
 
           <Route path={ROUTES.ABOUT_US} component={AboutUs} />
 
@@ -55,7 +58,7 @@ const App = () => {
         </Layout>
       </Router>
     </SnackBarContextProvider>
-  );
-};
+  )
+}
 
-export default withAuthentication(App);
+export default withAuthentication(App)
