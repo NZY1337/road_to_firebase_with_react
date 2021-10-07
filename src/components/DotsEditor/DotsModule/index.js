@@ -1,91 +1,79 @@
+import { indexOf } from "lodash";
 import React, { useState, useEffect, useRef } from "react";
 import DraggableDot from "./DraggableDot";
 
 export function DotsModule({ dots }) {
   const [dotsArr, setDotsArr] = useState(dots);
-
-  const [currentDotId, setCurrentDotId] = useState(null);
-
-  const [asd, setAsd] = useState({});
-
-  const dotRef = useRef(null);
-
-  let [active, setActive] = useState(false);
+  const [currentDotIdx, setCurrentDotIdx] = useState(null);
+  const [zIndex, setZindex] = useState(null);
+  const [active, setActive] = useState(false);
 
   const dragStart = (e) => {
     // this means that we have at least on child, the click isn't triggered by the parrent
-
-    if (e.target.id !== "asd") {
+    if (e.target.id !== "dots-container" && e.target.id !== "") {
       setActive(true);
-      const id = e.target.id;
-      setCurrentDotId(id);
 
-      setAsd({
-        ...asd,
-        [id]: {
-          ...asd[id],
-          initialX: e.clientX - asd[id].offsetX,
-          initialY: e.clientY - asd[id].offsetY,
-        },
-      });
-    }
-  };
+      let idx = dotsArr.findIndex((dot) => dot.id === e.target.id);
+      setCurrentDotIdx(idx);
 
-  const drag = (e) => {
-    if (active) {
-      setAsd({
-        ...asd,
-        [currentDotId]: {
-          ...asd[currentDotId],
-          currentX: e.clientX - asd[currentDotId].initialX,
-          currentY: e.clientY - asd[currentDotId].initialY,
-          offsetX: asd[currentDotId].currentX,
-          offsetY: asd[currentDotId].currentY,
-        },
-      });
+      const newDotsArr = [...dotsArr];
+
+      newDotsArr[idx].initialX = e.clientX - newDotsArr[idx].offsetX;
+      newDotsArr[idx].initialY = e.clientY - newDotsArr[idx].offsetY;
+
+      setDotsArr(newDotsArr);
     }
   };
 
   const dragEnd = (e) => {
-    active &&
-      setAsd({
-        ...asd,
-        [currentDotId]: {
-          ...asd[currentDotId],
-          initialX: asd[currentDotId].currentX,
-          initialY: asd[currentDotId].currentY,
-        },
-      });
+    if (active) {
+      const newDotsArr = [...dotsArr];
+
+      newDotsArr[currentDotIdx].initialX = newDotsArr[currentDotIdx].currentX;
+      newDotsArr[currentDotIdx].initialY = newDotsArr[currentDotIdx].currentX;
+
+      setDotsArr(newDotsArr);
+    }
 
     setActive(false);
   };
 
+  const drag = (e) => {
+    if (active) {
+      const newDotsArr = [...dotsArr];
+
+      newDotsArr[currentDotIdx].currentX = e.clientX - newDotsArr[currentDotIdx].initialX;
+      newDotsArr[currentDotIdx].currentY = e.clientY - newDotsArr[currentDotIdx].initialY;
+      newDotsArr[currentDotIdx].offsetX = newDotsArr[currentDotIdx].currentX;
+      newDotsArr[currentDotIdx].offsetY = newDotsArr[currentDotIdx].currentY;
+
+      setDotsArr(newDotsArr);
+    }
+  };
+
+  const changeDotsZindex = (e) => {
+    if (e.target.id !== "dots-container" && e.target.id !== "") {
+      let initialDots = [...dotsArr];
+      let idx = initialDots.findIndex((i) => i.id === e.target.id);
+
+      // we can't use currentDotIdx because the event is triggered onHover and we do not have access on 'currentDotIdx'
+      [initialDots[idx], initialDots[initialDots.length - 1]] = [initialDots[initialDots.length - 1], initialDots[idx]];
+      setDotsArr(initialDots);
+    }
+  };
+
   useEffect(() => {
     setDotsArr(dots);
-
-    dots.map((dot) => {
-      setAsd({
-        ...asd,
-        [dot.id]: {
-          currentX: null,
-          currentY: null,
-          initialX: null,
-          initialY: null,
-          offsetX: 0,
-          offsetY: 0,
-        },
-      });
-    });
   }, [dots]);
 
   const renderDots = () =>
-    dotsArr.map((dot) => (
+    dotsArr.map((dot, idx) => (
       <DraggableDot
         key={dot.id}
-        currentX={asd[dot.id].currentX}
-        currentY={asd[dot.id].currentY}
-        ref={dotRef}
+        currentX={dotsArr[idx].currentX}
+        currentY={dotsArr[idx].currentY}
         dot={dot}
+        zIndex={zIndex}
         active={active}
       />
     ));
@@ -95,8 +83,16 @@ export function DotsModule({ dots }) {
       onMouseMove={drag}
       onMouseUp={dragEnd}
       onMouseDown={dragStart}
-      id="asd"
-      style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
+      //   onMouseOver={changeDotsZindex}
+      id="dots-container"
+      style={{
+        width: "70%",
+        height: "70%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0,0,0,0.3)",
+      }}
     >
       {dotsArr && renderDots()}
     </div>

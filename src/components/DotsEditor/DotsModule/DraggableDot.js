@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React from "react";
 
 import { makeStyles } from "@material-ui/core";
 
@@ -69,18 +69,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function DraggableDot({ dot, currentX, currentY }, ref) {
-  const { cover, company, description, id } = dot;
+export function DraggableDot({ dot, zIndex }) {
+  const { cover, company, description, id, currentX, currentY } = dot;
 
+  if (currentX) {
+    console.log(currentX);
+  }
   const classes = useStyles();
 
   return (
-    <div
-      style={{ transform: `translate3d(${currentX}px, ${currentY}px, 0)` }}
-      className={classes.item}
-      ref={ref}
-      id={id}
-    >
+    <div style={{ transform: `translate3d(${currentX}px, ${currentY}px, 0)` }} className={classes.item} id={id}>
       <div className="inner">
         <img src={cover} />
         <a href={company}>{description}</a>
@@ -89,4 +87,4 @@ export function DraggableDot({ dot, currentX, currentY }, ref) {
   );
 }
 
-export default forwardRef(DraggableDot);
+export default DraggableDot;

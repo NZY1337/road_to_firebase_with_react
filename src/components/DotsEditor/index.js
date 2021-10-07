@@ -60,7 +60,9 @@ export function DotsEditor({ firebase }) {
     e.preventDefault();
     const dotId = uuidv4().slice(0, 6);
 
-    setDots([...dots, { ...dotsValues, id: dotId }]);
+    const coords = { currentX: null, currentY: null, initialX: null, initialY: null, offsetX: 0, offsetY: 0 };
+
+    setDots([...dots, { ...dotsValues, id: dotId, ...coords }]);
 
     setDotsValues({
       company: "",
