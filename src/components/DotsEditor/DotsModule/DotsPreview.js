@@ -7,7 +7,7 @@ import { Link } from "@material-ui/core";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
-export function DotsPreview({ dots }) {
+export function DotsPreview({ dots, onEditDotHandler }) {
   return (
     <Grid container justify="space-between" alignItems="flex-start" style={{ marginTop: "5rem" }}>
       <h2 style={{ marginBottom: "1rem" }}>Current Dots:</h2>
@@ -15,7 +15,7 @@ export function DotsPreview({ dots }) {
       <Grid container item lg={12} spacing={2}>
         {dots.map((dot) => {
           return (
-            <Grid item lg={3} md={4} sm={4} style={{ height: "400px" }}>
+            <Grid key={dot.id} item lg={3} md={4} sm={4} style={{ height: "400px" }}>
               <Link
                 href={dot.company}
                 style={{
@@ -38,11 +38,30 @@ export function DotsPreview({ dots }) {
                   textDecoration: "none",
                 }}
               >
-                <Typography variant="h6">{dot.description}</Typography>
+                <Typography variant="h6" style={{ width: "80%" }}>
+                  {dot.description}
+                </Typography>
 
                 <div style={{ position: "absolute", top: "10px", right: "10px" }}>
-                  <EditTwoToneIcon color="default" style={{ fontSize: "20px", marginRight: "6px" }} />
-                  <DeleteTwoToneIcon color="secondary" style={{ fontSize: "20px" }} />
+                  <EditTwoToneIcon
+                    color="default"
+                    style={{ fontSize: "20px", marginRight: "6px" }}
+                    onClick={(e) => {
+                      console.log("edit is clicked");
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onEditDotHandler(dot.id);
+                    }}
+                  />
+                  <DeleteTwoToneIcon
+                    color="secondary"
+                    style={{ fontSize: "20px" }}
+                    onClick={(e) => {
+                      console.log("delete is clicked");
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                  />
                 </div>
               </Link>
             </Grid>

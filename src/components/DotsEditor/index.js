@@ -39,6 +39,16 @@ export function DotsEditor({ firebase }) {
 
   const [posts, setPosts] = useState([]);
 
+  const onEditDotHandler = (id) => {
+    const currentDot = dots.find((dot) => dot.id === id);
+
+    setDotsValues({
+      company: currentDot.company,
+      cover: currentDot.cover,
+      description: currentDot.description,
+    });
+  };
+
   const onChangeHandler = (e) => {
     e.persist();
     const {
@@ -140,7 +150,7 @@ export function DotsEditor({ firebase }) {
           </Grid>
         </Grid>
 
-        <DotsPreview dots={dots} />
+        <DotsPreview dots={dots} onEditDotHandler={onEditDotHandler} />
       </Container>
     </div>
   );
