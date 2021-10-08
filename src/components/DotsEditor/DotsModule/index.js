@@ -1,4 +1,3 @@
-import { indexOf } from 'lodash'
 import React, { useState, useEffect, useRef } from 'react'
 import DraggableDot from './DraggableDot'
 

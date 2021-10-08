@@ -83,7 +83,7 @@ export function DraggableDot({ dot, zIndex, isDotPassingHalfScreen }) {
       <div
         className={`inner ${isDotPassingHalfScreen ? 'rightSide' : 'leftSide'}`}
       >
-        <img src={cover} />
+        <img src={cover} alt="product details" />
         <a href={company}>{description}</a>
       </div>
     </div>
