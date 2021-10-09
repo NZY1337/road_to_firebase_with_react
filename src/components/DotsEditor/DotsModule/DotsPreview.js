@@ -6,8 +6,17 @@ import { Typography } from "@material-ui/core";
 import { Link } from "@material-ui/core";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
+import Button from "@material-ui/core/Button";
 
-export function DotsPreview({ dots, onEditDotHandler, onDeleteDotHandler }) {
+export function DotsPreview({
+  dots,
+  onEditDotHandler,
+  onDeleteDotHandler,
+  searchValues,
+  onHandleAddDotsToCurrentPost,
+}) {
+  const { post, title } = searchValues;
+
   return (
     <Grid container justify="space-between" alignItems="flex-start" style={{ marginTop: "5rem" }}>
       {dots.length > 0 && <h2 style={{ marginBottom: "1rem" }}>Current Dots:</h2>}
@@ -66,6 +75,17 @@ export function DotsPreview({ dots, onEditDotHandler, onDeleteDotHandler }) {
           );
         })}
       </Grid>
+
+      {dots.length > 0 && (
+        <Grid item lg={12} spacing={2} style={{ marginTop: "2rem" }}>
+          <Button variant="outlined" color="primary" onClick={onHandleAddDotsToCurrentPost}>
+            Dots will be saved to
+            <b style={{ marginLeft: ".3rem" }}>
+              {post}/{title}
+            </b>
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 }

@@ -11,9 +11,6 @@ import ComboBox from "../../utils/Autocomplete";
 import { withFirebase } from "../Firebase";
 import { Typography } from "@material-ui/core";
 import DotsModule from "./DotsModule";
-import { Link } from "@material-ui/core";
-import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
-import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 import { v4 as uuidv4 } from "uuid";
 
 import DotsPreview from "./DotsModule/DotsPreview";
@@ -27,13 +24,34 @@ export function DotsEditor({ firebase }) {
     cover: "",
     description: "",
   });
+
   const [searchValues, setSearchValues] = useState({
     post: "blog",
+    title: "",
+    key: "",
   });
-  const [dots, setDots] = useState([]); // all bullets from BulletsForm
+
+  const [dots, setDots] = useState([]); // all bullets from BulletsForm or Firebase
   const [dotCover, setDotCover] = useState("");
   const [posts, setPosts] = useState([]);
   const [currentDotId, setCurrentDotId] = useState("");
+
+  const onHandleAddDotsToCurrentPost = () => {
+    const postRef = firebase.db.ref().child(`/${searchValues.post}/${searchValues.key}`);
+
+    const result = (array) =>
+      array.reduce((obj, item) => {
+        obj[item.id] = item;
+        return obj;
+      }, {});
+
+    const dotsCoord = result(dots);
+
+    postRef
+      .update({ dotsCoord })
+      .then(() => console.log("Post has been successfully updated! :)"))
+      .catch((err) => console.log(err));
+  };
 
   const emptyDotsValues = () => {
     setDotsValues({
@@ -85,6 +103,39 @@ export function DotsEditor({ firebase }) {
     }
   };
 
+  const handleAutocompleteChange = (_, post) => {
+    post &&
+      setSearchValues({
+        ...searchValues,
+        title: post.title,
+        key: post.key,
+      });
+
+    post && setDotCover(post.cover);
+
+    if (post) {
+      const postRef = firebase.db.ref(`/${searchValues.post}/${post.key}`);
+
+      postRef.on("value", (snapshot) => {
+        const dotsCoord = snapshot.val().dotsCoord;
+
+        let defaultArr = [];
+
+        if (dotsCoord) {
+          Object.keys(dotsCoord).map((id) => {
+            console.log(dotsCoord[id]);
+            const dot = dotsCoord[id];
+            defaultArr.push(dot);
+          });
+
+          setDots(defaultArr);
+        } else {
+          setDots([]);
+        }
+      });
+    }
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const dotId = uuidv4().slice(0, 6);
@@ -98,9 +149,12 @@ export function DotsEditor({ firebase }) {
         offsetX: 0,
         offsetY: 0,
         isDotPassingHalfScreen: false,
+        ...dotsValues,
+        id: dotId,
       };
 
-      setDots([...dots, { ...dotsValues, id: dotId, ...coords }]);
+      //! refactor, it is a single DOT not DOTS,  [dot, setDot] (should be)
+      setDots([...dots, { ...coords }]);
 
       emptyDotsValues();
     } else {
@@ -119,11 +173,6 @@ export function DotsEditor({ firebase }) {
     }
   };
 
-  const handleAutocompleteChange = (_, post) => {
-    // console.log(post);
-    post && setDotCover(post.cover);
-  };
-
   useEffect(() => {
     let posts = [];
 
@@ -136,6 +185,16 @@ export function DotsEditor({ firebase }) {
       });
     });
   }, [searchValues.post, firebase.db]);
+
+  //   small hack
+  useEffect(() => {
+    const close = document.getElementsByClassName("MuiAutocomplete-clearIndicator")[0];
+
+    // Add a Click Event Listener to the button
+    close.addEventListener("click", () => {
+      setSearchValues({ post: "blog", title: "", key: "" });
+    });
+  }, []);
 
   return (
     <div style={{ backgroundColor: "snow" }}>
@@ -151,16 +210,17 @@ export function DotsEditor({ firebase }) {
       <Container maxWidth="lg" style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
         <Grid container justify="space-between" alignItems="flex-start">
           <Grid container item lg={5} direction="column" justify="center" align="center">
-            <AddDotsForm values={dotsValues} onChangeHandler={onChangeHandler} onSubmitHandler={onSubmitHandler} />
+            <AddDotsForm
+              postTitle={searchValues.title}
+              values={dotsValues}
+              onChangeHandler={onChangeHandler}
+              onSubmitHandler={onSubmitHandler}
+            />
           </Grid>
 
           <Grid container item lg={5} direction="column" justify="center">
-            <Typography component="h4" style={{ color: "#f50057" }}>
-              Please choose your <b>Post Type</b>.{" "}
-            </Typography>
-
-            <Typography component="p" style={{ marginBottom: "1rem", color: "gray" }}>
-              <i>Then select your title.</i>
+            <Typography component="h4" style={{ color: "#f50057", marginBottom: ".5rem" }}>
+              Choose your <b>post type</b> then select your <b>post title.</b> in order to add bullets to your post.
             </Typography>
 
             <SearchCoverForm
@@ -171,13 +231,19 @@ export function DotsEditor({ firebase }) {
 
             <ComboBox
               posts={posts}
-              //   autoCompleteValue={dotCover}
+              autoCompleteValue={searchValues.title}
               handleAutocompleteChange={handleAutocompleteChange}
             />
           </Grid>
         </Grid>
 
-        <DotsPreview dots={dots} onEditDotHandler={onEditDotHandler} onDeleteDotHandler={onDeleteDotHandler} />
+        <DotsPreview
+          searchValues={searchValues}
+          dots={dots}
+          onEditDotHandler={onEditDotHandler}
+          onDeleteDotHandler={onDeleteDotHandler}
+          onHandleAddDotsToCurrentPost={onHandleAddDotsToCurrentPost}
+        />
       </Container>
     </div>
   );

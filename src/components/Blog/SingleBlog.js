@@ -33,7 +33,7 @@ class SingleBlog extends Component {
       }
     });
   };
- 
+
   updatePostViewCounter = () => {
     this.postRefCounter = this.props.firebase.db.ref(`${this.postType}`).child(`${this.postTypeId}`).child("postViews");
 
@@ -44,7 +44,7 @@ class SingleBlog extends Component {
 
   componentDidMount() {
     this.fetchPost();
-    // this.updatePostViewCounter();
+    this.updatePostViewCounter();
   }
 
   componentWillUnmount() {

@@ -32,18 +32,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function AddDotsForm({ values, onSubmitHandler, onChangeHandler }) {
+export function AddDotsForm({ values, onSubmitHandler, onChangeHandler, postTitle }) {
   const { company, cover, description } = values;
   const classes = useStyles();
 
   const isInvalid = company === "" || cover === "" || description === "";
+  const disableForm = { pointerEvents: "none", opacity: ".5" };
+  const disableFormBasedOnPostTitle = !postTitle ? disableForm : {};
 
   return (
     <React.Fragment>
       <Typography style={{ textAlign: "left", color: "black" }} component="p" variant="body2">
         Add your bullets. Remember that each bullet is <b>draggable</b>.
       </Typography>
-      <form id="sign-in-form" onSubmit={onSubmitHandler} autoComplete="off">
+
+      <form id="sign-in-form" onSubmit={onSubmitHandler} autoComplete="off" style={disableFormBasedOnPostTitle}>
         <TextField
           id="dots-company"
           name="company"

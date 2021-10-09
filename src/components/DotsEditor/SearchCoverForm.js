@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const currencies = [
+const postTypes = [
   {
     value: "blog",
   },
@@ -54,14 +54,13 @@ export function SearchCoverForm({ values, onSubmitHandler, onChangeHandler }) {
           margin="dense"
           size="small"
           value={post}
-          defaultValue="asd"
           onChange={onChangeHandler}
           //   fullWidth
           SelectProps={{
             renderValue: (value) => value,
           }}
         >
-          {currencies.map((option) => (
+          {postTypes.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.value}
             </MenuItem>
