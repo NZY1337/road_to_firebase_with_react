@@ -1,85 +1,84 @@
-import React, { useState, useEffect, useRef } from 'react'
-import DraggableDot from './DraggableDot'
+import React, { useState, useEffect, useRef } from "react";
+import DraggableDot from "./DraggableDot";
 
 export function DotsModule({ dots }) {
-  const [dotsArr, setDotsArr] = useState(dots)
-  const [currentDotIdx, setCurrentDotIdx] = useState(null)
-  const [zIndex, setZindex] = useState(null)
-  const [active, setActive] = useState(false)
-  const [isDotPassingHalfScreen, setIsDotPassingHalfScren] = useState(false)
+  const [dotsArr, setDotsArr] = useState(dots);
+  const [currentDotIdx, setCurrentDotIdx] = useState(null);
+  const [zIndex, setZindex] = useState(null);
+  const [active, setActive] = useState(false);
+  const [isDotPassingHalfScreen, setIsDotPassingHalfScren] = useState(false);
 
   const dragStart = (e) => {
     // this means that we have at least on child, the click isn't triggered by the parrent
-    if (e.target.id !== 'dots-container' && e.target.id !== '') {
-      setActive(true)
+    if (e.target.id !== "dots-container" && e.target.id !== "") {
+      setActive(true);
 
-      let idx = dotsArr.findIndex((dot) => dot.id === e.target.id)
-      setCurrentDotIdx(idx)
+      let idx = dotsArr.findIndex((dot) => dot.id === e.target.id);
+      setCurrentDotIdx(idx);
 
-      const newDotsArr = [...dotsArr]
+      const newDotsArr = [...dotsArr];
 
-      newDotsArr[idx].initialX = e.clientX - newDotsArr[idx].offsetX
-      newDotsArr[idx].initialY = e.clientY - newDotsArr[idx].offsetY
+      newDotsArr[idx].initialX = e.clientX - newDotsArr[idx].offsetX;
+      newDotsArr[idx].initialY = e.clientY - newDotsArr[idx].offsetY;
 
-      setDotsArr(newDotsArr)
+      setDotsArr(newDotsArr);
     }
-  }
+  };
 
   const dragEnd = (e) => {
     if (active) {
-      const newDotsArr = [...dotsArr]
+      const newDotsArr = [...dotsArr];
 
-      newDotsArr[currentDotIdx].initialX = newDotsArr[currentDotIdx].currentX
-      newDotsArr[currentDotIdx].initialY = newDotsArr[currentDotIdx].currentX
+      newDotsArr[currentDotIdx].initialX = newDotsArr[currentDotIdx].currentX;
+      newDotsArr[currentDotIdx].initialY = newDotsArr[currentDotIdx].currentX;
 
-      setDotsArr(newDotsArr)
+      setDotsArr(newDotsArr);
     }
 
-    setActive(false)
-  }
+    setActive(false);
+  };
 
   const drag = (e) => {
     if (active) {
-      const newDotsArr = [...dotsArr]
+      const newDotsArr = [...dotsArr];
 
-      newDotsArr[currentDotIdx].currentX =
-        e.clientX - newDotsArr[currentDotIdx].initialX
-      newDotsArr[currentDotIdx].currentY =
-        e.clientY - newDotsArr[currentDotIdx].initialY
-      newDotsArr[currentDotIdx].offsetX = newDotsArr[currentDotIdx].currentX
-      newDotsArr[currentDotIdx].offsetY = newDotsArr[currentDotIdx].currentY
+      newDotsArr[currentDotIdx].currentX = e.clientX - newDotsArr[currentDotIdx].initialX;
+      newDotsArr[currentDotIdx].currentY = e.clientY - newDotsArr[currentDotIdx].initialY;
+      newDotsArr[currentDotIdx].offsetX = newDotsArr[currentDotIdx].currentX;
+      newDotsArr[currentDotIdx].offsetY = newDotsArr[currentDotIdx].currentY;
 
-      setDotsArr(newDotsArr)
+      setDotsArr(newDotsArr);
 
-      detectDotPosOnTheScreen(e)
+      detectDotPosOnTheScreen(e);
     }
-  }
+  };
 
   const detectDotPosOnTheScreen = (e) => {
+    const newDotsArr = [...dotsArr];
+
     if (e.clientX > window.screen.width / 2) {
-      setIsDotPassingHalfScren(true)
+      newDotsArr[currentDotIdx].isDotPassingHalfScreen = true;
+      setDotsArr(newDotsArr);
     } else {
-      setIsDotPassingHalfScren(false)
+      newDotsArr[currentDotIdx].isDotPassingHalfScreen = false;
+      setDotsArr(newDotsArr);
     }
-  }
+  };
 
   const changeDotsZindex = (e) => {
-    if (e.target.id !== 'dots-container' && e.target.id !== '') {
-      let initialDots = [...dotsArr]
-      let idx = initialDots.findIndex((i) => i.id === e.target.id)
+    if (e.target.id !== "dots-container" && e.target.id !== "") {
+      let initialDots = [...dotsArr];
+      let idx = initialDots.findIndex((i) => i.id === e.target.id);
 
       // we can't use currentDotIdx because the event is triggered onHover and we do not have access on 'currentDotIdx'
-      ;[initialDots[idx], initialDots[initialDots.length - 1]] = [
-        initialDots[initialDots.length - 1],
-        initialDots[idx],
-      ]
-      setDotsArr(initialDots)
+      [initialDots[idx], initialDots[initialDots.length - 1]] = [initialDots[initialDots.length - 1], initialDots[idx]];
+      setDotsArr(initialDots);
     }
-  }
+  };
 
   useEffect(() => {
-    setDotsArr(dots)
-  }, [dots])
+    setDotsArr(dots);
+  }, [dots]);
 
   const renderDots = () =>
     dotsArr.map((dot, idx) => (
@@ -90,9 +89,9 @@ export function DotsModule({ dots }) {
         dot={dot}
         zIndex={zIndex}
         active={active}
-        isDotPassingHalfScreen={isDotPassingHalfScreen}
+        isDotPassingHalfScreen={dotsArr[idx].isDotPassingHalfScreen}
       />
-    ))
+    ));
 
   return (
     <div
@@ -102,17 +101,17 @@ export function DotsModule({ dots }) {
       //   onMouseOver={changeDotsZindex}
       id="dots-container"
       style={{
-        width: '70%',
-        height: '70%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        width: "70%",
+        height: "70%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0,0,0,0.3)",
       }}
     >
       {dotsArr && renderDots()}
     </div>
-  )
+  );
 }
 
-export default DotsModule
+export default DotsModule;

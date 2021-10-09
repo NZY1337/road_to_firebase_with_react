@@ -27,26 +27,41 @@ export function DotsEditor({ firebase }) {
     cover: "",
     description: "",
   });
-
   const [searchValues, setSearchValues] = useState({
     post: "blog",
   });
-
-  //? all bullets from BulletsForm
-  const [dots, setDots] = useState([]);
-
+  const [dots, setDots] = useState([]); // all bullets from BulletsForm
   const [dotCover, setDotCover] = useState("");
-
   const [posts, setPosts] = useState([]);
+  const [currentDotId, setCurrentDotId] = useState("");
+
+  const emptyDotsValues = () => {
+    setDotsValues({
+      company: "",
+      cover: "",
+      description: "",
+    });
+  };
 
   const onEditDotHandler = (id) => {
     const currentDot = dots.find((dot) => dot.id === id);
 
+    setCurrentDotId(id);
     setDotsValues({
       company: currentDot.company,
       cover: currentDot.cover,
       description: currentDot.description,
     });
+  };
+
+  const onDeleteDotHandler = (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this dot?");
+
+    if (confirm) {
+      const allDots = [...dots].filter((dot) => dot.id !== id);
+      console.log(allDots);
+      setDots(allDots);
+    }
   };
 
   const onChangeHandler = (e) => {
@@ -74,22 +89,34 @@ export function DotsEditor({ firebase }) {
     e.preventDefault();
     const dotId = uuidv4().slice(0, 6);
 
-    const coords = {
-      currentX: null,
-      currentY: null,
-      initialX: null,
-      initialY: null,
-      offsetX: 0,
-      offsetY: 0,
-    };
+    if (!currentDotId) {
+      const coords = {
+        currentX: null,
+        currentY: null,
+        initialX: null,
+        initialY: null,
+        offsetX: 0,
+        offsetY: 0,
+        isDotPassingHalfScreen: false,
+      };
 
-    setDots([...dots, { ...dotsValues, id: dotId, ...coords }]);
+      setDots([...dots, { ...dotsValues, id: dotId, ...coords }]);
 
-    setDotsValues({
-      company: "",
-      cover: "",
-      description: "",
-    });
+      emptyDotsValues();
+    } else {
+      const allDots = [...dots];
+      const dotIdx = allDots.findIndex((dot) => dot.id === currentDotId);
+      allDots[dotIdx] = {
+        ...allDots[dotIdx],
+        company: dotsValues.company,
+        cover: dotsValues.cover,
+        description: dotsValues.description,
+      };
+
+      setDots(allDots);
+      setCurrentDotId("");
+      emptyDotsValues();
+    }
   };
 
   const handleAutocompleteChange = (_, post) => {
@@ -150,7 +177,7 @@ export function DotsEditor({ firebase }) {
           </Grid>
         </Grid>
 
-        <DotsPreview dots={dots} onEditDotHandler={onEditDotHandler} />
+        <DotsPreview dots={dots} onEditDotHandler={onEditDotHandler} onDeleteDotHandler={onDeleteDotHandler} />
       </Container>
     </div>
   );

@@ -7,10 +7,10 @@ import { Link } from "@material-ui/core";
 import EditTwoToneIcon from "@material-ui/icons/EditTwoTone";
 import DeleteTwoToneIcon from "@material-ui/icons/DeleteTwoTone";
 
-export function DotsPreview({ dots, onEditDotHandler }) {
+export function DotsPreview({ dots, onEditDotHandler, onDeleteDotHandler }) {
   return (
     <Grid container justify="space-between" alignItems="flex-start" style={{ marginTop: "5rem" }}>
-      <h2 style={{ marginBottom: "1rem" }}>Current Dots:</h2>
+      {dots.length > 0 && <h2 style={{ marginBottom: "1rem" }}>Current Dots:</h2>}
 
       <Grid container item lg={12} spacing={2}>
         {dots.map((dot) => {
@@ -34,7 +34,6 @@ export function DotsPreview({ dots, onEditDotHandler }) {
                   backgroundColor: "rgba(0,0,0,.5)",
                   color: "#fff",
                   height: "100% ",
-
                   textDecoration: "none",
                 }}
               >
@@ -47,7 +46,6 @@ export function DotsPreview({ dots, onEditDotHandler }) {
                     color="default"
                     style={{ fontSize: "20px", marginRight: "6px" }}
                     onClick={(e) => {
-                      console.log("edit is clicked");
                       e.preventDefault();
                       e.stopPropagation();
                       onEditDotHandler(dot.id);
@@ -57,9 +55,9 @@ export function DotsPreview({ dots, onEditDotHandler }) {
                     color="secondary"
                     style={{ fontSize: "20px" }}
                     onClick={(e) => {
-                      console.log("delete is clicked");
                       e.preventDefault();
                       e.stopPropagation();
+                      onDeleteDotHandler(dot.id);
                     }}
                   />
                 </div>
