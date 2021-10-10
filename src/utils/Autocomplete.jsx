@@ -15,7 +15,7 @@ export default function ComboBox({
       onChange={handleAutocompleteChange}
       size="small"
       //   value={autoCompleteValue}
-      getOptionLabel={(option) => (option.title ? String(option.title) : '')}
+      getOptionLabel={(option) => (option ? String(option.title) : '')}
       style={{ width: 300 }}
       renderInput={(params) => (
         <TextField

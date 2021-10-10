@@ -28,6 +28,7 @@ export function DotsEditor({ firebase }) {
   const [searchValues, setSearchValues] = useState({
     post: 'blog',
     title: '',
+    key: '',
   })
 
   const [dots, setDots] = useState([]) // all bullets from BulletsForm or Firebase
@@ -109,6 +110,7 @@ export function DotsEditor({ firebase }) {
       setSearchValues({
         ...searchValues,
         title: post.title,
+        key: post.key,
       })
 
     post && setDotCover(post.cover)
@@ -117,18 +119,22 @@ export function DotsEditor({ firebase }) {
       const postRef = firebase.db.ref(`/${searchValues.post}/${post.key}`)
 
       postRef.on('value', (snapshot) => {
-        const dotsCoord = snapshot.val().dotsCoord
+        if (snapshot.val() !== null) {
+          const dotsCoord = snapshot.val().dotsCoord
 
-        let defaultArr = []
+          let defaultArr = []
 
-        if (dotsCoord) {
-          Object.keys(dotsCoord).map((id) => {
-            console.log(dotsCoord[id])
-            const dot = dotsCoord[id]
-            defaultArr.push(dot)
-          })
+          if (dotsCoord) {
+            Object.keys(dotsCoord).map((id) => {
+              console.log(dotsCoord[id])
+              const dot = dotsCoord[id]
+              defaultArr.push(dot)
+            })
 
-          setDots(defaultArr)
+            setDots(defaultArr)
+          } else {
+            setDots([])
+          }
         } else {
           setDots([])
         }
