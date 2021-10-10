@@ -1,9 +1,13 @@
 /* eslint-disable no-use-before-define */
-import React from "react";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import React from 'react'
+import TextField from '@material-ui/core/TextField'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
-export default function ComboBox({ posts, handleAutocompleteChange, autoCompleteValue }) {
+export default function ComboBox({
+  posts,
+  handleAutocompleteChange,
+  autoCompleteValue,
+}) {
   return (
     <Autocomplete
       id="selected-post"
@@ -11,9 +15,15 @@ export default function ComboBox({ posts, handleAutocompleteChange, autoComplete
       onChange={handleAutocompleteChange}
       size="small"
       //   value={autoCompleteValue}
-      getOptionLabel={(option) => option.title}
+      getOptionLabel={(option) => (option.title ? String(option.title) : '')}
       style={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Select your Post Title" variant="outlined" />}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Select your Post Title"
+          variant="outlined"
+        />
+      )}
     />
-  );
+  )
 }
