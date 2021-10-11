@@ -56,6 +56,7 @@ export function DotsEditor({ firebase }) {
       .then(() => {
         handleOpen('success', 'Post has been successfully updated!')
         setShowSubmitDotsBtn(false)
+        emptyDotsValues()
       })
       .catch((err) => handleOpen('error', `Error : ${err}`))
   }
@@ -196,15 +197,17 @@ export function DotsEditor({ firebase }) {
   }
 
   useEffect(() => {
-    let posts = []
-
     firebase.db.ref(searchValues.post).on('value', (snap) => {
+      let newPosts = []
       // eslint-disable-next-line array-callback-return
-      Object.keys(snap.val()).map((postId) => {
-        const post = { ...snap.val()[postId], key: postId }
-        posts.push(post)
-        setPosts(posts)
-      })
+      if (snap.val() !== 'null') {
+        Object.keys(snap.val()).map((postId) => {
+          const post = { ...snap.val()[postId], key: postId }
+          newPosts.push(post)
+        })
+
+        setPosts(newPosts)
+      }
     })
   }, [searchValues.post, firebase.db])
 
@@ -231,7 +234,7 @@ export function DotsEditor({ firebase }) {
         description="A visualization of the most important detatails of an interior
         design creation."
       >
-        <DotsModule dots={dots} />
+        <DotsModule dots={dots} setShowSubmitDotsBtn={setShowSubmitDotsBtn} />
       </HeaderContainer>
 
       <Container
@@ -258,10 +261,11 @@ export function DotsEditor({ firebase }) {
           <Grid container item lg={5} direction="column" justify="center">
             <Typography
               component="h4"
-              style={{ color: '#f50057', marginBottom: '.5rem' }}
+              color="secondary"
+              style={{ marginBottom: '.5rem' }}
             >
-              Choose your <b>post type</b> then select your <b>post title.</b>{' '}
-              in order to add bullets to your post.
+              Choose your <b>post type</b> then select your <b>post title</b> in
+              order to add bullets to your post.
             </Typography>
 
             <SearchCoverForm

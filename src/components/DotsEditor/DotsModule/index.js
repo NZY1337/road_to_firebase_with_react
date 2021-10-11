@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import DraggableDot from './DraggableDot'
 
-export function DotsModule({ dots }) {
+export function DotsModule({ dots, setShowSubmitDotsBtn }) {
   const [dotsArr, setDotsArr] = useState(null)
   const [currentDotIdx, setCurrentDotIdx] = useState(null)
   const [zIndex, setZindex] = useState(null)
@@ -33,8 +33,7 @@ export function DotsModule({ dots }) {
 
       setDotsArr(newDotsArr)
 
-      //! very important -
-      console.log(newDotsArr[currentDotIdx].description)
+      setShowSubmitDotsBtn(true)
     }
 
     setActive(false)

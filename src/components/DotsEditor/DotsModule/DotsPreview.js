@@ -111,8 +111,8 @@ export function DotsPreview({
         </Grid>
       )}
 
-      {!dots.length > 0 && (
-        <Typography variant="h6">No Dots for this posts</Typography>
+      {!dots.length > 0 && title && (
+        <Typography variant="h6">No editable dots for this posts. </Typography>
       )}
     </Grid>
   )
