@@ -1,7 +1,4 @@
-'use strict'
-
-import React, { useState, useEffect } from 'react'
-
+import React, { useState, useEffect, useContext } from 'react'
 import HeaderContainer from '../Blog/HeaderContainer'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
@@ -12,6 +9,7 @@ import { withFirebase } from '../Firebase'
 import { Typography } from '@material-ui/core'
 import DotsModule from './DotsModule'
 import { v4 as uuidv4 } from 'uuid'
+import { SnackBarContext } from '../../utils/SnackBarContext'
 
 import DotsPreview from './DotsModule/DotsPreview'
 
@@ -19,12 +17,15 @@ const defaultCover =
   'https://images.pexels.com/photos/936722/pexels-photo-936722.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
 
 export function DotsEditor({ firebase }) {
+  const { handleOpen } = useContext(SnackBarContext)
+  // Dots Informations bullet form
   const [dotsValues, setDotsValues] = useState({
     company: '',
     cover: '',
     description: '',
   })
 
+  // select a new Bullet Post Form
   const [searchValues, setSearchValues] = useState({
     post: 'blog',
     title: '',
@@ -35,6 +36,7 @@ export function DotsEditor({ firebase }) {
   const [dotCover, setDotCover] = useState('')
   const [posts, setPosts] = useState([])
   const [currentDotId, setCurrentDotId] = useState('')
+  const [showSubmitDotsBtn, setShowSubmitDotsBtn] = useState(false)
 
   const onHandleAddDotsToCurrentPost = () => {
     const postRef = firebase.db
@@ -51,8 +53,11 @@ export function DotsEditor({ firebase }) {
 
     postRef
       .update({ dotsCoord })
-      .then(() => console.log('Post has been successfully updated! :)'))
-      .catch((err) => console.log(err))
+      .then(() => {
+        handleOpen('success', 'Post has been successfully updated!')
+        setShowSubmitDotsBtn(false)
+      })
+      .catch((err) => handleOpen('error', `Error : ${err}`))
   }
 
   const emptyDotsValues = () => {
@@ -78,9 +83,20 @@ export function DotsEditor({ firebase }) {
     const confirm = window.confirm('Are you sure you want to delete this dot?')
 
     if (confirm) {
-      const allDots = [...dots].filter((dot) => dot.id !== id)
-      console.log(allDots)
-      setDots(allDots)
+      const postRef = firebase.db.ref(
+        `${searchValues.post}/${searchValues.key}/dotsCoord/${id}`,
+      )
+
+      postRef
+        .remove()
+        .then(() => {
+          emptyDotsValues()
+          handleOpen(
+            'success',
+            `${searchValues.post}/${searchValues.key}/dotsCoord/${id} removed successfully`,
+          )
+        })
+        .catch((err) => handleOpen('error', `error ${err}, please try again`))
     }
   }
 
@@ -98,6 +114,7 @@ export function DotsEditor({ firebase }) {
       })
     } else {
       setPosts([])
+
       setSearchValues({
         ...searchValues,
         [name]: value,
@@ -105,40 +122,39 @@ export function DotsEditor({ firebase }) {
     }
   }
 
+  const fetchCurrentDotPost = (postKey) => {
+    const postRef = firebase.db.ref(`/${searchValues.post}/${postKey}`)
+
+    postRef.on('value', (snapshot) => {
+      if (snapshot.val() !== null) {
+        const dotsCoord = snapshot.val().dotsCoord
+        let defaultArr = []
+        if (dotsCoord) {
+          Object.keys(dotsCoord).map((id) => {
+            const dot = dotsCoord[id]
+            defaultArr.push(dot)
+          })
+          setDots(defaultArr)
+        } else {
+          setDots([])
+        }
+      } else {
+        setDots([])
+      }
+    })
+  }
+
   const handleAutocompleteChange = (_, post) => {
-    post &&
+    if (post) {
+      fetchCurrentDotPost(post.key)
       setSearchValues({
         ...searchValues,
         title: post.title,
         key: post.key,
       })
-
-    post && setDotCover(post.cover)
-
-    if (post) {
-      const postRef = firebase.db.ref(`/${searchValues.post}/${post.key}`)
-
-      postRef.on('value', (snapshot) => {
-        if (snapshot.val() !== null) {
-          const dotsCoord = snapshot.val().dotsCoord
-
-          let defaultArr = []
-
-          if (dotsCoord) {
-            Object.keys(dotsCoord).map((id) => {
-              console.log(dotsCoord[id])
-              const dot = dotsCoord[id]
-              defaultArr.push(dot)
-            })
-
-            setDots(defaultArr)
-          } else {
-            setDots([])
-          }
-        } else {
-          setDots([])
-        }
-      })
+      setDotCover(post.cover)
+      emptyDotsValues()
+      setShowSubmitDotsBtn(false)
     }
   }
 
@@ -159,13 +175,11 @@ export function DotsEditor({ firebase }) {
         id: dotId,
       }
 
-      //! refactor, it is a single DOT not DOTS,  [dot, setDot] (should be)
       setDots([...dots, { ...coords }])
-
-      emptyDotsValues()
     } else {
       const allDots = [...dots]
       const dotIdx = allDots.findIndex((dot) => dot.id === currentDotId)
+
       allDots[dotIdx] = {
         ...allDots[dotIdx],
         company: dotsValues.company,
@@ -175,8 +189,10 @@ export function DotsEditor({ firebase }) {
 
       setDots(allDots)
       setCurrentDotId('')
-      emptyDotsValues()
     }
+
+    emptyDotsValues()
+    setShowSubmitDotsBtn(true)
   }
 
   useEffect(() => {
@@ -201,6 +217,9 @@ export function DotsEditor({ firebase }) {
     // Add a Click Event Listener to the button
     close.addEventListener('click', () => {
       setSearchValues({ post: 'blog', title: '', key: '' })
+      setDots([])
+      emptyDotsValues()
+      setShowSubmitDotsBtn(false)
     })
   }, [])
 
@@ -265,6 +284,7 @@ export function DotsEditor({ firebase }) {
           onEditDotHandler={onEditDotHandler}
           onDeleteDotHandler={onDeleteDotHandler}
           onHandleAddDotsToCurrentPost={onHandleAddDotsToCurrentPost}
+          showSubmitDotsBtn={showSubmitDotsBtn}
         />
       </Container>
     </div>

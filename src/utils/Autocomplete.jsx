@@ -14,7 +14,7 @@ export default function ComboBox({
       options={posts}
       onChange={handleAutocompleteChange}
       size="small"
-      //   value={autoCompleteValue}
+      // value={autoCompleteValue}
       getOptionLabel={(option) => (option ? String(option.title) : '')}
       style={{ width: 300 }}
       renderInput={(params) => (
