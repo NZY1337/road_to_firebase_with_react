@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core'
+import './animation.scss'
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '50%',
     position: 'relative',
     boxShadow: '0 0 0 rgba(204, 169, 44, .4)',
+    animation: 'pulsate 1.5s infinite',
 
     '& div.rightSide': {
       right: '20px',

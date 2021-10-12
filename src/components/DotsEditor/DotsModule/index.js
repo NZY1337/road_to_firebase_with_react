@@ -108,12 +108,12 @@ export function DotsModule({ dots, setShowSubmitDotsBtn }) {
       //   onMouseOver={changeDotsZindex}
       id="dots-container"
       style={{
-        width: '70%',
-        height: '70%',
+        width: '100%',
+        height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        //   backgroundColor: 'rgba(0,0,0,0.3)',
       }}
     >
       {dotsArr && renderDots()}

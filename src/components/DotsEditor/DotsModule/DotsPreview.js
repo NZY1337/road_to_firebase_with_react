@@ -7,6 +7,7 @@ import { Link } from '@material-ui/core'
 import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone'
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 export function DotsPreview({
   dots,
@@ -106,7 +107,10 @@ export function DotsPreview({
             color="primary"
             onClick={onHandleAddDotsToCurrentPost}
           >
-            Save Dots
+            <Typography variant="p" style={{ marginRight: '.5rem' }}>
+              Save Dots
+            </Typography>{' '}
+            <CircularProgress size={20} />
           </Button>
         </Grid>
       )}
