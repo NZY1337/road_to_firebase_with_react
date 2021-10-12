@@ -132,6 +132,7 @@ class SingleBlog extends Component {
         return (
           <Dot
             classes={classes}
+            key={dot.id}
             currentX={dot.currentX}
             currentY={dot.currentY}
             company={dot.company}
