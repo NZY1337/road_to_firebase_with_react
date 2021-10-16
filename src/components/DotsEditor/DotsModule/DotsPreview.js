@@ -9,7 +9,7 @@ import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import './animation.scss'
+
 
 export function DotsPreview({
   dots,

@@ -14,7 +14,7 @@ import NavWrapper from "./NavWrapper";
 const useStyles = makeStyles((theme) => ({
   bgClass1: {
     "&.MuiPaper-root": {
-      backgroundColor: "rgba(0,0,0, 1)",
+      backgroundColor: "rgba(0,0,0, .8)",
       transition: "background-color .5s",
     },
   },

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { randomIndexBasedOnArrLen } from "../../../utils/helpers";
 import { makeStyles } from "@material-ui/core";
 import { withFirebase } from "../../Firebase/context";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import CarouselItem from "./CarouselItem";
-
+import "./animation.scss";
 import "../styles.scss";
 
 import Slider from "react-slick";
@@ -60,6 +61,7 @@ const Carousel = (props) => {
   const classes = useStyles(width);
 
   const [posts, setPosts] = useState(null);
+  const [inProp, setInProp] = useState(false);
 
   var settings = {
     dots: true,
@@ -121,7 +123,7 @@ const Carousel = (props) => {
         let posts = snapshot.val();
         const randomSlides = randomIndexBasedOnArrLen(posts);
         setPosts(randomSlides);
-        setPosts(posts);
+        // setPosts(posts);
       } else {
         setPosts(null);
       }
@@ -132,27 +134,27 @@ const Carousel = (props) => {
     };
   }, [props.firebase.db]);
 
-  const renderSlides = () => {
-    return Object.keys(posts).map((id, index) => {
-      const { cover, title, description, postType } = posts[id];
-
-      return (
-        <CarouselItem
-          key={index}
-          postType={postType}
-          index={index}
-          blogId={id}
-          title={title}
-          description={description}
-          url={cover}
-        />
-      );
-    });
-  };
-
   return (
     <div style={{ height: "100vh", background: "black" }}>
-      {posts && <Slider {...settings}>{renderSlides()}</Slider>}
+      {posts && (
+        <Slider {...settings}>
+          {Object.keys(posts).map((id, index) => {
+            const { cover, title, description, postType } = posts[id];
+            return (
+              <CarouselItem
+                key={id}
+                postType={postType}
+                carouselIndex={carouselIndex}
+                index={index}
+                blogId={id}
+                title={title}
+                description={description}
+                url={cover}
+              />
+            );
+          })}
+        </Slider>
+      )}
     </div>
   );
 };
