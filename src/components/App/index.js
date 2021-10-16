@@ -24,7 +24,8 @@ import SnackBarContextProvider from '../../utils/SnackBarContext'
 
 // https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
 
-const App = () => {
+const App = (props) => {
+  //   console.log(props.firebase.auth.currentUser)
   return (
     <SnackBarContextProvider>
       <Router>

@@ -1,54 +1,58 @@
-import React from "react";
+import React from 'react'
 
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import FacebookIcon from "@material-ui/icons/Facebook";
-import InstagramIcon from "@material-ui/icons/Instagram";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import { makeStyles } from "@material-ui/core";
+import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link'
+import FacebookIcon from '@material-ui/icons/Facebook'
+import InstagramIcon from '@material-ui/icons/Instagram'
+import TwitterIcon from '@material-ui/icons/Twitter'
+import { makeStyles } from '@material-ui/core'
+import { FacebookShareButton } from 'react-share'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "sticky",
+    position: 'sticky',
     left: 0,
-    top: "50px",
+    top: '50px',
     bottom: 0,
 
-    "& button:focus": {
-      outline: "none",
+    '& button:focus': {
+      outline: 'none',
     },
 
-    "& svg": {
-      display: "inline-block",
-      borderRadius: "50%",
-      border: "2px solid",
-      width: "17px",
-      height: "17px",
-      lineHeight: "17px",
-      verticalAlign: "middle",
-      textAlign: "center",
-      boxSizing: "content-box",
-      padding: "5px",
-      marginRight: "6px",
+    '& svg': {
+      display: 'inline-block',
+      borderRadius: '50%',
+      border: '2px solid',
+      width: '17px',
+      height: '17px',
+      lineHeight: '17px',
+      verticalAlign: 'middle',
+      textAlign: 'center',
+      boxSizing: 'content-box',
+      padding: '5px',
+      marginRight: '6px',
     },
 
-    "& button.social-insta": {
-      color: "#e1306c",
+    '& button.social-insta': {
+      color: '#e1306c',
     },
 
-    "& button.social-twitter": {
-      color: "#1da1f2",
+    '& button.social-twitter': {
+      color: '#1da1f2',
     },
   },
-}));
+}))
 
 const SocialShare = () => {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.root}>
       <Typography variant="h6">Share On:</Typography>
       <Link className="social-facebook" component="button" variant="body2">
-        <FacebookIcon />
+        {/* <FacebookIcon /> */}
+        <FacebookShareButton url={'https://www.facebook.com/NZY1337/'}>
+          Share your post
+        </FacebookShareButton>
       </Link>
 
       <Link className="social-insta" component="button" variant="body2">
@@ -59,7 +63,7 @@ const SocialShare = () => {
         <TwitterIcon />
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default SocialShare;
+export default SocialShare

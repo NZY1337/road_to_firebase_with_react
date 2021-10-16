@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Grid from '@material-ui/core/Grid'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import { Typography } from '@material-ui/core'
 import { Link } from '@material-ui/core'
@@ -8,6 +9,7 @@ import EditTwoToneIcon from '@material-ui/icons/EditTwoTone'
 import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import './animation.scss'
 
 export function DotsPreview({
   dots,
@@ -31,67 +33,76 @@ export function DotsPreview({
       )}
 
       <Grid container item lg={12} spacing={2}>
-        {dots.map((dot) => {
-          return (
-            <Grid
-              key={dot.id}
-              item
-              lg={3}
-              md={4}
-              sm={4}
-              style={{ height: '400px' }}
-            >
-              <Link
-                href={dot.company}
-                style={{
-                  backgroundImage: `url(${dot.cover})`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center center',
-                  backgroundBlendMode: 'multiply',
-                  borderRadius: '5px',
-                  overflow: 'hidden',
-                  textAlign: 'center',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: 'rgba(0,0,0,.5)',
-                  color: '#fff',
-                  height: '100% ',
-                  textDecoration: 'none',
-                }}
-              >
-                <Typography variant="h6" style={{ width: '80%' }}>
-                  {dot.description}
-                </Typography>
-
-                <div
-                  style={{ position: 'absolute', top: '10px', right: '10px' }}
+        <TransitionGroup component={null}>
+          {dots.map((dot) => {
+            return (
+              <CSSTransition key={dot.id} timeout={500} classNames={'dot-item'}>
+                <Grid
+                  key={dot.id}
+                  item
+                  lg={3}
+                  md={4}
+                  sm={4}
+                  style={{ height: '400px' }}
                 >
-                  <EditTwoToneIcon
-                    color="default"
-                    style={{ fontSize: '20px', marginRight: '6px' }}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      onEditDotHandler(dot.id)
+                  <Link
+                    href={dot.company}
+                    className="dot-item"
+                    style={{
+                      backgroundImage: `url(${dot.cover})`,
+                      backgroundSize: 'cover',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center center',
+                      backgroundBlendMode: 'multiply',
+                      borderRadius: '5px',
+                      overflow: 'hidden',
+                      textAlign: 'center',
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: 'rgba(0,0,0,.5)',
+                      color: '#fff',
+                      height: '100% ',
+                      textDecoration: 'none',
                     }}
-                  />
-                  <DeleteTwoToneIcon
-                    color="secondary"
-                    style={{ fontSize: '20px' }}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      onDeleteDotHandler(dot.id)
-                    }}
-                  />
-                </div>
-              </Link>
-            </Grid>
-          )
-        })}
+                  >
+                    <Typography variant="h6" style={{ width: '80%' }}>
+                      {dot.description}
+                    </Typography>
+
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '10px',
+                      }}
+                    >
+                      <EditTwoToneIcon
+                        color="default"
+                        style={{ fontSize: '20px', marginRight: '6px' }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          onEditDotHandler(dot.id)
+                        }}
+                      />
+                      <DeleteTwoToneIcon
+                        color="secondary"
+                        style={{ fontSize: '20px' }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          onDeleteDotHandler(dot.id)
+                        }}
+                      />
+                    </div>
+                  </Link>
+                </Grid>
+              </CSSTransition>
+            )
+          })}
+        </TransitionGroup>
       </Grid>
 
       {showSubmitDotsBtn && (

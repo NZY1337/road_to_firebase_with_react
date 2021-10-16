@@ -113,6 +113,7 @@ export function DotsModule({ dots, setShowSubmitDotsBtn }) {
         dot={dot}
         zIndex={zIndex}
         isDotPassingHalfScreen={dotsArr[idx].isDotPassingHalfScreen}
+        type="editor"
       />
     ))
 

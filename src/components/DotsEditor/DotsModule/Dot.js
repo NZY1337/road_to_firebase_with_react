@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Dot = ({ classes, dot }) => {
+const Dot = ({ classes, dot, type }) => {
   const {
     currentX,
     currentY,
@@ -12,14 +12,19 @@ const Dot = ({ classes, dot }) => {
     finalLeft,
     finalTop,
   } = dot
+
+  const determineIfPresentationOrEditor =
+    type === 'presentation'
+      ? {
+          position: 'absolute',
+          top: `${finalTop}%`,
+          left: `${finalLeft}%`,
+        }
+      : { transform: `translate3d(${currentX}px, ${currentY}px, 0)` }
+
   return (
     <div
-      // style={{ transform: `translate3d(${currentX}px, ${currentY}px, 0)` }}
-      style={{
-        position: 'absolute',
-        top: `${finalTop}%`,
-        left: `${finalLeft}%`,
-      }}
+      style={determineIfPresentationOrEditor}
       className={classes.item}
       id={id}
     >

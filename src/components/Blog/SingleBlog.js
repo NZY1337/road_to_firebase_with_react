@@ -134,7 +134,10 @@ class SingleBlog extends Component {
 
       return Object.keys(dots).map((id) => {
         const dot = dots[id]
-        return <Dot classes={classes} key={dot.id} dot={dot} />
+        console.log(dot)
+        return (
+          <Dot classes={classes} key={dot.id} dot={dot} type="presentation" />
+        )
       })
     }
   }
