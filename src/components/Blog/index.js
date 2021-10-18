@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid'
 import CardBlog from './CardBlog'
 import HeaderContainer from './HeaderContainer'
 import { SnackBarContext } from '../../utils/SnackBarContext'
-import { Typography } from '@material-ui/core'
 
 class Blogs extends Component {
   static contextType = SnackBarContext
