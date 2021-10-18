@@ -1,0 +1,12 @@
+.carousel-title-enter {
+  transform: translateY(-30px);
+  opacity: 0;
+  scale: 0.8;
+}
+
+.carousel-title-enter-active {
+  transform: translateY(0px);
+  scale: 1;
+  opacity: 1;
+  transition: all 200ms ease-in;
+}

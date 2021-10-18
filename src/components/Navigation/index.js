@@ -10,6 +10,7 @@ import { withFirebase } from "../Firebase";
 import { AuthUserContext } from "../Sesssion";
 import MenuItems from "./MenuItems";
 import NavWrapper from "./NavWrapper";
+import { CSSTransition } from "react-transition-group";
 
 const useStyles = makeStyles((theme) => ({
   bgClass1: {

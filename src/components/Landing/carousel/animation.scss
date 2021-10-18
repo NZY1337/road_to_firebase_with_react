@@ -1,9 +1,9 @@
-.carousel-title-enter {
+.header-title-enter {
   transform: translateX(-30px);
   transform-origin: 0 0;
 }
 
-.carousel-title-enter-active {
+.header-title-enter-active {
   transform: translateX(0px);
   transition: all 200ms ease-in;
 }

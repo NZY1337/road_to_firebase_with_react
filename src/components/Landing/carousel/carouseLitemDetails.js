@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import "./animation.scss";
 
 export default function CarouseLitemDetails({
@@ -20,12 +20,10 @@ export default function CarouseLitemDetails({
   console.log(carouselIndex, index);
 
   useEffect(() => {
-    if (carouselIndex !== index) {
+    if (carouselIndex == index) {
       setInProp(true);
     }
-    console.log("component mounted");
     return () => {
-      console.log("component unmounted");
       setInProp(false);
     };
   }, [carouselIndex]);

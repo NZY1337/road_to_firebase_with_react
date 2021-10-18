@@ -187,7 +187,7 @@ class Blogs extends Component {
         decideWhatToRender.map((post) => {
           return (
             <CardBlog
-              key={post.title}
+              key={post.postId}
               user={user}
               id={post.postId}
               uniquePostId={uniquePostId}
