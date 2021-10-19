@@ -1,0 +1,51 @@
+.bar1,
+.bar2,
+.bar3 {
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  margin-bottom: 5px;
+}
+
+div.bars {
+  list-style: none;
+  cursor: pointer;
+  width: 20px;
+}
+
+div.bars .bar1 {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+div.bars .bar2 {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+div.bars .bar3 {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.bars.open {
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.bars.open .bar1 {
+  -webkit-transform: rotate(45deg) translate(4px, 8px);
+  transform: rotate(45deg) translate(4px, 8px);
+  background-color: aqua;
+}
+
+.bars.open .bar2 {
+  opacity: 0;
+}
+
+.bars.open .bar3 {
+  -webkit-transform: rotate(-45deg) translate(2px, -6px);
+  transform: rotate(-45deg) translate(2px, -6px);
+  background-color: aqua;
+}
+/*# sourceMappingURL=togglebtn.css.map */

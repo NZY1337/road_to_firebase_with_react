@@ -1,0 +1,16 @@
+.carousel-title-enter {
+  -webkit-transform: translateY(-30px);
+          transform: translateY(-30px);
+  opacity: 0;
+  scale: 0.8;
+}
+
+.carousel-title-enter-active {
+  -webkit-transform: translateY(0px);
+          transform: translateY(0px);
+  scale: 1;
+  opacity: 1;
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+/*# sourceMappingURL=animations.css.map */

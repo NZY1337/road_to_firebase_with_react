@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAEI,gBAFY,CACd,EAAE,CACA,CAAC,CAAC;EACA,KAAK,EAAE,IAAI;EACX,WAAW,EAAE,IAAI;EACjB,UAAU,EAAE,UAAU;EACtB,eAAe,EAAE,IAAI;CAKtB;;AAXL,AAQM,gBARU,CACd,EAAE,CACA,CAAC,AAME,MAAM,CAAC;EACN,KAAK,EAAE,IAAI;CACZ",
+    "sources": [
+        "toggleCategories.scss"
+    ],
+    "names": [],
+    "file": "toggleCategories.css"
+}

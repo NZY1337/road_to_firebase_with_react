@@ -1,0 +1,14 @@
+.header-title-enter {
+  -webkit-transform: translateX(-30px);
+          transform: translateX(-30px);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+}
+
+.header-title-enter-active {
+  -webkit-transform: translateX(0px);
+          transform: translateX(0px);
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+/*# sourceMappingURL=animation.css.map */

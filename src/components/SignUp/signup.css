@@ -1,0 +1,30 @@
+#sign-up-form .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
+}
+
+#sign-up-form .MuiFormControl-root,
+#sign-up-form .MuiButton-contained {
+  width: 100%;
+}
+
+#sign-up-form .MuiFilledInput-inputMarginDense {
+  color: aqua !important;
+  font-weight: 100 !important;
+}
+
+#sign-up-form .MuiInputBase-input {
+  background-color: rgba(128, 128, 128, 0.2) !important;
+}
+
+#sign-up-form .MuiFormControl-root label {
+  color: #fff !important;
+}
+
+#sign-up-form .MuiTypography-root {
+  color: gray !important;
+}
+
+#sign-up-form .MuiFilledInput-underline::after {
+  border-bottom-color: aqua !important;
+}
+/*# sourceMappingURL=signup.css.map */

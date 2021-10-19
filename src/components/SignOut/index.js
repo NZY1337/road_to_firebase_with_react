@@ -4,26 +4,20 @@ import { withFirebase } from "../Firebase/context";
 import Button from "@material-ui/core/Button";
 
 import { SnackBarContext } from "../../utils/SnackBarContext";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const SignOutBtn = ({ firebase }) => {
   const history = useHistory();
   const { handleOpen } = useContext(SnackBarContext);
   return (
-    <div>
-      <Button
-        type="button"
-        variant="outlined"
-        color="secondary"
-        size="small"
-        onClick={() => {
-          history.push("/");
-          firebase.doSignOut();
-          handleOpen("success", "You successfully signed out!");
-        }}
-      >
-        Sign Out
-      </Button>
-    </div>
+    <ExitToAppIcon
+      style={{ color: "red" }}
+      onClick={() => {
+        history.push("/");
+        firebase.doSignOut();
+        handleOpen("success", "You successfully signed out!");
+      }}
+    />
   );
 };
 //

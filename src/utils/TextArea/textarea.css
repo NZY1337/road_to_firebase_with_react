@@ -1,0 +1,53 @@
+#cancellationNotesContainer {
+  position: relative;
+  float: left;
+  width: 100% !important;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+#cancellationNotesContainer label {
+  position: absolute;
+  top: 0px;
+  left: 12px;
+  padding: 0.9rem 0;
+  color: #fff;
+  pointer-events: none;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  color: #fff;
+  font: inherit;
+  font-family: "Lato", sans-serif !important;
+}
+
+#cancellationNotesContainer textarea {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-size: 1rem;
+  color: #fff;
+  width: 100%;
+  font-family: "Lato", sans-serif !important;
+  border-radius: 4px;
+  min-height: 10rem;
+  resize: none;
+  padding: 20px 12px;
+}
+
+#cancellationNotesContainer textarea:focus, #cancellationNotesContainer textarea.not-empty {
+  outline: 0;
+}
+
+#cancellationNotesContainer textarea:focus ~ label,
+#cancellationNotesContainer textarea.not-empty ~ label {
+  font-size: 12px;
+  color: aqua;
+  top: -8.5px;
+  font-weight: normal !important;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  background: transparent;
+}
+/*# sourceMappingURL=textarea.css.map */

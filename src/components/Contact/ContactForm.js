@@ -1,106 +1,116 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import * as ROUTES from '../../constants/routes'
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import * as ROUTES from "../../constants/routes";
 
 // HOC
-import { withFirebase } from '../Firebase'
+import { withFirebase } from "../Firebase";
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import TextareaAutosize from '@material-ui/core/TextareaAutosize'
-import TextArea from '../../utils/TextArea/TextArea'
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextArea from "../../utils/TextArea/TextArea";
 
 // contexts
-import { SnackBarContext } from '../../utils/SnackBarContext'
+import { SnackBarContext } from "../../utils/SnackBarContext";
+import axios from "axios";
 
 const useStyles = (theme) => ({
   root: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    width: '100%',
-    '& label.MuiFormLabel-root': {
-      color: '#fff',
-      fontSize: '15px',
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    width: "100%",
+    "& label.MuiFormLabel-root": {
+      color: "#fff",
+      fontSize: "15px",
     },
 
-    '& label.Mui-focused': {
-      color: 'aqua',
+    "& label.Mui-focused": {
+      color: "aqua",
     },
 
-    '& .MuiFilledInput-underline:after': {
-      borderBottomColor: 'transparent',
+    "& .MuiFilledInput-underline:after": {
+      borderBottomColor: "transparent",
     },
-    '& .MuiInputBase-root': {
-      color: '#fff',
-      fontSize: '14px',
+    "& .MuiInputBase-root": {
+      color: "#fff",
+      fontSize: "14px",
     },
   },
   btn: {
-    border: '1px solid gray',
-    '& .MuiButton-label': {
-      color: 'aqua',
+    border: "1px solid gray",
+    "& .MuiButton-label": {
+      color: "gray",
     },
   },
   forgotPw: {
-    color: 'aqua!important',
+    color: "aqua!important",
   },
-})
+});
 
-const INITIAL_STATE = { email: '', name: '', message: '' }
+const INITIAL_STATE = { email: "", name: "", message: "" };
 
 class ContactFormBase extends Component {
-  static contextType = SnackBarContext
+  static contextType = SnackBarContext;
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = { ...INITIAL_STATE }
+    this.state = { ...INITIAL_STATE };
   }
 
-  onSubmit = (event) => {
-    event.preventDefault()
-    const { handleOpen } = this.context
-    const { email, password } = this.state
+  onSubmit = async (event) => {
+    event.preventDefault();
 
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        this.setState({ ...INITIAL_STATE })
+    const { handleOpen } = this.context;
+    const { message, email } = this.state;
 
-        this.props.history.push(ROUTES.LANDING)
-        handleOpen('success', 'You successfully logged in!')
+    // try {
+    //   handleOpen("success", "Your mail has been sent!");
+    //   this.setState({ ...INITIAL_STATE });
+
+    //   await axios.post("http://localhost:4000/send_mail", {
+    //     text: message,
+    //     fromUser: email,
+    //   });
+    // } catch (err) {
+    //   handleOpen("error", err.message);
+    // }
+
+    await axios
+      .post("http://localhost:4000/send_mail", {
+        text: message,
+        fromUser: email,
       })
-      .catch((error) => {
-        handleOpen('error', error.message)
+      .then((res) => {
+        console.log(res);
+        this.setState({ ...INITIAL_STATE });
+        handleOpen("success", "Your mail has been sent!");
       })
-  }
+      .catch((err) => handleOpen("error", err.message));
+
+    this.setState({ message: "" });
+  };
 
   onChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
-    })
-  }
+    });
+  };
 
   render() {
-    const { email, name } = this.state
+    const { email, name, message } = this.state;
 
-    const isInvalid = name === '' || email === ''
-    const { classes } = this.props
+    const isInvalid = name === "" || email === "" || message === "";
+    const { classes } = this.props;
 
     return (
       <>
-        <Grid
-          container
-          alignItems="center"
-          justify="center"
-          spacing={3}
-          style={{ height: '100%', width: '100%' }}
-        >
+        <Grid container alignItems="center" justify="center" spacing={3} style={{ height: "100%", width: "100%" }}>
           <Grid item xs={12} md={3}>
-            <Typography variant="h3" gutterBottom style={{ color: '#fff' }}>
+            <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
               Contact Us
             </Typography>
             <form id="sign-in-form" onSubmit={this.onSubmit}>
@@ -112,7 +122,7 @@ class ContactFormBase extends Component {
                   label="Email"
                   type="email"
                   onChange={this.onChange}
-                  defaultValue={email}
+                  value={email}
                   variant="filled"
                   className={classes.root}
                   InputProps={{
@@ -129,7 +139,7 @@ class ContactFormBase extends Component {
                   id="filled-name"
                   label="Nume"
                   onChange={this.onChange}
-                  defaultValue={name}
+                  value={name}
                   variant="filled"
                   className={classes.root}
                   InputProps={{
@@ -138,7 +148,7 @@ class ContactFormBase extends Component {
                 />
               </div>
 
-              <TextArea />
+              <TextArea message={message} onHandleChange={this.onChange} />
 
               <Grid container justify="space-between" alignItems="center" item>
                 <Button
@@ -155,12 +165,10 @@ class ContactFormBase extends Component {
           </Grid>
         </Grid>
       </>
-    )
+    );
   }
 }
 
-const ContactForm = withRouter(
-  withFirebase(withStyles(useStyles)(ContactFormBase)),
-)
+const ContactForm = withRouter(withFirebase(withStyles(useStyles)(ContactFormBase)));
 
-export default ContactForm
+export default ContactForm;
