@@ -85,13 +85,10 @@ class ContactFormBase extends Component {
         fromUser: email,
       })
       .then((res) => {
-        console.log(res);
         this.setState({ ...INITIAL_STATE });
-        handleOpen("success", "Your mail has been sent!");
+        handleOpen("success", "Your email has been sent!");
       })
       .catch((err) => handleOpen("error", err.message));
-
-    this.setState({ message: "" });
   };
 
   onChange = (event) => {
@@ -109,7 +106,7 @@ class ContactFormBase extends Component {
     return (
       <>
         <Grid container alignItems="center" justify="center" spacing={3} style={{ height: "100%", width: "100%" }}>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={6} lg={5} xl={3}>
             <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
               Contact Us
             </Typography>

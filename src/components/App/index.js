@@ -1,25 +1,25 @@
-import React, { useState } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import LandingPage from '../Landing'
-import SignUpPage from '../SignUp'
-import SignInPage from '../SignIn'
-import HomePage from '../Home'
-import AccountPage from '../Account'
-import AdminPage from '../Admin'
-import Editor from '../Editor'
-import Blogs from '../Blog'
-import SingleBlog from '../Blog/SingleBlog'
-import Layout from '../Layout'
-import AboutUs from '../AboutUs/AboutUs'
-import DotsEditor from '../DotsEditor'
-import Contact from '../Contact/Contact'
-import { withAuthentication } from '../Sesssion'
+import LandingPage from "../Landing";
+import SignUpPage from "../SignUp";
+import SignInPage from "../SignIn";
+import HomePage from "../Home";
+import AccountPage from "../Account";
+import AdminPage from "../Admin";
+import Editor from "../Editor";
+import Blogs from "../Blog";
+import SingleBlog from "../Blog/SingleBlog";
+import Layout from "../Layout";
+import AboutUs from "../AboutUs/AboutUs";
+import DotsEditor from "../DotsEditor";
+import Contact from "../Contact/Contact";
+import { withAuthentication } from "../Sesssion";
 
-import * as ROUTES from '../../constants/routes'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import './animation.scss'
-import SnackBarContextProvider from '../../utils/SnackBarContext'
+import * as ROUTES from "../../constants/routes";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import "./animation.scss";
+import SnackBarContextProvider from "../../utils/SnackBarContext";
 
 // https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
 
@@ -29,109 +29,109 @@ const App = ({ match }) => {
     {
       path: ROUTES.LANDING,
       Component: LandingPage,
-      name: 'Landing',
+      name: "Landing",
       exact: true,
     },
 
     {
       path: ROUTES.SIGN_UP,
       Component: SignUpPage,
-      name: 'SignUpPage',
+      name: "SignUpPage",
       exact: false,
     },
 
     {
       path: ROUTES.SIGN_IN,
       Component: SignInPage,
-      name: 'SignInPage',
+      name: "SignInPage",
       exact: false,
     },
 
     {
       path: ROUTES.HOME,
       Component: HomePage,
-      name: 'HomePage',
+      name: "HomePage",
       exact: false,
     },
 
     {
       path: ROUTES.ACCOUNT,
       Component: AccountPage,
-      name: 'AccountPage',
+      name: "AccountPage",
       exact: false,
     },
 
     {
       path: ROUTES.ADMIN,
       Component: AdminPage,
-      name: 'AdminPage',
+      name: "AdminPage",
       exact: false,
     },
 
     {
       path: ROUTES.SIGN_UP,
       Component: SignUpPage,
-      name: 'Sign Up Page',
+      name: "Sign Up Page",
       exact: false,
     },
 
     {
       path: ROUTES.EDITOR,
       Component: Editor,
-      name: 'Editor',
+      name: "Editor",
       exact: false,
     },
 
     {
       path: ROUTES.DATA_VISUALIZATION_EDITOR,
       Component: DotsEditor,
-      name: 'DotsEditor',
+      name: "DotsEditor",
       exact: false,
     },
 
     {
       path: ROUTES.ABOUT_US,
       Component: AboutUs,
-      name: 'AboutUs',
+      name: "AboutUs",
       exact: false,
     },
 
     {
-      path: '/edit/:type/:id',
+      path: "/edit/:type/:id",
       Component: Editor,
-      name: 'Editor',
+      name: "Editor",
       exact: false,
     },
 
     {
-      path: '/blog/:id/:postTitle',
+      path: "/blog/:id/:postTitle",
       Component: SingleBlog,
-      name: 'SingleBlog',
+      name: "SingleBlog",
       exact: false,
     },
 
     {
-      path: '/blog',
+      path: "/blog",
       Component: Blogs,
-      name: 'Blogs',
+      name: "Blogs",
       exact: true,
     },
 
     {
-      path: '/portofoliu/:id/:postTitle',
+      path: "/portofoliu/:id/:postTitle",
       Component: SingleBlog,
-      name: 'SingleBlog',
+      name: "SingleBlog",
       exact: false,
     },
 
     {
-      path: '/portofoliu',
+      path: "/portofoliu",
       Component: Blogs,
-      name: 'Portofolio',
+      name: "Portofolio",
       exact: true,
     },
-  ])
-  console.log(routes)
+  ]);
+
   return (
     <SnackBarContextProvider>
       <Router>
@@ -144,10 +144,7 @@ const App = ({ match }) => {
           <Route path={ROUTES.ADMIN} component={AdminPage} />
 
           <Route path={ROUTES.EDITOR} component={Editor} />
-          <Route
-            path={ROUTES.DATA_VISUALIZATION_EDITOR}
-            component={DotsEditor}
-          />
+          <Route path={ROUTES.DATA_VISUALIZATION_EDITOR} component={DotsEditor} />
 
           <Route path={ROUTES.ABOUT_US} component={AboutUs} />
           <Route path={ROUTES.CONTACT} component={Contact} />
@@ -175,7 +172,7 @@ const App = ({ match }) => {
         </Layout>
       </Router>
     </SnackBarContextProvider>
-  )
-}
+  );
+};
 
-export default withAuthentication(App)
+export default withAuthentication(App);

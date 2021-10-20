@@ -32,7 +32,7 @@ app.post("/send_mail", cors(), async (req, res) => {
         `,
     })
     .then((response) => res.send(response))
-    .catch((err) => console.log(err));
+    .catch((err) => res.send(err));
 });
 
 app.listen(process.env.PORT || 4000, () => console.log("Server is running on port 4000"));
