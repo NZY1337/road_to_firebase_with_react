@@ -158,7 +158,6 @@ class Blogs extends Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0)
     this.fetchFirstBatch()
     this.fetchUser()
     window.addEventListener('scroll', this.onScrollFetchPosts)
