@@ -1,13 +1,13 @@
-import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import VideoPlayer from '../../utils/VideoPlayer'
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import VideoPlayer from "../../utils/VideoPlayer";
 
 // material-ui CSS
-import { UseLazyLoading } from '../../utils/helpers'
+import { UseLazyLoading } from "../../utils/helpers";
 
-import Skeleton from 'react-loading-skeleton'
+import Skeleton from "react-loading-skeleton";
 
-import SingleCard from './SingleCard'
+import SingleCard from "./SingleCard";
 
 // conext
 
@@ -35,12 +35,12 @@ const CardBlog = ({
   handleDeletePost,
   uniqueStorageIdCallback,
 }) => {
-  const { postType, cover, title, description } = post
+  const { postType, cover, title, description } = post;
 
-  const [imgLoaded, videoLoaded] = UseLazyLoading(post)
+  const [imgLoaded, videoLoaded] = UseLazyLoading(post);
 
   return (
-    <Grid item md={6} lg={3} xs={12}>
+    <Grid item md={6} lg={3} xs={6}>
       {imgLoaded && (
         <SingleCard
           user={user}
@@ -75,15 +75,15 @@ const CardBlog = ({
         </SingleCard>
       )}
 
-      {post.cover && !imgLoaded && !post.cover.includes('.mp4') && (
+      {post.cover && !imgLoaded && !post.cover.includes(".mp4") && (
         <Skeleton width="100%" height="500px" count={1} delay={1} />
       )}
 
-      {post.cover && !videoLoaded && post.cover.includes('.mp4') && (
+      {post.cover && !videoLoaded && post.cover.includes(".mp4") && (
         <Skeleton width="100%" height="500px" count={1} delay={1} />
       )}
     </Grid>
-  )
-}
+  );
+};
 
-export default CardBlog
+export default CardBlog;
