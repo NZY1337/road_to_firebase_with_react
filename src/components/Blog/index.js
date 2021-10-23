@@ -53,11 +53,9 @@ class Blogs extends Component {
   };
 
   getRefLength = () => {
-    //firebase.google.com/docs/reference/js/v8/firebase.database.DataSnapshot#numchildren
-    https: var ref = this.props.firebase.db.ref(`${this.pathname}`);
-    const len = 0;
-    let self = this;
+    const ref = this.props.firebase.db.ref(`${this.pathname}`);
 
+    let self = this;
     ref.once("value").then(function (snapshot) {
       self.setState({
         nodeLength: snapshot.numChildren(),
@@ -68,19 +66,23 @@ class Blogs extends Component {
   fetchFirstBatch = () => {
     const firstBatchRef = this.props.firebase.db.ref(`${this.pathname}`).orderByKey().limitToFirst(4);
 
-    firstBatchRef.on("child_added", (snapshot) => {
-      if (snapshot.val() !== null) {
-        let post = { ...snapshot.val(), postId: snapshot.key };
+    try {
+      firstBatchRef.on("child_added", (snapshot) => {
+        if (snapshot.val() !== null) {
+          let post = { ...snapshot.val(), postId: snapshot.key };
 
-        this.setState((prevState) => {
-          return {
-            ...prevState,
-            posts: [...prevState.posts, post],
-            lastKey: snapshot.key,
-          };
-        });
-      }
-    });
+          this.setState((prevState) => {
+            return {
+              ...prevState,
+              posts: [...prevState.posts, post],
+              lastKey: snapshot.key,
+            };
+          });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   fetchNext5Batches = () => {
@@ -90,29 +92,32 @@ class Blogs extends Component {
       .startAfter(this.state.lastKey)
       .limitToFirst(4);
 
-    console.log("fetching...");
-    next5BatchRef.on("child_added", (snapshot) => {
-      if (snapshot.val() !== null) {
-        let post = { ...snapshot.val(), postId: snapshot.key };
-
-        this.setState(
-          (prevState) => {
-            return {
-              ...prevState,
-              posts: [...prevState.posts, post],
-              lastKey: snapshot.key,
-            };
-          },
-          () => {
-            // we make sure that the state is updated and finishes the executions - due to asyncronicity
-            if (this.state.posts.length === this.state.nodeLength) {
-              window.removeEventListener("scroll", this.onScrollFetchPosts, false);
-              this.setState({ showSpinner: true });
+    try {
+      next5BatchRef.on("child_added", (snapshot) => {
+        if (snapshot.val() !== null) {
+          let post = { ...snapshot.val(), postId: snapshot.key };
+          console.log("loading...");
+          this.setState(
+            (prevState) => {
+              return {
+                ...prevState,
+                posts: [...prevState.posts, post],
+                lastKey: snapshot.key,
+              };
+            },
+            () => {
+              // we make sure that the state is updated and finishes the executions - due to asyncronicity
+              if (this.state.posts.length === this.state.nodeLength) {
+                window.removeEventListener("scroll", this.onScrollFetchPosts, false);
+                this.setState({ showSpinner: true });
+              }
             }
-          }
-        );
-      }
-    });
+          );
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   fetchUser() {
@@ -156,15 +161,16 @@ class Blogs extends Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.getRefLength();
     this.fetchFirstBatch();
     this.fetchUser();
     window.addEventListener("scroll", this.onScrollFetchPosts);
 
     this.snackBar = this.context;
-  }
 
-  componentDidUpdate(prevProps, prevState) {}
+    console.log(window.innerHeight + window.scrollY, document.body.offsetHeight);
+  }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.onScrollFetchPosts);
@@ -219,12 +225,17 @@ class Blogs extends Component {
             {this.state.showSpinner && (
               <Typography
                 variant="p"
+                component="p"
                 style={{
                   fontWeight: "bold",
                   fontStyle: "italic",
                   display: "block",
                   marginTop: "1rem",
                   textAlign: "center",
+                  background: "-webkit-linear-gradient(45deg, #09009f, #00ff95 80%)",
+                  backgroundClip: "border-box",
+                  webkitBackgroundClip: "text",
+                  webkitTextFillColor: "transparent",
                 }}
               >
                 No More Posts to be loaded ...
