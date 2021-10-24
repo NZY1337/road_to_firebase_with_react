@@ -2,8 +2,33 @@ import React from "react";
 import "./footer.scss";
 import logo from "../../assets/images/beadesignful-logo.png";
 import { Container, Grid, Typography, Link } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "#000",
+    color: "#fff",
+    paddingTop: "2rem",
+    paddingBottom: "2rem",
+  },
+
+  footer: {
+    display: "flex",
+    padding: 0,
+    listStyle: "none",
+
+    "& li": {
+      marginRight: "1rem",
+      "& a": {
+        color: "#fff",
+      },
+    },
+  },
+}));
 
 export default function Footer() {
+  const classes = useStyles();
+
   const footerNav = {
     footer: [
       {
@@ -45,12 +70,12 @@ export default function Footer() {
   ];
 
   return (
-    <footer>
+    <footer className={classes.root}>
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           {footerNav.footer.map((item, index) => {
             return (
-              <Grid item lg={4} key={index} className="col-lg-4 text-white">
+              <Grid item md={4} lg={4} key={index}>
                 <Typography variant="h5" gutterBottom>
                   {item.name}
                 </Typography>
@@ -68,16 +93,16 @@ export default function Footer() {
           })}
         </Grid>
 
-        <hr className="w-100" style={{ height: "1px", backgroundColor: "white", margin: "1rem 0" }} />
+        <hr className="w-100" style={{ margin: "1rem 0" }} />
 
-        <Grid container flex="center" alignItems="center">
-          <Grid item container sm={8} flex="center" alignItems="center">
+        <Grid container flex="center" spacing={3} alignItems="center">
+          <Grid item md={8} lg={8} container flex="center" alignItems="center">
             <img src={logo} style={{ width: "60px", height: "60px", marginRight: "1rem" }} alt="" />
             <Typography variant="h4"> BeauDesignful</Typography>
           </Grid>
 
-          <Grid container item sm={4} flex="center" alignItems="center">
-            <ul className="d-xl-flex" id="footer-nav">
+          <Grid md={4} lg={4} item>
+            <ul className={classes.footer}>
               {footerMenu.map((item, index) => {
                 return (
                   <li key={index}>

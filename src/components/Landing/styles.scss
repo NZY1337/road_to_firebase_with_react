@@ -47,3 +47,9 @@
 .slick-next {
   right: 50px !important;
 }
+
+@media (max-width: 576px) {
+  .slick-arrow {
+    top: 70% !important;
+  }
+}

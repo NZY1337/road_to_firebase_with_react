@@ -131,7 +131,7 @@ export default function TemporaryDrawer({ authMenu, nonAuthMenu, authUser }) {
           <Drawer className={classes.root} anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
             {list(anchor)}
 
-            {/* <div
+            <div
               className="over"
               style={{
                 width: "30%",
@@ -150,7 +150,7 @@ export default function TemporaryDrawer({ authMenu, nonAuthMenu, authUser }) {
                 // borderRadius: " 0% 100% 100% 0% / 100% 100% 100% 0%",
                 // marginLeft: "2rem",
               }}
-            ></div> */}
+            ></div>
           </Drawer>
         </React.Fragment>
       ))}

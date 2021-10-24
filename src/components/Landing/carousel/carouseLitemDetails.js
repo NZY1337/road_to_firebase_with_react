@@ -17,7 +17,6 @@ export default function CarouseLitemDetails({
 }) {
   const postTitle = title && title.split(" ").join("-").toLowerCase();
   const [inProp, setInProp] = useState(false);
-  console.log(carouselIndex, index);
 
   useEffect(() => {
     if (carouselIndex == index) {
@@ -31,7 +30,7 @@ export default function CarouseLitemDetails({
   return (
     <Container maxWidth="lg">
       <Grid container direction="column" justify="center" style={{ height: "100vh" }}>
-        <Grid item md={8} data-number={`0.${index + 1}`} className={carouselInfo}>
+        <Grid item xs={12} md={8} data-number={`0.${index + 1}`} className={carouselInfo}>
           <CSSTransition in={inProp} timeout={200} classNames="carousel-title">
             <h1 className="carousel-title">{title} </h1>
           </CSSTransition>

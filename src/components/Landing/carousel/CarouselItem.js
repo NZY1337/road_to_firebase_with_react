@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   carouselInfo: {
     position: "relative",
     paddingLeft: "0rem",
-    borderLeft: "1px solid white",
+
     padding: "2rem",
     display: "flex",
     paddingLeft: "2rem",
@@ -66,6 +66,15 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "start",
     flexBasis: "auto !important",
+
+    ["@media (max-width:575px)"]: {
+      paddingLeft: "0rem",
+    },
+
+    ["@media (min-width:576px)"]: {
+      paddingLeft: "2rem",
+      borderLeft: "1px solid white",
+    },
 
     "& a": {
       marginTop: "2rem",
