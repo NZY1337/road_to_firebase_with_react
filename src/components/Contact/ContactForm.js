@@ -106,7 +106,7 @@ class ContactFormBase extends Component {
     return (
       <>
         <Grid container alignItems="center" justify="center" spacing={3} style={{ height: "100%", width: "100%" }}>
-          <Grid item xs={12} md={6} lg={5} xl={3}>
+          <Grid item xs={12} sm={7} md={5} lg={4} xl={3}>
             <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
               Contact Us
             </Typography>

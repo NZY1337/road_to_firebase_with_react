@@ -7,21 +7,30 @@ import VideoPlayer from "../../utils/VideoPlayer";
 import { CSSTransition } from "react-transition-group";
 import "./animations.scss";
 
-const h6 = {
-  color: "aqua",
-  marginBottom: "2rem",
-};
+import { makeStyles } from "@material-ui/core";
 
-const descriptionStyle = {
-  color: "#fff",
-  marginTop: "1rem",
-  fontSize: "1.3rem",
-  width: "50%",
-  margin: "0 auto",
-};
+const useStyles = makeStyles((theme) => ({
+  description: {
+    color: "#fff",
+    marginTop: "1rem",
+    fontSize: "1.3rem",
+    width: "100%",
+
+    ["@media (min-width:767px)"]: {
+      width: "50%",
+    },
+    margin: "0 auto",
+  },
+
+  header: {
+    color: "aqua",
+    marginBottom: "2rem",
+  },
+}));
 
 const HeaderContainer = ({ cover, title, description, height, children, flexEnd, shadow }) => {
   const [inProp, setInProp] = useState(false);
+  const classes = useStyles();
   useEffect(() => {
     setInProp(true);
 
@@ -53,16 +62,23 @@ const HeaderContainer = ({ cover, title, description, height, children, flexEnd,
         <div style={{ height: "100%" }}>
           <VideoPlayer url={cover} autoPlay={true} controls={false} />
 
-          <Grid container style={{ height: "100%" }} item direction="column" justify="center" align="center">
+          <Grid
+            container
+            style={{ height: "100%", padding: ".5rem" }}
+            item
+            direction="column"
+            justify="center"
+            align="center"
+          >
             <CSSTransition in={inProp} timeout={200} classNames="carousel-title">
-              <Typography component="h2" variant="h2" style={h6} className="header-title">
+              <Typography component="h2" variant="h2" className={classes.header}>
                 {title}
               </Typography>
             </CSSTransition>
 
             {children}
 
-            <Typography component="p" variant="body1" style={descriptionStyle}>
+            <Typography component="p" variant="body1" className={classes.description}>
               {description}
             </Typography>
           </Grid>

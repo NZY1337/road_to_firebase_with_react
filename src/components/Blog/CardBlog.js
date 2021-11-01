@@ -40,7 +40,7 @@ const CardBlog = ({
   const [imgLoaded, videoLoaded] = UseLazyLoading(post);
 
   return (
-    <Grid item md={6} lg={3} xs={6}>
+    <Grid item sm={6} md={4} lg={3} xs={12}>
       {imgLoaded && (
         <SingleCard
           user={user}

@@ -125,7 +125,7 @@ class SignUpFormBase extends Component {
 
     return (
       <Grid container alignItems="center" justify="center" spacing={3} style={{ width: "100%", height: "100%" }}>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={2}>
           <Typography variant="h3" gutterBottom style={{ color: "#fff" }}>
             Sign Up
           </Typography>
