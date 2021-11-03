@@ -60,6 +60,7 @@ const SocialShare = () => {
         />
         <meta property="og:description" content="asd" />
         <meta property="og:image" content={imgUrl} />
+        <meta property="og:image:secure_url" content={imgUrl} />
         <meta property="fb:app_id" content="393053855937435 " />
       </Helmet>
 
@@ -68,6 +69,7 @@ const SocialShare = () => {
       <FacebookShareButton
         quote={'This is my first post shared on Facebook!'}
         url={'https://roat-to-firebase-with-react.web.app'}
+        imageurl={imgUrl}
       >
         <FacebookIcon size={35} />
       </FacebookShareButton>
