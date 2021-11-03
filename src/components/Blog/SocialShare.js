@@ -62,11 +62,33 @@ const SocialShare = () => {
           content="https://roat-to-firebase-with-react.web.app"
         />
 
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={imgUrl} />
-        <meta property="og:image:secure_url" content={imgUrl} />
+        <meta
+          property="og:description"
+          content={description}
+          data-react-helmet="true"
+        />
+        <meta property="og:image" content={imgUrl} data-react-helmet="true" />
+        <meta
+          property="og:image:secure_url"
+          content={imgUrl}
+          data-react-helmet="true"
+        />
         <meta property="fb:app_id" content="587717922350472 " />
-        <meta property="og:image:secure_url" content={imgUrl} />
+        <meta
+          property="og:image:secure_url"
+          content={imgUrl}
+          data-react-helmet="true"
+        />
+        <meta
+          property="og:image:height"
+          content="1846"
+          data-react-helmet="true"
+        />
+        <meta
+          property="og:image:width"
+          content="1200"
+          data-react-helmet="true"
+        />
       </Helmet>
 
       <Typography variant="h6">Share On:</Typography>
