@@ -48,14 +48,32 @@ const useStyles = makeStyles((theme) => ({
 
 const SocialShare = () => {
   const classes = useStyles()
+  const description = 'Social Share Page'
+  const imgUrl =
+    'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
 
   return (
     <div className={classes.root}>
+      <Helmet>
+        <meta name="description" content="Social Share" />
+        <meta charSet="utf-8" />
+        <meta
+          property="og:url"
+          content="https://roat-to-firebase-with-react.web.app"
+        />
+
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={imgUrl} />
+        <meta property="og:image:secure_url" content={imgUrl} />
+        <meta property="fb:app_id" content="587717922350472 " />
+        <meta property="og:image:secure_url" content={imgUrl} />
+      </Helmet>
+
       <Typography variant="h6">Share On:</Typography>
 
       <FacebookShareButton
         quote={'This is my first post shared on Facebook!'}
-        url={window.location.href}
+        url={'https://roat-to-firebase-with-react.web.app'}
       >
         <FacebookIcon size={35} />
       </FacebookShareButton>
