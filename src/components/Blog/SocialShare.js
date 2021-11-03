@@ -61,7 +61,7 @@ const SocialShare = () => {
         <meta property="og:description" content="asd" />
         <meta property="og:image" content={imgUrl} />
         <meta property="og:image:secure_url" content={imgUrl} />
-        <meta property="fb:app_id" content="393053855937435 " />
+        <meta property="fb:app_id" content="587717922350472 " />
         <meta property="og:image:secure_url" content={imgUrl} />
         <meta property="og:image:width" content="500" />
         <meta property="og:image:height" content="500" />
