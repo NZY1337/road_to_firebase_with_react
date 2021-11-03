@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const SocialShare = () => {
   const classes = useStyles()
   const imgUrl =
-    'https://images.pexels.com/photos/9088924/pexels-photo-9088924.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+    'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
 
   return (
     <div className={classes.root}>
@@ -59,8 +59,8 @@ const SocialShare = () => {
           content="https://roat-to-firebase-with-react.web.app"
         />
         <meta property="og:description" content="asd" />
-        {/* <meta property="og:image" content={imgUrl} />
-        <meta property="og:image:secure_url" content={imgUrl} /> */}
+        <meta property="og:image" content={imgUrl} />
+        <meta property="og:image:secure_url" content={imgUrl} />
         <meta property="fb:app_id" content="393053855937435 " />
       </Helmet>
 
