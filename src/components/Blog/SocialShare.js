@@ -50,16 +50,11 @@ const SocialShare = () => {
       <Typography variant="h6">Share On:</Typography>
       <Link className="social-facebook" component="button" variant="body2">
         {/* <FacebookIcon /> */}
-        <FacebookShareButton
-          size={32}
-          round={true}
-          url={window.location.href}
-          imageURL={
-            'https://images.pexels.com/photos/9713309/pexels-photo-9713309.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
-          }
+        <a
+          href={`https://www.facebook.com/sharer.php?u=${window.location.href}?imageurl='https://images.pexels.com/photos/9713309/pexels-photo-9713309.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'`}
         >
           Share your post
-        </FacebookShareButton>
+        </a>
       </Link>
 
       <Link className="social-insta" component="button" variant="body2">
