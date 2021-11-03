@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const SocialShare = () => {
   const classes = useStyles()
   const imgUrl =
-    'https://images.pexels.com/photos/9789897/pexels-photo-9789897.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+    'https://images.pexels.com/photos/9088924/pexels-photo-9088924.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
 
   return (
     <div className={classes.root}>
