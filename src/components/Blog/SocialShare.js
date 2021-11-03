@@ -54,7 +54,6 @@ const SocialShare = () => {
         <FacebookShareButton size={32} round={true} url={window.location.href}>
           Share your post
         </FacebookShareButton>
-        <h1>Hy</h1>
       </Link>
 
       <Link className="social-insta" component="button" variant="body2">
