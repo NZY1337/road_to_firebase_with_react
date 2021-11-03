@@ -136,7 +136,10 @@ class Blogs extends Component {
   }
 
   onScrollFetchPosts = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      this.state.nodeLength > 4
+    ) {
       this.fetchNext5Batches()
       console.log('fetched...')
     }
