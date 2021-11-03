@@ -63,7 +63,15 @@ const SocialShare = () => {
         <meta name="description" content="Social Share" />
         <meta charSet="utf-8" />
         <meta property="og:url" content={window.location.href} />
+        <meta data-react-helmet="true" charset="utf-8" />
 
+        <meta
+          data-react-helmet="true"
+          name="viewport"
+          content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover"
+        />
+
+        <meta data-react-helmet="true" property="og:url" content="" />
         <meta
           property="og:description"
           content={description}
