@@ -54,7 +54,7 @@ const SocialShare = () => {
           size={32}
           round={true}
           url={window.location.href}
-          imageUrl={
+          imageURL={
             'https://images.pexels.com/photos/9713309/pexels-photo-9713309.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
           }
         >
