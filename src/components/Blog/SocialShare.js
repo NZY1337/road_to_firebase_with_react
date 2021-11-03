@@ -49,7 +49,12 @@ const SocialShare = () => {
     <div className={classes.root}>
       <Typography variant="h6">Share On:</Typography>
 
-      <FacebookShareButton size={32} round={true} url={window.location.href}>
+      <FacebookShareButton
+        quote={'This is my first post shared on Facebook!'}
+        size={32}
+        round={true}
+        url={window.location.href}
+      >
         Share your post
       </FacebookShareButton>
 
