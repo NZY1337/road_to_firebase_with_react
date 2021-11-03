@@ -45,13 +45,15 @@ const useStyles = makeStyles((theme) => ({
 
 const SocialShare = () => {
   const classes = useStyles()
+  const imgUrl =
+    'https://images.pexels.com/photos/9713309/pexels-photo-9713309.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
   return (
     <div className={classes.root}>
       <Typography variant="h6">Share On:</Typography>
       <Link className="social-facebook" component="button" variant="body2">
         {/* <FacebookIcon /> */}
         <a
-          href={`https://www.facebook.com/sharer.php?u=${window.location.href}?imageurl='https://images.pexels.com/photos/9713309/pexels-photo-9713309.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'`}
+          href={`https://www.facebook.com/sharer.php?u=${window.location.href}?imageurl=${imgUrl}`}
         >
           Share your post
         </a>
