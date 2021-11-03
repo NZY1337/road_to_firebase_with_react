@@ -55,12 +55,14 @@ const SocialShare = () => {
   return (
     <div className={classes.root}>
       <Helmet>
+        <link
+          data-react-helmet="true"
+          rel="canonical"
+          href={window.location.href}
+        />
         <meta name="description" content="Social Share" />
         <meta charSet="utf-8" />
-        <meta
-          property="og:url"
-          content="https://roat-to-firebase-with-react.web.app"
-        />
+        <meta property="og:url" content={window.location.href} />
 
         <meta
           property="og:description"
