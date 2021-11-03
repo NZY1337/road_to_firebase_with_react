@@ -61,7 +61,7 @@ const SocialShare = () => {
 
       <Typography variant="h6">Share On:</Typography>
       <a
-        href={`http://www.facebook.com/share.php?u=[${url}]&title=[kek]&picture=[${imgUrl}]`}
+        href={`http://www.facebook.com/share.php?href=${url}&title=kek&picture=${imgUrl}`}
       >
         FB Share
       </a>
