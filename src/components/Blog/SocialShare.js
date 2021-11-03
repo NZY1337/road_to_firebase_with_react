@@ -8,7 +8,6 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import { makeStyles } from '@material-ui/core'
 import { FacebookShareButton, FacebookIcon } from 'react-share'
 import HelmetMetaData from '../../utils/Helmet'
-import MetaTags from 'react-meta-tags'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,30 +48,23 @@ const SocialShare = () => {
   const classes = useStyles()
   const imgUrl =
     'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+  const url = 'https://roat-to-firebase-with-react.web.app'
 
+  //  https://github.com/justswim/cra-metatag-demo/blob/master/server.js
   return (
     <div className={classes.root}>
-      {/* <HelmetMetaData
+      <HelmetMetaData
         imgUrl={imgUrl}
         description={'hy all'}
         url={'https://roat-to-firebase-with-react.web.app'}
-      /> */}
+      />
 
-      <MetaTags>
-        <title>Page 1</title>
-
-        <meta id="og-title" property="og:title" content="MyApp" />
-        <meta
-          id="og-image"
-          property="og:image"
-          content="https://via.placeholder.com/300"
-        />
-        <meta property="og:image:width" content="300" />
-        <meta property="og:image:height" content="300" />
-        <meta property="og:image" content={imgUrl} />
-        <meta property="og:image:secure_url" content={imgUrl} />
-      </MetaTags>
       <Typography variant="h6">Share On:</Typography>
+      <a
+        href={`http://www.facebook.com/share.php?u=[${url}]&title=[kek]&picture=[${imgUrl}]`}
+      >
+        FB Share
+      </a>
 
       <FacebookShareButton
         quote={'This is my first post shared on Facebook!'}

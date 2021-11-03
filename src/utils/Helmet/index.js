@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet'
 
 const HelmetMetaData = ({ imgUrl, description, url }) => {
   return (
-    <Helmet>
+    <Helmet data-react-helmet="true">
       <meta charSet="utf-8" />
       <title>ASd</title>
       <meta property="og:url" content={url} />
