@@ -149,6 +149,16 @@ const App = ({ match }) => {
           property="og:image"
           content="https://images.pexels.com/photos/9299384/pexels-photo-9299384.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
         />
+
+        <meta property="fb:app_id" content="393053855937435 " />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content="myContent" />
+        <meta property="og:title" content="myTitle" />
+        <meta property="og:image" content="myImage" />
+        <meta property="og:site_name" content="My Site Name" />
+        <meta property="og:image:width" content="500" />
+        <meta property="og:image:height" content="500" />
+        <meta property="og:description" content="My Description" />
       </Helmet>
 
       <Router>

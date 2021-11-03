@@ -63,8 +63,8 @@ const SocialShare = () => {
         <meta property="og:image:secure_url" content={imgUrl} />
         <meta property="fb:app_id" content="393053855937435 " />
         <meta property="og:image:secure_url" content={imgUrl} />
-        {/* <meta property="og:image:width" content="500" />
-        <meta property="og:image:height" content="500" /> */}
+        <meta property="og:image:width" content="500" />
+        <meta property="og:image:height" content="500" />
       </Helmet>
 
       <Typography variant="h6">Share On:</Typography>
