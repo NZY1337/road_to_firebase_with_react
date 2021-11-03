@@ -142,12 +142,12 @@ const App = ({ match }) => {
 
         <meta
           property="og:image:secure_url"
-          content="https://miro.medium.com/max/700/1*fzQTyO4aGCTzOPIyNDIjew.jpeg"
+          content="https://images.pexels.com/photos/9299384/pexels-photo-9299384.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
         />
 
         <meta
           property="og:image"
-          content="https://miro.medium.com/max/700/1*fzQTyO4aGCTzOPIyNDIjew.jpeg"
+          content="https://images.pexels.com/photos/9299384/pexels-photo-9299384.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
         />
       </Helmet>
 

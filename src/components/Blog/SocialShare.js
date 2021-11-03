@@ -8,6 +8,7 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import { makeStyles } from '@material-ui/core'
 import { FacebookShareButton, FacebookIcon } from 'react-share'
 import HelmetMetaData from '../../utils/Helmet'
+import MetaTags from 'react-meta-tags'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,12 +52,26 @@ const SocialShare = () => {
 
   return (
     <div className={classes.root}>
-      <HelmetMetaData
+      {/* <HelmetMetaData
         imgUrl={imgUrl}
         description={'hy all'}
         url={'https://roat-to-firebase-with-react.web.app'}
-      />
+      /> */}
 
+      <MetaTags>
+        <title>Page 1</title>
+
+        <meta id="og-title" property="og:title" content="MyApp" />
+        <meta
+          id="og-image"
+          property="og:image"
+          content="https://via.placeholder.com/300"
+        />
+        <meta property="og:image:width" content="300" />
+        <meta property="og:image:height" content="300" />
+        <meta property="og:image" content={imgUrl} />
+        <meta property="og:image:secure_url" content={imgUrl} />
+      </MetaTags>
       <Typography variant="h6">Share On:</Typography>
 
       <FacebookShareButton
