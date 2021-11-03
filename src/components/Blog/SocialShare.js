@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core'
 import { FacebookShareButton, FacebookIcon } from 'react-share'
 import { Helmet } from 'react-helmet'
 
+// https://rohanweb.netlify.app/blogs/justice-for-khaire-protest
+
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'sticky',
@@ -46,32 +48,14 @@ const useStyles = makeStyles((theme) => ({
 
 const SocialShare = () => {
   const classes = useStyles()
-  const imgUrl =
-    'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
 
   return (
     <div className={classes.root}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>ASd</title>
-        <meta
-          property="og:url"
-          content="https://roat-to-firebase-with-react.web.app"
-        />
-        <meta property="og:description" content="asd" />
-        <meta property="og:image" content={imgUrl} />
-        <meta property="og:image:secure_url" content={imgUrl} />
-        <meta property="fb:app_id" content="587717922350472 " />
-        <meta property="og:image:secure_url" content={imgUrl} />
-        <meta property="og:image:width" content="500" />
-        <meta property="og:image:height" content="500" />
-      </Helmet>
-
       <Typography variant="h6">Share On:</Typography>
 
       <FacebookShareButton
         quote={'This is my first post shared on Facebook!'}
-        url={'https://roat-to-firebase-with-react.web.app'}
+        url={window.location.href}
       >
         <FacebookIcon size={35} />
       </FacebookShareButton>
