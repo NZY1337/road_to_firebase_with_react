@@ -7,7 +7,7 @@ import InstagramIcon from '@material-ui/icons/Instagram'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import { makeStyles } from '@material-ui/core'
 import { FacebookShareButton, FacebookIcon } from 'react-share'
-import { Helmet } from 'react-helmet'
+import HelmetMetaData from '../../utils/Helmet'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,18 +51,11 @@ const SocialShare = () => {
 
   return (
     <div className={classes.root}>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>ASd</title>
-        <meta
-          property="og:url"
-          content="https://roat-to-firebase-with-react.web.app"
-        />
-        <meta property="og:description" content="asd" />
-        <meta property="og:image" content={imgUrl} />
-        <meta property="og:image:secure_url" content={imgUrl} />
-        <meta property="fb:app_id" content="393053855937435 " />
-      </Helmet>
+      <HelmetMetaData
+        imgUrl={imgUrl}
+        description={'hy all'}
+        url={'https://roat-to-firebase-with-react.web.app'}
+      />
 
       <Typography variant="h6">Share On:</Typography>
 

@@ -20,6 +20,7 @@ import * as ROUTES from '../../constants/routes'
 import './animation.scss'
 import SnackBarContextProvider from '../../utils/SnackBarContext'
 import ScrollToTop from '../../utils/ScrollTop/ScrollToTop'
+import HelmetMetaData from '../../utils/Helmet'
 
 // https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
 
@@ -134,6 +135,13 @@ const App = ({ match }) => {
 
   return (
     <SnackBarContextProvider>
+      <HelmetMetaData
+        imgUrl={
+          'https://images.pexels.com/photos/9681163/pexels-photo-9681163.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+        }
+        description={'from App'}
+        url={'https://roat-to-firebase-with-react.web.app'}
+      />
       <Router>
         <ScrollToTop />
         <Layout>
