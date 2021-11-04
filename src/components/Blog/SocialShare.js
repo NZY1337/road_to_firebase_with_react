@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SocialShare = ({ description, title, cover }) => {
   const classes = useStyles()
-  const [meta, setMeta] = useEffect({
+  const [meta, setMeta] = useState({
       metaDescription: description,
       metaCover:cover
   })
