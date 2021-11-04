@@ -42,24 +42,17 @@ const useStyles = makeStyles((theme) => ({
 
 const SocialShare = ({ description, title, cover }) => {
   const classes = useStyles()
-  const [meta, setMeta] = useState({
-      metaDescription: description,
-      metaCover:cover
-  })
-  
   return (
     <div className={classes.root}>
-      {cover && <Helmet>
-        <link data-react-helmet="true" rel="canonical" href={window.location.href}/>
-        <meta name="description" content="Social Share" />
+      <Helmet>
+        <meta property="og:image" content={cover} data-react-helmet="true" />
+        <meta  property="og:image:secure_url" content={cover} data-react-helmet="true"/>
         <meta property="og:url" content={window.location.href} />
         <meta data-react-helmet="true" property="og:url" content="" />
-        <meta property="og:description" content={meta.metaDescription} data-react-helmet="true"/>
-        <meta property="og:image" content={cover} data-react-helmet="true" />
-        <meta  property="og:image:secure_url" content={meta.metaCover} data-react-helmet="true"/>
+        <meta property="og:description" content={description} data-react-helmet="true"/>
         <meta property="og:image:height" content="1846" content="1846"/>
         <meta property="og:image:width" content="1200" data-react-helmet="true"/>
-      </Helmet>}
+      </Helmet>
 
       <Typography variant="h6">Share On:</Typography>
 
