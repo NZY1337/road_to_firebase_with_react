@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Typography from '@material-ui/core/Typography'
 import Link from '@material-ui/core/Link'
@@ -47,14 +47,18 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SocialShare = () => {
+  const [meta] = useState({
+    name: 'react-helmet-demo',
+    description: 'Social Share Page',
+    imgUrl:
+      'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+  })
   const classes = useStyles()
-  const description = 'Social Share Page'
-  const imgUrl =
-    'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
 
   return (
     <div className={classes.root}>
       <Helmet>
+        <title>{`Digital card of ${meta.name}`}</title>
         <link
           data-react-helmet="true"
           rel="canonical"
@@ -72,19 +76,17 @@ const SocialShare = () => {
         <meta data-react-helmet="true" property="og:url" content="" />
         <meta
           property="og:description"
-          content={description}
+          content={meta.description}
           data-react-helmet="true"
         />
-        <meta property="og:image" content={imgUrl} data-react-helmet="true" />
         <meta
-          property="og:image:secure_url"
-          content={imgUrl}
+          property="og:image"
+          content={meta.imgUrl}
           data-react-helmet="true"
         />
-        <meta property="fb:app_id" content="587717922350472 " />
         <meta
           property="og:image:secure_url"
-          content={imgUrl}
+          content={meta.imgUrl}
           data-react-helmet="true"
         />
         <meta
