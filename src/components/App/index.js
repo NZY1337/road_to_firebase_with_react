@@ -21,11 +21,7 @@ import './animation.scss'
 import SnackBarContextProvider from '../../utils/SnackBarContext'
 import ScrollToTop from '../../utils/ScrollTop/ScrollToTop'
 
-import { hydrate, render } from 'react-dom'
-// https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
-const rootElement = document.getElementById('root')
-
-const App = ({ match }) => {
+const App = () => {
   return (
     <SnackBarContextProvider>
       <Router>

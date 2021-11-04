@@ -51,7 +51,7 @@ const SocialShare = () => {
     name: 'react-helmet-demo',
     description: 'Social Share Page',
     imgUrl:
-      'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+      'https://images.pexels.com/photos/8586072/pexels-photo-8586072.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
   })
 
   const classes = useStyles()
