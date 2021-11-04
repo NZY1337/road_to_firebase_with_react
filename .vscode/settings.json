@@ -1,6 +1,7 @@
 {
   "editor.fontLigatures": true,
   "editor.fontFamily": "Fira Code iScript, Monaco, Consolas, 'Courier New', monospace",
+  "prettier.printWidth": 200,
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
@@ -10,8 +11,7 @@
           "entity.name.type.class", //class names
           "keyword", //import, export, return…
           "constant", //String, Number, Boolean…, this, super
-          "storage.modifier", //static keyword
-          "storage.type.class.js" //class keyword
+          "storage.modifier" //static keyword
         ],
         "settings": {
           "fontStyle": "italic"
@@ -25,12 +25,18 @@
           "constant.numeric.css",
           "keyword.other.unit.px.css",
           "constant.numeric.decimal.js",
-          "constant.numeric.json"
+          "constant.numeric.json",
+          "storage.type.class.js" //class keyword
         ],
         "settings": {
           "fontStyle": ""
         }
       }
     ]
-  }
+  },
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  },
+  "editor.formatOnSave": true
 }

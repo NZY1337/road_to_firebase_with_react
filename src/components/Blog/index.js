@@ -9,7 +9,6 @@ import CardBlog from './CardBlog'
 import HeaderContainer from './HeaderContainer'
 import { SnackBarContext } from '../../utils/SnackBarContext'
 import Typography from '@material-ui/core/Typography'
-import LinearProgress from '@material-ui/core/LinearProgress'
 
 class Blogs extends Component {
   static contextType = SnackBarContext
@@ -146,7 +145,7 @@ class Blogs extends Component {
   }
 
   handleDeletePost = ({ postType }, uniquePostId, uniqueStorageId) => {
-    const { storage, doRemoveItemsFromStorage } = this.props.firebase
+    const { doRemoveItemsFromStorage } = this.props.firebase
     const postRefDB = this.props.firebase.db.ref(postType)
 
     const confirm = window.confirm('are you sure you want to delete this?')
@@ -184,12 +183,8 @@ class Blogs extends Component {
     this.getRefLength()
     this.fetchFirstBatch()
     this.fetchUser()
-
     window.addEventListener('scroll', this.onScrollFetchPosts)
-
     this.snackBar = this.context
-
-    //  console.log(window.innerHeight + window.scrollY, document.body.offsetHeight)
   }
 
   componentWillUnmount() {

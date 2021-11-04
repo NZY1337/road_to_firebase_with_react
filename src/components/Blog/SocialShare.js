@@ -40,61 +40,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SocialShare = (sda) => {
-  const [meta] = useState({
-    name: 'react-helmet-demo',
-    description: 'Social Share Page',
-    imgUrl:
-      'https://images.pexels.com/photos/9758638/pexels-photo-9758638.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-  })
-
+const SocialShare = ({ description, title, cover }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <Helmet>
-        <title>{`Digital card of ${meta.name}`}</title>
-        <link
-          data-react-helmet="true"
-          rel="canonical"
-          href={window.location.href}
-        />
+        <link data-react-helmet="true" rel="canonical" href={window.location.href}/>
         <meta name="description" content="Social Share" />
         <meta property="og:url" content={window.location.href} />
         <meta data-react-helmet="true" property="og:url" content="" />
-        <meta
-          property="og:description"
-          content={meta.description}
-          data-react-helmet="true"
-        />
-        <meta
-          property="og:image"
-          content={meta.imgUrl}
-          data-react-helmet="true"
-        />
-        <meta
-          property="og:image:secure_url"
-          content={meta.imgUrl}
-          data-react-helmet="true"
-        />
-        <meta
-          property="og:image:height"
-          content="1846"
-          data-react-helmet="true"
-        />
-        <meta
-          property="og:image:width"
-          content="1200"
-          data-react-helmet="true"
-        />
+        <meta property="og:description" content={description} data-react-helmet="true"/>
+        <meta property="og:image" content={cover} data-react-helmet="true" />
+        <meta  property="og:image:secure_url" content={cover} data-react-helmet="true"/>
+        <meta property="og:image:height" content="1846" content="1846"/>
+        <meta property="og:image:width" content="1200" data-react-helmet="true"/>
       </Helmet>
 
       <Typography variant="h6">Share On:</Typography>
 
-      <FacebookShareButton
-        quote={'This is my first post shared on Facebook!'}
-        url={window.location.href}
-      >
+      <FacebookShareButton quote={'This is my first post shared on Facebook!'} url={window.location.href}>
         <FacebookIcon size={35} />
       </FacebookShareButton>
     </div>
