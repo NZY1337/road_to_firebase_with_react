@@ -1,15 +1,9 @@
 import React, { useState } from 'react'
 
 import Typography from '@material-ui/core/Typography'
-import Link from '@material-ui/core/Link'
-
-import InstagramIcon from '@material-ui/icons/Instagram'
-import TwitterIcon from '@material-ui/icons/Twitter'
 import { makeStyles } from '@material-ui/core'
 import { FacebookShareButton, FacebookIcon } from 'react-share'
 import { Helmet } from 'react-helmet'
-
-// https://rohanweb.netlify.app/blogs/justice-for-khaire-protest
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,12 +40,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SocialShare = () => {
+const SocialShare = (sda) => {
   const [meta] = useState({
     name: 'react-helmet-demo',
     description: 'Social Share Page',
     imgUrl:
-      'https://images.pexels.com/photos/8586072/pexels-photo-8586072.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+      'https://images.pexels.com/photos/9758638/pexels-photo-9758638.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
   })
 
   const classes = useStyles()
@@ -66,14 +60,7 @@ const SocialShare = () => {
           href={window.location.href}
         />
         <meta name="description" content="Social Share" />
-        <meta charSet="utf-8" />
         <meta property="og:url" content={window.location.href} />
-        <meta data-react-helmet="true" charset="utf-8" />
-        <meta
-          data-react-helmet="true"
-          name="viewport"
-          content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover"
-        />
         <meta data-react-helmet="true" property="og:url" content="" />
         <meta
           property="og:description"
@@ -110,14 +97,6 @@ const SocialShare = () => {
       >
         <FacebookIcon size={35} />
       </FacebookShareButton>
-
-      <Link className="social-insta" component="button" variant="body2">
-        <InstagramIcon />
-      </Link>
-
-      <Link className="social-twitter" component="button" variant="body2">
-        <TwitterIcon />
-      </Link>
     </div>
   )
 }

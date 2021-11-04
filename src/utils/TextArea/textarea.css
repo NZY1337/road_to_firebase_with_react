@@ -17,7 +17,7 @@
   transition: all 0.15s ease;
   color: #fff;
   font: inherit;
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Lato', sans-serif !important;
 }
 
 #cancellationNotesContainer textarea {
@@ -29,14 +29,15 @@
   font-size: 1rem;
   color: #fff;
   width: 100%;
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Lato', sans-serif !important;
   border-radius: 4px;
   min-height: 10rem;
   resize: none;
   padding: 20px 12px;
 }
 
-#cancellationNotesContainer textarea:focus, #cancellationNotesContainer textarea.not-empty {
+#cancellationNotesContainer textarea:focus,
+#cancellationNotesContainer textarea.not-empty {
   outline: 0;
 }
 
