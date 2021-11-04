@@ -53,6 +53,7 @@ const SocialShare = () => {
     imgUrl:
       'https://images.pexels.com/photos/9714732/pexels-photo-9714732.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
   })
+
   const classes = useStyles()
 
   return (

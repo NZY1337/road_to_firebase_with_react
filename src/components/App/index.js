@@ -20,9 +20,10 @@ import * as ROUTES from '../../constants/routes'
 import './animation.scss'
 import SnackBarContextProvider from '../../utils/SnackBarContext'
 import ScrollToTop from '../../utils/ScrollTop/ScrollToTop'
-import { Helmet } from 'react-helmet'
 
+import { hydrate, render } from 'react-dom'
 // https://stackoverflow.com/questions/52681342/hide-url-extensions-using-react-router-dom
+const rootElement = document.getElementById('root')
 
 const App = ({ match }) => {
   return (
