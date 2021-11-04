@@ -64,13 +64,11 @@ const SocialShare = () => {
         <meta charSet="utf-8" />
         <meta property="og:url" content={window.location.href} />
         <meta data-react-helmet="true" charset="utf-8" />
-
         <meta
           data-react-helmet="true"
           name="viewport"
           content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover"
         />
-
         <meta data-react-helmet="true" property="og:url" content="" />
         <meta
           property="og:description"
@@ -105,7 +103,7 @@ const SocialShare = () => {
 
       <FacebookShareButton
         quote={'This is my first post shared on Facebook!'}
-        url={'https://roat-to-firebase-with-react.web.app'}
+        url={window.location.href}
       >
         <FacebookIcon size={35} />
       </FacebookShareButton>
