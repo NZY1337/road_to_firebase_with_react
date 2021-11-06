@@ -8,17 +8,20 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // width: "100%",
-  },
-
-  btn: {
-    "& .MuiButton-label": {
-      color: "gray",
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      // width: "100%",
     },
-  },
-}));
+
+    btn: {
+      "& .MuiButton-label": {
+        color: "gray",
+      },
+    },
+  }),
+  { index: 1 }
+);
 
 const postTypes = [
   {
@@ -37,13 +40,7 @@ export function SearchCoverForm({ values, onSubmitHandler, onChangeHandler }) {
   const isInvalid = title === "" || post === "";
 
   return (
-    <form
-      id="search-cover-form"
-      onSubmit={onSubmitHandler}
-      autoComplete="off"
-      className={classes.root}
-      style={{ marginBottom: ".5rem" }}
-    >
+    <form id="search-cover-form" onSubmit={onSubmitHandler} autoComplete="off" className={classes.root} style={{ marginBottom: ".5rem" }}>
       <div>
         <TextField
           id="search-post"

@@ -12,43 +12,46 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const useStyles = makeStyles((theme) => ({
-  identifierLeft: {
-    "& .slick-active": {
-      "&::after": {
-        position: "absolute",
-        content: "''",
-        width: (w) => Number(w.widthLeft),
-        height: "10px",
-        top: "-20px",
-        bottom: 0,
-        left: "7px", // - margin
-        borderLeft: "2px solid red",
-        borderTop: "2px solid red",
-        borderRight: 0,
-        borderBottom: 0,
+const useStyles = makeStyles(
+  (theme) => ({
+    identifierLeft: {
+      "& .slick-active": {
+        "&::after": {
+          position: "absolute",
+          content: "''",
+          width: (w) => Number(w.widthLeft),
+          height: "10px",
+          top: "-20px",
+          bottom: 0,
+          left: "7px", // - margin
+          borderLeft: "2px solid red",
+          borderTop: "2px solid red",
+          borderRight: 0,
+          borderBottom: 0,
+        },
       },
     },
-  },
 
-  identifierRight: {
-    "& .slick-active": {
-      "&::after": {
-        position: "absolute",
-        content: "''",
-        width: (w) => Number(w.widthRight),
-        height: "10px",
-        top: "-20px",
-        bottom: 0,
-        right: "7px", // - margin
-        borderLeft: 0,
-        borderTop: "2px solid red",
-        borderRight: "2px solid red",
-        borderBottom: 0,
+    identifierRight: {
+      "& .slick-active": {
+        "&::after": {
+          position: "absolute",
+          content: "''",
+          width: (w) => Number(w.widthRight),
+          height: "10px",
+          top: "-20px",
+          bottom: 0,
+          right: "7px", // - margin
+          borderLeft: 0,
+          borderTop: "2px solid red",
+          borderRight: "2px solid red",
+          borderBottom: 0,
+        },
       },
     },
-  },
-}));
+  }),
+  { index: 1 }
+);
 
 const Carousel = (props) => {
   const [width, setWidth] = useState({
@@ -80,12 +83,7 @@ const Carousel = (props) => {
     appendDots: (dots) => {
       return (
         <div>
-          <ul
-            className={
-              carouselIndex >= Math.floor(settings.postsLen / 2) ? classes.identifierRight : classes.identifierLeft
-            }
-            style={{ margin: "0 auto", width: "fit-content" }}
-          >
+          <ul className={carouselIndex >= Math.floor(settings.postsLen / 2) ? classes.identifierRight : classes.identifierLeft} style={{ margin: "0 auto", width: "fit-content" }}>
             {dots}
           </ul>
         </div>
@@ -97,11 +95,9 @@ const Carousel = (props) => {
     const dotWidth = 14;
     const dotMargin = 10;
     const dotHalfWidth = dotWidth / 2; // for centering
-    const totalWidthLeft =
-      [Math.round(postsLen) * (dotWidth + dotMargin) - dotMargin] - [index * (dotWidth + dotMargin)] - dotHalfWidth * 2;
+    const totalWidthLeft = [Math.round(postsLen) * (dotWidth + dotMargin) - dotMargin] - [index * (dotWidth + dotMargin)] - dotHalfWidth * 2;
 
-    const totalWidthRight =
-      [Math.round(postsLen + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
+    const totalWidthRight = [Math.round(postsLen + index * (dotWidth + dotMargin)) - dotMargin + dotWidth] - dotHalfWidth;
 
     //! do I really need to use prevState?
     setWidth((prevState) => ({
@@ -140,18 +136,7 @@ const Carousel = (props) => {
         <Slider {...settings}>
           {Object.keys(posts).map((id, index) => {
             const { cover, title, description, postType } = posts[id];
-            return (
-              <CarouselItem
-                key={id}
-                postType={postType}
-                carouselIndex={carouselIndex}
-                index={index}
-                blogId={id}
-                title={title}
-                description={description}
-                url={cover}
-              />
-            );
+            return <CarouselItem key={id} postType={postType} carouselIndex={carouselIndex} index={index} blogId={id} title={title} description={description} url={cover} />;
           })}
         </Slider>
       )}

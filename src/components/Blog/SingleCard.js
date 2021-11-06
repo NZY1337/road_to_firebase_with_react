@@ -29,110 +29,100 @@ import { makeStyles } from "@material-ui/core/styles";
     ************************************************
 */
 
-const useStyles = makeStyles((theme) => ({
-  "@keyframes loadingAnimation": {
-    "0%": {
-      backgroundColor: "rgba(211, 211, 211, .4)",
-    },
-    "50%": {
-      backgroundColor: "rgba(128,128,128, .4)",
-    },
-    "100%": {
-      backgroundColor: "rgba(211, 211, 211, .4)",
-    },
-  },
-
-  cardHeader: {
-    zIndex: 1,
-    position: "relative",
-    backgroundColor: "#fff",
-  },
-
-  myAnimation: {
-    animation: `$loadingAnimation 600ms ${theme.transitions.easing.easeInOut} infinite`,
-  },
-
-  card: {
-    "&:hover a": {
-      left: "0px",
-    },
-
-    "& .cardcontent-summary p": {
-      maxWidth: "100%",
-      display: "-webkit-box",
-      WebkitBoxOrient: "vertical",
-      WebkitLineClamp: 3,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-
-    "& .cardcontent-summary": {
-      marginBottom: "0px",
-      transition: "all .2s",
-    },
-
-    "&:hover .cardcontent-summary": {
-      marginBottom: "10px",
-    },
-
-    "&:hover .MuiCardMedia-root": {
-      transform: "scale(1.1)",
-    },
-  },
-
-  cardMedia: {
-    height: "450px",
-    objectFit: "cover",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    backgroundBlendMode: "multiply",
-    transition: "all .2s",
-  },
-
-  cardContent: {
-    position: "absolute",
-    bottom: "0px",
-    textAlign: "left",
-    width: "100%",
-    left: 0,
-
-    "& h2": {
-      color: "aqua",
-    },
-    "& p": {
-      color: "#fff",
-    },
-
-    "& a": {
-      marginTop: "1rem",
-      color: "#fff",
-      border: "none",
-      textTransform: "none",
-      padding: 0,
-      textDecoration: "underline",
-      left: "-100px",
-      transition: "all .2s",
-
-      "&:hover": {
-        border: "none",
+const useStyles = makeStyles(
+  (theme) => ({
+    "@keyframes loadingAnimation": {
+      "0%": {
+        backgroundColor: "rgba(211, 211, 211, .4)",
+      },
+      "50%": {
+        backgroundColor: "rgba(128,128,128, .4)",
+      },
+      "100%": {
+        backgroundColor: "rgba(211, 211, 211, .4)",
       },
     },
-  },
-}));
 
-const CardBlog = ({
-  user,
-  id,
-  uniquePostId,
-  anchorEl,
-  open,
-  handleClose,
-  handleClick,
-  handleDeletePost,
-  children,
-  postType,
-  post,
-  uniqueStorageIdCallback,
-}) => {
+    cardHeader: {
+      zIndex: 1,
+      position: "relative",
+      backgroundColor: "#fff",
+    },
+
+    myAnimation: {
+      animation: `$loadingAnimation 600ms ${theme.transitions.easing.easeInOut} infinite`,
+    },
+
+    card: {
+      "&:hover a": {
+        left: "0px",
+      },
+
+      "& .cardcontent-summary p": {
+        maxWidth: "100%",
+        display: "-webkit-box",
+        WebkitBoxOrient: "vertical",
+        WebkitLineClamp: 3,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      },
+
+      "& .cardcontent-summary": {
+        marginBottom: "0px",
+        transition: "all .2s",
+      },
+
+      "&:hover .cardcontent-summary": {
+        marginBottom: "10px",
+      },
+
+      "&:hover .MuiCardMedia-root": {
+        transform: "scale(1.1)",
+      },
+    },
+
+    cardMedia: {
+      height: "450px",
+      objectFit: "cover",
+      backgroundColor: "rgba(0, 0, 0, 0.2)",
+      backgroundBlendMode: "multiply",
+      transition: "all .2s",
+    },
+
+    cardContent: {
+      position: "absolute",
+      bottom: "0px",
+      textAlign: "left",
+      width: "100%",
+      left: 0,
+
+      "& h2": {
+        color: "aqua",
+      },
+      "& p": {
+        color: "#fff",
+      },
+
+      "& a": {
+        marginTop: "1rem",
+        color: "#fff",
+        border: "none",
+        textTransform: "none",
+        padding: 0,
+        textDecoration: "underline",
+        left: "-100px",
+        transition: "all .2s",
+
+        "&:hover": {
+          border: "none",
+        },
+      },
+    },
+  }),
+  { index: 1 }
+);
+
+const CardBlog = ({ user, id, uniquePostId, anchorEl, open, handleClose, handleClick, handleDeletePost, children, postType, post, uniqueStorageIdCallback }) => {
   const classes = useStyles();
   const postTitle = post.title.split(" ").join("-").toLowerCase();
   const { cover, title, description } = post;
@@ -203,14 +193,7 @@ const CardBlog = ({
             </Typography>
           </div>
 
-          <Button
-            component={Link}
-            className="view-more"
-            to={`${postType}/${id}/${postTitle}`}
-            size="small"
-            variant="outlined"
-            color="primary"
-          >
+          <Button component={Link} className="view-more" to={`${postType}/${id}/${postTitle}`} size="small" variant="outlined" color="primary">
             Read More
           </Button>
         </CardContent>

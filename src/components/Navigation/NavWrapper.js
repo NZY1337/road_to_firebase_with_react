@@ -13,46 +13,49 @@ import Popover from "../../utils/Popover";
 import Logo from "./Logo";
 import ProfileImage from "./ProfileImage";
 
-const useStyles = makeStyles((theme) => ({
-  bgClass1: {
-    "&.MuiPaper-root": {
-      backgroundColor: "rgba(0,0,0, .8)",
-      transition: "background-color .5s",
-    },
-  },
-
-  bgClass2: {
-    "&.MuiPaper-root": {
-      backgroundColor: "transparent",
-      transition: "background-color .5s",
-    },
-  },
-
-  header: {
-    "&.MuiPaper-root": {
-      padding: "1rem",
+const useStyles = makeStyles(
+  (theme) => ({
+    bgClass1: {
+      "&.MuiPaper-root": {
+        backgroundColor: "rgba(0,0,0, .8)",
+        transition: "background-color .5s",
+      },
     },
 
-    "& a": {
-      textDecoration: "none",
+    bgClass2: {
+      "&.MuiPaper-root": {
+        backgroundColor: "transparent",
+        transition: "background-color .5s",
+      },
     },
 
-    "& .MuiTypography-root": {
-      fontWeight: "bold",
-    },
-  },
+    header: {
+      "&.MuiPaper-root": {
+        padding: "1rem",
+      },
 
-  logo: {
-    border: "2px dotted aqua",
-    borderRadius: "50%",
-    display: "flex",
-    width: "50px",
-    height: "50px",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 0,
-  },
-}));
+      "& a": {
+        textDecoration: "none",
+      },
+
+      "& .MuiTypography-root": {
+        fontWeight: "bold",
+      },
+    },
+
+    logo: {
+      border: "2px dotted aqua",
+      borderRadius: "50%",
+      display: "flex",
+      width: "50px",
+      height: "50px",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 0,
+    },
+  }),
+  { index: 1 }
+);
 
 export function NavWrapper({ authUser, authMenu, nonAuthMenu, headerClass }) {
   const { bgClass1, bgClass2, logo, header } = useStyles();
@@ -77,11 +80,7 @@ export function NavWrapper({ authUser, authMenu, nonAuthMenu, headerClass }) {
             )}
           </Grid>
 
-          <Grid
-            item
-            md={1}
-            style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center" }}
-          >
+          <Grid item md={1} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
             <Popover toggleButton={<ToggleButton />} />
             {/* <ProfileImage firebase={firebase} authUser={authUser} /> */}
           </Grid>

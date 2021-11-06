@@ -5,23 +5,25 @@ import PasswordChange from "../PasswordChange";
 
 import { withAuthorization, AuthUserContext } from "../Sesssion";
 
-const url =
-  "https://images.pexels.com/photos/3597084/pexels-photo-3597084.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
+const url = "https://images.pexels.com/photos/3597084/pexels-photo-3597084.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-    backgroundImage: `url(${url})`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    backgroundBlendMode: "multiply",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-}));
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      height: "100vh",
+      backgroundImage: `url(${url})`,
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      backgroundBlendMode: "multiply",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  }),
+  { index: 1 }
+);
 
 const Account = () => {
   const classes = useStyles();

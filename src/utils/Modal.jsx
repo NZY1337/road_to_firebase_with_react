@@ -21,18 +21,21 @@ const StyledButton = withStyles({
   },
 })(Button);
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: "rgba(0,0,0,.8)",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
+const useStyles = makeStyles(
+  (theme) => ({
+    modal: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    paper: {
+      backgroundColor: "rgba(0,0,0,.8)",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }),
+  { index: 1 }
+);
 
 export default function TransitionsModal({ children, title }) {
   const classes = useStyles();
@@ -64,15 +67,7 @@ export default function TransitionsModal({ children, title }) {
         }}
       >
         <Fade in={open}>
-          <Grid
-            item
-            md={3}
-            lg={3}
-            xs={5}
-            container
-            justify="center"
-            style={{ position: "absolute", bottom: "15%", right: "10%" }}
-          >
+          <Grid item md={3} lg={3} xs={5} container justify="center" style={{ position: "absolute", bottom: "15%", right: "10%" }}>
             <div className={classes.paper} style={{ width: "100%" }}>
               {children}
             </div>

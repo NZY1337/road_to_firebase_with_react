@@ -5,19 +5,22 @@ import Divider from "@material-ui/core/Divider";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    whiteSpace: "nowrap",
-    marginBottom: theme.spacing(1),
-  },
-  divider: {
-    marginTop: ".75rem",
-    marginBottom: "1rem",
-  },
-}));
+const useStyles = makeStyles(
+  (theme) => ({
+    paper: {
+      padding: theme.spacing(1),
+      textAlign: "center",
+      color: theme.palette.text.secondary,
+      whiteSpace: "nowrap",
+      marginBottom: theme.spacing(1),
+    },
+    divider: {
+      marginTop: ".75rem",
+      marginBottom: "1rem",
+    },
+  }),
+  { index: 1 }
+);
 
 const Todo = ({ id, todo, handleDelete, handleEdit }) => {
   const classes = useStyles();

@@ -9,28 +9,32 @@ import "./animations.scss";
 
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  description: {
-    color: "#fff",
-    marginTop: "1rem",
-    fontSize: "1.3rem",
-    width: "100%",
+const useStyles = makeStyles(
+  (theme) => ({
+    description: {
+      color: "#fff",
+      marginTop: "1rem",
+      fontSize: "1.3rem",
+      width: "100%",
 
-    ["@media (min-width:767px)"]: {
-      width: "50%",
+      ["@media (min-width:767px)"]: {
+        width: "50%",
+      },
+      margin: "0 auto",
     },
-    margin: "0 auto",
-  },
 
-  header: {
-    color: "aqua",
-    marginBottom: "2rem",
-  },
-}));
+    header: {
+      color: "aqua",
+      marginBottom: "2rem",
+    },
+  }),
+  { index: 1 }
+);
 
 const HeaderContainer = ({ cover, title, description, height, children, flexEnd, shadow }) => {
   const [inProp, setInProp] = useState(false);
   const classes = useStyles();
+
   useEffect(() => {
     setInProp(true);
 
@@ -62,14 +66,7 @@ const HeaderContainer = ({ cover, title, description, height, children, flexEnd,
         <div style={{ height: "100%" }}>
           <VideoPlayer url={cover} autoPlay={true} controls={false} />
 
-          <Grid
-            container
-            style={{ height: "100%", padding: ".5rem" }}
-            item
-            direction="column"
-            justify="center"
-            align="center"
-          >
+          <Grid container style={{ height: "100%", padding: ".5rem" }} item direction="column" justify="center" align="center">
             <CSSTransition in={inProp} timeout={200} classNames="carousel-title">
               <Typography component="h2" variant="h2" className={classes.header}>
                 {title}

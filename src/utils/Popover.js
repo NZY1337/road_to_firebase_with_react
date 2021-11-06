@@ -6,18 +6,21 @@ import ToggleButton from "./ToggleButton/ToggleButton";
 
 import "../assets/scss/toggleCategories.scss";
 
-const useStyles = makeStyles((theme) => ({
-  typography: {
-    padding: theme.spacing(2),
-  },
-  popover: {
-    "& .MuiPopover-paper": {
-      marginTop: "1rem",
-      backgroundColor: "#D9AFD9",
-      backgroundImage: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
+const useStyles = makeStyles(
+  (theme) => ({
+    typography: {
+      padding: theme.spacing(2),
     },
-  },
-}));
+    popover: {
+      "& .MuiPopover-paper": {
+        marginTop: "1rem",
+        backgroundColor: "#D9AFD9",
+        backgroundImage: "linear-gradient(-225deg, #FF3CAC 0%, #562B7C 52%, #2B86C5 100%)",
+      },
+    },
+  }),
+  { index: 1 }
+);
 
 export default function SimplePopover() {
   const classes = useStyles();

@@ -6,31 +6,34 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiInputLabel-root": {
-      fontSize: "14px",
-    },
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      "& .MuiInputLabel-root": {
+        fontSize: "14px",
+      },
 
-    width: "100%",
+      width: "100%",
 
-    "& .MuiFilledInput-underline:after": {
-      borderBottomColor: "aqua",
+      "& .MuiFilledInput-underline:after": {
+        borderBottomColor: "aqua",
+      },
+      "& .MuiInputBase-root": {
+        color: "#000",
+        fontSize: "14px",
+      },
     },
-    "& .MuiInputBase-root": {
-      color: "#000",
-      fontSize: "14px",
+    btn: {
+      "& .MuiButton-label": {
+        color: "gray",
+      },
     },
-  },
-  btn: {
-    "& .MuiButton-label": {
-      color: "gray",
+    forgotPw: {
+      color: "aqua!important",
     },
-  },
-  forgotPw: {
-    color: "aqua!important",
-  },
-}));
+  }),
+  { index: 1 }
+);
 
 export function AddDotsForm({ values, onSubmitHandler, onChangeHandler, postTitle }) {
   const { company, cover, description } = values;
@@ -94,14 +97,7 @@ export function AddDotsForm({ values, onSubmitHandler, onChangeHandler, postTitl
         />
 
         <Grid container justify="space-between" alignItems="center" item>
-          <Button
-            className={isInvalid && classes.btn}
-            variant="contained"
-            color="secondary"
-            type="submit"
-            disabled={isInvalid}
-            style={{ marginTop: ".5rem", textTransform: "capitalize" }}
-          >
+          <Button className={isInvalid && classes.btn} variant="contained" color="secondary" type="submit" disabled={isInvalid} style={{ marginTop: ".5rem", textTransform: "capitalize" }}>
             <Typography component="p">Submit Data Bullet</Typography>
           </Button>
         </Grid>

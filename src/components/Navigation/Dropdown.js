@@ -1,77 +1,76 @@
-import React from 'react'
-import Button from '@material-ui/core/Button'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
-import { NavLink } from 'react-router-dom'
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp'
-import { makeStyles } from '@material-ui/core/styles'
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Typography from "@material-ui/core/Typography";
+import { NavLink } from "react-router-dom";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '&.MuiPaper-root': {
-      backgroundColor: 'rgba(0,0,0, 1)',
-      transition: 'background-color .5s',
-    },
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      "&.MuiPaper-root": {
+        backgroundColor: "rgba(0,0,0, 1)",
+        transition: "background-color .5s",
+      },
 
-    '& .MuiMenu-list': {
-      backgroundColor: 'black',
+      "& .MuiMenu-list": {
+        backgroundColor: "black",
 
-      '& a': {
-        textDecoration: 'none',
+        "& a": {
+          textDecoration: "none",
+        },
       },
     },
-  },
-}))
+  }),
+  { index: 1 }
+);
 
 export function Dropdown({ submenu, submenuName, defaultColorToDrowdown }) {
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const classes = useStyles()
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const classes = useStyles();
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const renderSublinks = () => {
     return submenu.map((menu) => {
-      const { location, name, id } = menu
+      const { location, name, id } = menu;
       return (
         <NavLink
           onClick={handleClose}
           exact
           activeStyle={{
-            color: 'aqua',
-            textDecoration: 'none',
+            color: "aqua",
+            textDecoration: "none",
           }}
           key={id}
-          style={{ color: '#fff' }}
+          style={{ color: "#fff" }}
           to={location}
           color="inherit"
         >
           <MenuItem>
-            <Typography
-              variant="body1"
-              component="p"
-              style={{ color: '#fff', fontWeight: 'bold' }}
-            >
+            <Typography variant="body1" component="p" style={{ color: "#fff", fontWeight: "bold" }}>
               {name}
             </Typography>
           </MenuItem>
         </NavLink>
-      )
-    })
-  }
+      );
+    });
+  };
 
   return (
     <div>
       <Button
         style={{
-          color: defaultColorToDrowdown ? 'aqua' : '#fff',
-          fontSize: 'inherit',
-          textTransform: 'none',
+          color: defaultColorToDrowdown ? "aqua" : "#fff",
+          fontSize: "inherit",
+          textTransform: "none",
         }}
         aria-controls="simple-menu"
         aria-haspopup="true"
@@ -81,18 +80,11 @@ export function Dropdown({ submenu, submenuName, defaultColorToDrowdown }) {
         {submenuName}
         <ArrowDropUpIcon />
       </Button>
-      <Menu
-        id="simple-menu"
-        className={classes.root}
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+      <Menu id="simple-menu" className={classes.root} anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {renderSublinks()}
       </Menu>
     </div>
-  )
+  );
 }
 
-export default Dropdown
+export default Dropdown;

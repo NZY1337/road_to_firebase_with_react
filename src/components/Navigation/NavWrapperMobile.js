@@ -5,21 +5,24 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import TemporaryDrawer from "../../utils/Drawer/TemporaryDrawer";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    "& .MuiPaper-root": {
-      backgroundColor: "#000!important",
-    },
+const useStyles = makeStyles(
+  (theme) => ({
+    root: {
+      flexGrow: 1,
+      "& .MuiPaper-root": {
+        backgroundColor: "#000!important",
+      },
 
-    "& .MuiTypography-root, & .MuiSvgIcon-root": {
-      color: "#fff",
+      "& .MuiTypography-root, & .MuiSvgIcon-root": {
+        color: "#fff",
+      },
     },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+  }),
+  { index: 1 }
+);
 
 export default function NavWrapperMobile({ authUser, authMenu, nonAuthMenu }) {
   const classes = useStyles();
